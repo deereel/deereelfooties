@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Made to Order - DeeReeL Footies</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 w-full transition-all duration-200 bg-white">
+    
+    <!-- Secondary Navigation -->
+    <div class="hidden md:flex justify-end items-center gap-6 px-6 py-2 text-xs">
+      <a href="contact.html" class="hover:underline">CONTACT</a>
+      <a href="our-history.html" class="hover:underline">OUR HISTORY</a>
+      <a href="blog.html" class="hover:underline">BLOG</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="flex items-center justify-between px-4 py-4 border-b">
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="men.html" class="hover:underline">MEN</a>
+        <a href="women.html" class="hover:underline">WOMEN</a>
+        <a href="customize.html" class="hover:underline">CUSTOMIZE</a>
+        <a href="mto.html" class="hover:underline">MTO</a>
+        <a href="outlet-shoes.html" class="hover:underline">OUTLET SHOES</a>
+      </nav>
+
+      <!-- Logo -->
+      <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2">
+        <div class="relative w-32 h-8">
+          <span class="font-serif text-xl tracking-widest">DEEREEL FOOTIES</span>
+        </div>
+      </a>
+
+      <!-- Right Navigation -->
+      <div class="flex items-center space-x-4">
+        <a href="search.html" class="hover:text-gray-600">
+          <i class="fas fa-search"></i>
+          <span class="sr-only">Search</span>
+        </a>
+        <a href="shoemaking.html" class="hidden md:block hover:underline">SHOEMAKING</a>
+        <a href="cart.html" class="hover:text-gray-600">
+          <div class="relative">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              0
+            </span>
+          </div>
+          <span class="sr-only">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden bg-white absolute w-full z-50 border-b hidden">
+      <nav class="flex flex-col p-4 space-y-4">
+        <a href="men.html" class="py-2 border-b">MEN</a>
+        <a href="women.html" class="py-2 border-b">WOMEN</a>
+        <a href="customize.html" class="py-2 border-b">CUSTOMIZE</a>
+        <a href="mto.html" class="py-2 border-b">MTO</a>
+        <a href="outlet-shoes.html" class="py-2 border-b">OUTLET SHOES</a>
+        <a href="shoemaking.html" class="py-2 border-b">SHOEMAKING</a>
+        <a href="contact.html" class="py-2 border-b">CONTACT</a>
+        <a href="our-history.html" class="py-2 border-b">OUR HISTORY</a>
+        <a href="blog.html" class="py-2">BLOG</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Section -->
+    <section class="relative w-full h-[400px]">
+      <img src="images/mto-hero.jpg" alt="DRF Made to Order" class="object-cover w-full h-full">
+      <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+        <div class="text-center text-white max-w-3xl px-4">
+          <h1 class="text-4xl md:text-5xl font-light mb-4">MADE TO ORDER</h1>
+          <p class="text-lg md:text-xl">Bespoke shoemaking for the discerning customer</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MTO Introduction -->
+    <section class="py-16 px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-3xl font-light mb-6">THE ULTIMATE SHOEMAKING EXPERIENCE</h2>
+        <p class="mb-8">
+          Our Made to Order service offers a unique experience for those who desire shoes crafted specifically to
+          their requirements. With our master shoemakers' guidance, create footwear that perfectly balances
+          aesthetics, comfort, and individuality.
+        </p>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">1</span>
+            </div>
+            <h3 class="text-xl mb-2">CONSULTATION</h3>
+            <p class="text-gray-600">Meet with our expert craftsmen to discuss your vision</p>
+          </div>
+          <div>
+            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">2</span>
+            </div>
+            <h3 class="text-xl mb-2">DESIGN</h3>
+            <p class="text-gray-600">Select exclusive materials and personalized details</p>
+          </div>
+          <div>
+            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl">3</span>
+            </div>
+            <h3 class="text-xl mb-2">CRAFTING</h3>
+            <p class="text-gray-600">Your shoes are meticulously handcrafted to your specifications</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-16 bg-neutral-100">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-light text-center mb-12">THE MTO PROCESS</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="relative h-[500px]">
+            <img src="images/mto-process.jpg" alt="MTO Process" class="object-cover w-full h-full">
+          </div>
+          <div>
+            <div class="space-y-8">
+              <div>
+                <h3 class="text-xl font-medium mb-2">INITIAL CONSULTATION</h3>
+                <p class="text-gray-600">
+                  Begin with a detailed discussion about your preferences, style, and specific requirements. Our
+                  experts will guide you through available options.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-medium mb-2">MATERIAL SELECTION</h3>
+                <p class="text-gray-600">
+                  Choose from our extensive collection of premium leathers, exclusive to our MTO service. Each
+                  material is carefully selected for quality and character.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-medium mb-2">FITTING AND MEASUREMENTS</h3>
+                <p class="text-gray-600">
+                  Precise measurements ensure your shoes will fit perfectly. We account for the unique characteristics
+                  of your feet.
+                </p>
+              </div>
+              <div>
+                <h3 class="text-xl font-medium mb-2">HANDCRAFTING</h3>
+                <p class="text-gray-600">
+                  Our master artisans in Mallorca bring your vision to life using traditional techniques passed down
+                  through generations.
+                </p>
+              </div>
+            </div>
+            <div class="mt-8">
+              <a href="#" class="border border-black px-6 py-2 inline-block hover:bg-black hover:text-white transition">
+                BOOK A CONSULTATION
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Materials -->
+    <section class="py-16 px-4">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-3xl font-light text-center mb-12">EXCLUSIVE MATERIALS</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="relative aspect-square overflow-hidden mb-4">
+              <img src="images/material-1.jpg" alt="Shell Cordovan" class="object-cover w-full h-full">
+            </div>
+            <h3 class="text-lg">SHELL CORDOVAN</h3>
+          </div>
+          <div class="text-center">
+            <div class="relative aspect-square overflow-hidden mb-4">
+              <img src="images/material-2.jpg" alt="Museum Calf" class="object-cover w-full h-full">
+            </div>
+            <h3 class="text-lg">MUSEUM CALF</h3>
+          </div>
+          <div class="text-center">
+            <div class="relative aspect-square overflow-hidden mb-4">
+              <img src="images/material-3.jpg" alt="Box Calf" class="object-cover w-full h-full">
+            </div>
+            <h3 class="text-lg">BOX CALF</h3>
+          </div>
+          <div class="text-center">
+            <div class="relative aspect-square overflow-hidden mb-4">
+              <img src="images/material-4.jpg" alt="Suede" class="object-cover w-full h-full">
+            </div>
+            <h3 class="text-lg">SUEDE</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-16 bg-neutral-900 text-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl font-light mb-6">CREATE YOUR MASTERPIECE</h2>
+        <p class="mb-8">
+          Experience the luxury of truly bespoke footwear. Delivery time for Made to Order shoes is approximately 8-10
+          weeks.
+        </p>
+        <a href="#" class="bg-white text-black px-8 py-3 inline-block hover:bg-gray-200 transition">
+          SCHEDULE APPOINTMENT
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t">
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="our-history.html" class="hover:underline">Our History</a>
+          </li>
+          <li>
+            <a href="shoemaking.html" class="hover:underline">Craftsmanship</a>
+          </li>
+          <li>
+            <a href="contact.html" class="hover:underline">Contact Us</a>
+          </li>
+          <li>
+            <a href="careers.html" class="hover:underline">Careers</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="shipping.html" class="hover:underline">Shipping & Delivery</a>
+          </li>
+          <li>
+            <a href="returns.html" class="hover:underline">Returns & Exchanges</a>
+          </li>
+          <li>
+            <a href="size-guide.html" class="hover:underline">Size Guide</a>
+          </li>
+          <li>
+            <a href="faq.html" class="hover:underline">FAQ</a>
+          </li>
+          <li>
+            <a href="care-guide.html" class="hover:underline">Shoe Care Guide</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">SHOP</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="men.html" class="hover:underline">Men's Collection</a>
+          </li>
+          <li>
+            <a href="women.html" class="hover:underline">Women's Collection</a>
+          </li>
+          <li>
+            <a href="customize.html" class="hover:underline">Customize</a>
+          </li>
+          <li>
+            <a href="mto.html" class="hover:underline">Made to Order</a>
+          </li>
+          <li>
+            <a href="outlet-shoes.html" class="hover:underline">Outlet</a>
+          </li>
+          <li>
+            <a href="gift-cards.html" class="hover:underline">Gift Cards</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">NEWSLETTER</h3>
+        <p class="text-sm mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
+        <form class="mb-6">
+          <div class="flex flex-col space-y-2">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="px-4 py-2 border border-gray-300 focus:outline-none"
+              required
+            />
+            <button type="submit" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">
+              SUBSCRIBE
+            </button>
+          </div>
+        </form>
+
+        <h3 class="font-medium mb-4">FOLLOW US</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-instagram text-lg"></i>
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-facebook text-lg"></i>
+            <span class="sr-only">Facebook</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-twitter text-lg"></i>
+            <span class="sr-only">Twitter</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-youtube text-lg"></i>
+            <span class="sr-only">YouTube</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="border-t py-6 px-4">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+        <div class="mb-4 md:mb-0">
+          <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="terms.html" class="hover:underline">Terms & Conditions</a>
+          <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+          <a href="cookies.html" class="hover:underline">Cookie Policy</a>
+          <a href="sitemap.html" class="hover:underline">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

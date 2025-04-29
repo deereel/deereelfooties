@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outlet Shoes - DeeReeL Footies</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="sticky top-0 z-50 w-full transition-all duration-200 bg-white">
+    <!-- Secondary Navigation -->
+    <div class="hidden md:flex justify-end items-center gap-6 px-6 py-2 text-xs">
+      <a href="contact.html" class="hover:underline">CONTACT</a>
+      <a href="our-history.html" class="hover:underline">OUR HISTORY</a>
+      <a href="blog.html" class="hover:underline">BLOG</a>
+    </div>
+
+    <!-- Main Navigation -->
+    <div class="flex items-center justify-between px-4 py-4 border-b">
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-8">
+        <a href="men.html" class="hover:underline">MEN</a>
+        <a href="women.html" class="hover:underline">WOMEN</a>
+        <a href="customize.html" class="hover:underline">CUSTOMIZE</a>
+        <a href="mto.html" class="hover:underline">MTO</a>
+        <a href="outlet-shoes.html" class="hover:underline">OUTLET SHOES</a>
+      </nav>
+
+      <!-- Logo -->
+      <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2">
+        <div class="relative w-32 h-8">
+          <span class="font-serif text-xl tracking-widest">DEEREEL FOOTIES</span>
+        </div>
+      </a>
+
+      <!-- Right Navigation -->
+      <div class="flex items-center space-x-4">
+        <a href="search.html" class="hover:text-gray-600">
+          <i class="fas fa-search"></i>
+          <span class="sr-only">Search</span>
+        </a>
+        <a href="shoemaking.html" class="hidden md:block hover:underline">SHOEMAKING</a>
+        <a href="cart.html" class="hover:text-gray-600">
+          <div class="relative">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              0
+            </span>
+          </div>
+          <span class="sr-only">Cart</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden bg-white absolute w-full z-50 border-b hidden">
+      <nav class="flex flex-col p-4 space-y-4">
+        <a href="men.html" class="py-2 border-b">MEN</a>
+        <a href="women.html" class="py-2 border-b">WOMEN</a>
+        <a href="customize.html" class="py-2 border-b">CUSTOMIZE</a>
+        <a href="mto.html" class="py-2 border-b">MTO</a>
+        <a href="outlet-shoes.html" class="py-2 border-b">OUTLET SHOES</a>
+        <a href="shoemaking.html" class="py-2 border-b">SHOEMAKING</a>
+        <a href="contact.html" class="py-2 border-b">CONTACT</a>
+        <a href="our-history.html" class="py-2 border-b">OUR HISTORY</a>
+        <a href="blog.html" class="py-2">BLOG</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-light mb-2">OUTLET</h1>
+        <div class="flex items-center text-sm text-gray-500">
+          <a href="index.html">Home</a>
+          <span class="mx-2">/</span>
+          <span>Outlet</span>
+        </div>
+      </div>
+
+      <div class="mb-12 max-w-3xl">
+        <p>
+          Discover exceptional quality at special prices. Our outlet features a selection of DeeReeL Footies shoes with minor
+          cosmetic imperfections or from previous seasons, all offered at discounted prices. Each pair maintains our
+          high standards of craftsmanship and durability.
+        </p>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <div class="md:w-1/4 space-y-6">
+          <div class="md:hidden flex justify-between items-center p-4 border border-gray-200 mb-4 filter-toggle">
+            <span>Filter Products</span>
+            <i class="fas fa-filter"></i>
+          </div>
+
+          <div class="hidden md:block filter-section">
+            <h3 class="font-medium mb-3">FILTER BY SIZE</h3>
+            <div class="flex flex-wrap gap-2">
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 6</div>
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 7</div>
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 8</div>
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 9</div>
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 10</div>
+              <div class="border px-3 py-1 cursor-pointer hover:bg-gray-100">UK 11</div>
+            </div>
+          </div>
+
+          <div class="hidden md:block filter-section">
+            <h3 class="font-medium mb-3">FILTER BY DISCOUNT</h3>
+            <div class="space-y-1">
+              <div class="flex items-center">
+                <input id="discount1" type="checkbox" class="mr-2">
+                <label for="discount1">20% and above</label>
+              </div>
+              <div class="flex items-center">
+                <input id="discount2" type="checkbox" class="mr-2">
+                <label for="discount2">30% and above</label>
+              </div>
+              <div class="flex items-center">
+                <input id="discount3" type="checkbox" class="mr-2">
+                <label for="discount3">40% and above</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="hidden md:block filter-section">
+            <h3 class="font-medium mb-3">FILTER BY COLOR</h3>
+            <div class="flex flex-wrap gap-2">
+              <div class="w-6 h-6 bg-black rounded-full cursor-pointer"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #92400e;"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #d97706;"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #991b1b;"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #1e3a8a;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="md:w-3/4">
+          <div class="flex justify-between items-center mb-6">
+            <div>Showing all 8 results</div>
+            <select class="border p-2">
+              <option>Sort by discount: high to low</option>
+              <option>Sort by price: low to high</option>
+              <option>Sort by price: high to low</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Product 1 -->
+            <div class="group">
+              <a href="outlet-shoes/product/1.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-1.jpg" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 22%
+                  </div>
+                </div>
+                <h3 class="text-lg">Oxford Cap Toe 80201</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€350</p>
+                  <p class="text-gray-500 line-through text-sm">€450</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="group">
+              <a href="outlet-shoes/product/2.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-2.jpg" alt="Penny Loafer 80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 23%
+                  </div>
+                </div>
+                <h3 class="text-lg">Penny Loafer 80647</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€325</p>
+                  <p class="text-gray-500 line-through text-sm">€425</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="group">
+              <a href="outlet-shoes/product/3.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-3.jpg" alt="Chelsea Boot 80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 20%
+                  </div>
+                </div>
+                <h3 class="text-lg">Chelsea Boot 80216</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€395</p>
+                  <p class="text-gray-500 line-through text-sm">€495</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="group">
+              <a href="outlet-shoes/product/4.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-4.jpg" alt="Wing Tip 80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 22%
+                  </div>
+                </div>
+                <h3 class="text-lg">Wing Tip 80290</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€360</p>
+                  <p class="text-gray-500 line-through text-sm">€460</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="group">
+              <a href="outlet-shoes/product/5.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-5.jpg" alt="Double Monk 80544" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 21%
+                  </div>
+                </div>
+                <h3 class="text-lg">Double Monk 80544</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€375</p>
+                  <p class="text-gray-500 line-through text-sm">€475</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="group">
+              <a href="outlet-shoes/product/6.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-6.jpg" alt="Derby Plain Toe 80579" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 22%
+                  </div>
+                </div>
+                <h3 class="text-lg">Derby Plain Toe 80579</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€345</p>
+                  <p class="text-gray-500 line-through text-sm">€445</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 7 -->
+            <div class="group">
+              <a href="outlet-shoes/product/7.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-7.jpg" alt="Chukka Boot 80791" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 21%
+                  </div>
+                </div>
+                <h3 class="text-lg">Chukka Boot 80791</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€385</p>
+                  <p class="text-gray-500 line-through text-sm">€485</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- Product 8 -->
+            <div class="group">
+              <a href="outlet-shoes/product/8.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="images/outlet-8.jpg" alt="Tassel Loafer 80158" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <div class="absolute top-0 right-0 bg-red-600 text-white px-2 py-1">
+                    SALE 23%
+                  </div>
+                </div>
+                <h3 class="text-lg">Tassel Loafer 80158</h3>
+                <div class="flex gap-2 items-baseline">
+                  <p class="text-red-600">€330</p>
+                  <p class="text-gray-500 line-through text-sm">€430</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t">
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="our-history.html" class="hover:underline">Our History</a>
+          </li>
+          <li>
+            <a href="shoemaking.html" class="hover:underline">Craftsmanship</a>
+          </li>
+          <li>
+            <a href="contact.html" class="hover:underline">Contact Us</a>
+          </li>
+          <li>
+            <a href="careers.html" class="hover:underline">Careers</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="shipping.html" class="hover:underline">Shipping & Delivery</a>
+          </li>
+          <li>
+            <a href="returns.html" class="hover:underline">Returns & Exchanges</a>
+          </li>
+          <li>
+            <a href="size-guide.html" class="hover:underline">Size Guide</a>
+          </li>
+          <li>
+            <a href="faq.html" class="hover:underline">FAQ</a>
+          </li>
+          <li>
+            <a href="care-guide.html" class="hover:underline">Shoe Care Guide</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">SHOP</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="men.html" class="hover:underline">Men's Collection</a>
+          </li>
+          <li>
+            <a href="women.html" class="hover:underline">Women's Collection</a>
+          </li>
+          <li>
+            <a href="customize.html" class="hover:underline">Customize</a>
+          </li>
+          <li>
+            <a href="mto.html" class="hover:underline">Made to Order</a>
+          </li>
+          <li>
+            <a href="outlet-shoes.html" class="hover:underline">Outlet</a>
+          </li>
+          <li>
+            <a href="gift-cards.html" class="hover:underline">Gift Cards</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">NEWSLETTER</h3>
+        <p class="text-sm mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
+        <form class="mb-6">
+          <div class="flex flex-col space-y-2">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="px-4 py-2 border border-gray-300 focus:outline-none"
+              required
+            />
+            <button type="submit" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">
+              SUBSCRIBE
+            </button>
+          </div>
+        </form>
+
+        <h3 class="font-medium mb-4">FOLLOW US</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-instagram text-lg"></i>
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-facebook text-lg"></i>
+            <span class="sr-only">Facebook</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-twitter text-lg"></i>
+            <span class="sr-only">Twitter</span>
+          </a>
+          <a href="#" class="hover:text-gray-600">
+            <i class="fab fa-youtube text-lg"></i>
+            <span class="sr-only">YouTube</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="border-t py-6 px-4">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+        <div class="mb-4 md:mb-0">
+          <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="terms.html" class="hover:underline">Terms & Conditions</a>
+          <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+          <a href="cookies.html" class="hover:underline">Cookie Policy</a>
+          <a href="sitemap.html" class="hover:underline">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile filter toggle
+      const filterToggle = document.querySelector('.filter-toggle');
+      const filterSections = document.querySelectorAll('.filter-section');
+      
+      if (filterToggle && filterSections.length > 0) {
+        filterToggle.addEventListener('click', function() {
+          filterSections.forEach(section => {
+            section.classList.toggle('hidden');
+            section.classList.toggle('md:block');
+          });
+          
+          // Toggle icon
+          const icon = filterToggle.querySelector('i');
+          if (icon.classList.contains('fa-filter')) {
+            icon.classList.remove('fa-filter');
+            icon.classList.add('fa-times');
+          } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-filter');
+          }
+        });
+      }
+      
+      // Size filter functionality
+      const sizeButtons = document.querySelectorAll('.border.px-3.py-1.cursor-pointer');
+      
+      sizeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          this.classList.toggle('bg-black');
+          this.classList.toggle('text-white');
+          // In a real implementation, this would filter the products
+        });
+      });
+      
+      // Color filter functionality
+      const colorButtons = document.querySelectorAll('.rounded-full.cursor-pointer');
+      
+      colorButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          this.classList.toggle('ring-2');
+          this.classList.toggle('ring-black');
+          // In a real implementation, this would filter the products
+        });
+      });
+      
+      // Checkbox filter functionality
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      
+      checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          // In a real implementation, this would filter the products
+          console.log(`Filter ${this.id} is ${this.checked ? 'checked' : 'unchecked'}`);
+        });
+      });
+      
+      // Sort functionality
+      const sortSelect = document.querySelector('select');
+      
+      if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+          // In a real implementation, this would sort the products
+          console.log(`Sorting by: ${this.value}`);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
