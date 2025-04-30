@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function() {
   ## 4. Cart Page HTML
   
   ```html type="code" project="DeeReeL Footies HTML" file="cart.html"
-  &lt;!DOCTYPE html>
+  <!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -306,25 +306,25 @@ document.addEventListener('DOMContentLoaded', function() {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
-    &lt;!-- Header -->
+    <!-- Header -->
     <header class="sticky top-0 z-50 w-full transition-all duration-200 bg-white">
-      &lt;!-- Top Bar -->
+      <!-- Top Bar -->
       
-      &lt;!-- Secondary Navigation -->
+      <!-- Secondary Navigation -->
       <div class="hidden md:flex justify-end items-center gap-6 px-6 py-2 text-xs">
         <a href="contact.html" class="hover:underline">CONTACT</a>
         <a href="our-history.html" class="hover:underline">OUR HISTORY</a>
         <a href="blog.html" class="hover:underline">BLOG</a>
       </div>
   
-      &lt;!-- Main Navigation -->
+      <!-- Main Navigation -->
       <div class="flex items-center justify-between px-4 py-4 border-b">
-        &lt;!-- Mobile Menu Button -->
+        <!-- Mobile Menu Button -->
         <button class="md:hidden menu-toggle">
           <i class="fas fa-bars"></i>
         </button>
   
-        &lt;!-- Desktop Navigation -->
+        <!-- Desktop Navigation -->
         <nav class="hidden md:flex items-center space-x-8">
           <a href="men.html" class="hover:underline">MEN</a>
           <a href="women.html" class="hover:underline">WOMEN</a>
@@ -333,14 +333,14 @@ document.addEventListener('DOMContentLoaded', function() {
           <a href="outlet-shoes.html" class="hover:underline">OUTLET SHOES</a>
         </nav>
   
-        &lt;!-- Logo -->
+        <!-- Logo -->
         <a href="index.html" class="absolute left-1/2 transform -translate-x-1/2">
           <div class="relative w-32 h-8">
             <span class="font-serif text-xl tracking-widest">DEEREEL FOOTIES</span>
           </div>
         </a>
   
-        &lt;!-- Right Navigation -->
+        <!-- Right Navigation -->
         <div class="flex items-center space-x-4">
           <a href="search.html" class="hover:text-gray-600">
             <i class="fas fa-search"></i>
@@ -359,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </div>
   
-      &lt;!-- Mobile Menu -->
+      <!-- Mobile Menu -->
       <div class="mobile-menu md:hidden bg-white absolute w-full z-50 border-b hidden">
         <nav class="flex flex-col p-4 space-y-4">
           <a href="men.html" class="py-2 border-b">MEN</a>
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </header>
   
-    &lt;!-- Main Content -->
+    <!-- Main Content -->
     <main>
       <div class="max-w-7xl mx-auto px-4 py-8">
         <div class="mb-8">
@@ -388,14 +388,14 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
   
         <div class="grid md:grid-cols-3 gap-8">
-          &lt;!-- Cart Items -->
+          <!-- Cart Items -->
           <div class="md:col-span-2">
             <div id="cart-items">
-              &lt;!-- Cart items will be rendered here by JavaScript -->
+              <!-- Cart items will be rendered here by JavaScript -->
             </div>
           </div>
   
-          &lt;!-- Cart Summary -->
+          <!-- Cart Summary -->
           <div id="cart-summary" class="bg-neutral-50 p-6">
             <h2 class="text-xl font-medium mb-6">ORDER SUMMARY</h2>
             
@@ -448,128 +448,202 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </main>
   
-    &lt;!-- Footer -->
-    <footer class="bg-white border-t">
-      &lt;!-- Main Footer -->
-      <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div>
-          <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
-          <ul class="space-y-2 text-sm">
-            <li>
-              <a href="our-history.html" class="hover:underline">Our History</a>
-            </li>
-            <li>
-              <a href="shoemaking.html" class="hover:underline">Craftsmanship</a>
-            </li>
-            <li>
-              <a href="contact.html" class="hover:underline">Contact Us</a>
-            </li>
-            <li>
-              <a href="careers.html" class="hover:underline">Careers</a>
-            </li>
-          </ul>
-        </div>
-  
-        <div>
-          <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
-          <ul class="space-y-2 text-sm">
-            <li>
-              <a href="shipping.html" class="hover:underline">Shipping & Delivery</a>
-            </li>
-            <li>
-              <a href="returns.html" class="hover:underline">Returns & Exchanges</a>
-            </li>
-            <li>
-              <a href="size-guide.html" class="hover:underline">Size Guide</a>
-            </li>
-            <li>
-              <a href="faq.html" class="hover:underline">FAQ</a>
-            </li>
-            <li>
-              <a href="care-guide.html" class="hover:underline">Shoe Care Guide</a>
-            </li>
-          </ul>
-        </div>
-  
-        <div>
-          <h3 class="font-medium mb-4">SHOP</h3>
-          <ul class="space-y-2 text-sm">
-            <li>
-              <a href="men.html" class="hover:underline">Men's Collection</a>
-            </li>
-            <li>
-              <a href="women.html" class="hover:underline">Women's Collection</a>
-            </li>
-            <li>
-              <a href="customize.html" class="hover:underline">Customize</a>
-            </li>
-            <li>
-              <a href="mto.html" class="hover:underline">Made to Order</a>
-            </li>
-            <li>
-              <a href="outlet-shoes.html" class="hover:underline">Outlet</a>
-            </li>
-            <li>
-              <a href="gift-cards.html" class="hover:underline">Gift Cards</a>
-            </li>
-          </ul>
-        </div>
-  
-        <div>
-          <h3 class="font-medium mb-4">NEWSLETTER</h3>
-          <p class="text-sm mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
-          <form class="mb-6">
-            <div class="flex flex-col space-y-2">
-              <input
-                type="email"
-                placeholder="Your email address"
-                class="px-4 py-2 border border-gray-300 focus:outline-none"
-                required
-              />
-              <button type="submit" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">
-                SUBSCRIBE
-              </button>
-            </div>
-          </form>
-  
-          <h3 class="font-medium mb-4">FOLLOW US</h3>
-          <div class="flex space-x-4">
-            <a href="#" class="hover:text-gray-600">
-              <i class="fab fa-instagram text-lg"></i>
-              <span class="sr-only">Instagram</span>
-            </a>
-            <a href="#" class="hover:text-gray-600">
-              <i class="fab fa-facebook text-lg"></i>
-              <span class="sr-only">Facebook</span>
-            </a>
-            <a href="#" class="hover:text-gray-600">
-              <i class="fab fa-twitter text-lg"></i>
-              <span class="sr-only">Twitter</span>
-            </a>
-            <a href="#" class="hover:text-gray-600">
-              <i class="fab fa-youtube text-lg"></i>
-              <span class="sr-only">YouTube</span>
-            </a>
+    <!-- Footer -->
+  <footer class="bg-white border-t">
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="our-history.html" class="hover:underline">Our History</a>
+          </li>
+          <li>
+            <a href="shoemaking.html" class="hover:underline">Craftsmanship</a>
+          </li>
+          <li>
+            <a href="contact.html" class="hover:underline">Contact Us</a>
+          </li>
+          <li>
+            <a href="careers.html" class="hover:underline">Careers</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="shipping.html" class="hover:underline">Shipping & Delivery</a>
+          </li>
+          <li>
+            <a href="returns.html" class="hover:underline">Returns & Exchanges</a>
+          </li>
+          <li>
+            <a href="size-guide.html" class="hover:underline">Size Guide</a>
+          </li>
+          <li>
+            <a href="faq.html" class="hover:underline">FAQ</a>
+          </li>
+          <li>
+            <a href="care-guide.html" class="hover:underline">Shoe Care Guide</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">SHOP</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="men.html" class="hover:underline">Men's Collection</a>
+          </li>
+          <li>
+            <a href="women.html" class="hover:underline">Women's Collection</a>
+          </li>
+          <li>
+            <a href="customize.html" class="hover:underline">Customize</a>
+          </li>
+          <li>
+            <a href="mto.html" class="hover:underline">Made to Order</a>
+          </li>
+          <li>
+            <a href="outlet-shoes.html" class="hover:underline">Outlet</a>
+          </li>          
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">NEWSLETTER</h3>
+        <p class="text-sm mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
+        <form class="mb-6">
+          <div class="flex flex-col space-y-2">
+            <input
+              type="email"
+              class="px-4 py-2 border border-gray-300 focus:outline-none"
+              placeholder="Your email address"
+              required
+            />
+            <button type="submit" class="bg-black text-white px-6 py-2 hover:bg-gray-800 transition">
+              SUBSCRIBE
+            </button>
           </div>
+        </form>
+        
+
+        <h3 class="font-medium mb-4">FOLLOW US</h3>
+        <div class="flex space-x-4">
+          <a href="instagram.com/deereelfooties" class="hover:text-gray-600">
+            <i class="fab fa-instagram text-lg"></i>
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="tiktok.com/deereel.footies" class="hover:text-gray-600">
+            <i class="fab fa-tiktok text-lg"></i>
+            <span class="sr-only">Tiktok</span>
+          </a>
+          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
+            <i class="fab fa-whatsapp text-lg"></i>
+            <span class="sr-only">Twitter</span>
+          </a>
+          
         </div>
       </div>
-  
-      &lt;!-- Bottom Footer -->
-      <div class="border-t py-6 px-4">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
-          <div class="mb-4 md:mb-0">
-            <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
-          </div>
-          <div class="flex flex-wrap justify-center gap-4">
-            <a href="terms.html" class="hover:underline">Terms & Conditions</a>
-            <a href="privacy.html" class="hover:underline">Privacy Policy</a>
-            <a href="cookies.html" class="hover:underline">Cookie Policy</a>
-            <a href="sitemap.html" class="hover:underline">Sitemap</a>
-          </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="border-t py-6 px-4">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+        <div class="mb-2 mb-md-0">
+          <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="terms.html" class="hover:underline">Terms & Conditions</a>
+          <a href="privacy.html" class="hover:underline">Privacy Policy</a>
+          <a href="cookies.html" class="hover:underline">Cookie Policy</a>
+          <a href="sitemap.html" class="hover:underline">Sitemap</a>
         </div>
       </div>
-    </footer>
+    </div>
+    
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
+      element.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+        if (submenu && submenu.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          submenu.classList.toggle('show');
+          e.stopPropagation();
+        }
+      });
+    });
+  </script>
   
-    <script src="js/main.js"></script>
+  <script src="js/main.js"></script>
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+    // Set the current year in the footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <script>
+    // Enable dropdowns on hover
+    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+      dropdown.addEventListener('mouseenter', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.show();
+        }
+      });
+      dropdown.addEventListener('mouseleave', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.hide();
+        }
+      });
+    });
+  
+    // Also add hover support for nested submenus (if you're using them)
+    document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
+      submenu.addEventListener('mouseenter', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.add('show');
+      });
+      submenu.addEventListener('mouseleave', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.remove('show');
+      });
+    });
+  </script>
+  <script>
+    const scrollBtn = document.getElementById("scrollToTop");
+  
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollBtn.style.display = "flex";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    });
+  
+    scrollBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
   </body>
   </html>

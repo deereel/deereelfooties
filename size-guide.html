@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Size Guide - DeeReeL Footies</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="DeeReel Footies – Premium handcrafted shoes for men and women. Shop loafers, boots, slippers, and custom footwear.">
+  <meta name="keywords" content="handcrafted shoes, Elegant shoes, DRF, DeeReel Footies, men's shoes, women's boots, women's shoes, men's boots, men's slippers, women's slippers, custom footwear, loafers, sandals, mules, derby, monk strap">
+  <meta name="author" content="DeeReel Footies">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Size Guide - DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,148 +20,282 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* Position the submenu */
+    /* Top-level dropdown appears on hover */
+    .dropdown:hover > .dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+  
+    /* Basic positioning */
+    .dropdown {
+      position: relative;
+    }
+  
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+  
+    /* Remove Bootstrap's default down arrow */
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+  
+    /* Nested dropdown positioning */
     .dropdown-submenu {
       position: relative;
     }
-    
-    .dropdown-submenu .dropdown-menu {
-      top: 0;
-      left: 100%;
-      margin-left: .1rem;
-      margin-right: .1rem;
+  
+    .dropdown-submenu > .dropdown-menu {
       display: none;
+      position: absolute;
+      top: 0;
+      left: 100%; /* Align to the right of parent */
+      margin-left: 0;
+      z-index: 1001;
     }
-    
-    /* Show the submenu on hover */
+  
+    /* Show submenu on hover */
     .dropdown-submenu:hover > .dropdown-menu {
       display: block;
     }
-    
-    /* Align nested submenu */
-    .dropdown-menu > .dropdown-submenu > .dropdown-menu {
-      left: 100%;
-      top: 0;
+  
+    /* Prevent overlap of submenus */
+    .dropdown-menu > .dropdown-submenu {
+      position: relative;
     }
+
+    .dropdown-submenu {
+      position: relative;
+    }
+    .dropdown-submenu .dropdown-menu {
+      display: none;
+    }
+    .dropdown-submenu .dropdown-menu.show {
+      display: block;
+    }
+
+    /* Scroll to Top Custom Styling */
+    #scrollToTop {
+      background-color: #381819; /* Dark chocolate background */
+      color: #fff; /* White icon color */
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #scrollToTop:hover {
+      background-color: #5a2a2b; /* Lighter chocolate on hover */
+      transform: scale(1.1);
+    }
+
   </style>
+  
+  
     
 </head>
 <body>
   <!-- Sticky Header -->
-<header class="sticky-top bg-white border-bottom shadow-sm">
-  <!-- First Row: Logo and Search Icon -->
-  <div class="d-flex justify-content-between align-items-center px-4 py-2">
-    <a href="index.html" class="navbar-brand d-flex align-items-center">
-      <img src="images/drf-logo.png" alt="Logo" style="height: 50px;">
-      <span class="nav-brand-title">DeeReel Footies</span>
-    </a>
-    <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <button class="btn d-none d-lg-inline">
-      <i class="fas fa-search"></i>
-    </button>
-  </div>
-
-  <!-- Second Row: Main Navigation -->
-<nav class="d-none d-md-flex w-100 align-items-center">
-  <!-- Left-side navigation -->
-  <div class="d-flex align-items-center gap-4">
-    <!-- MEN Dropdown -->
-    <div class="dropdown">
-      <a class="dropdown-toggle" href="men.html" data-bs-toggle="dropdown" aria-expanded="false">MEN</a>
-      <ul class="dropdown-menu">
-        <!-- Shoes -->
-        <li class="dropdown-submenu">
-          <a class="dropdown-item dropdown-toggle" href="men-shoes.html">Shoes</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="men-loafers.html">Loafers</a></li>
-            <li><a class="dropdown-item" href="men-oxford.html">Oxford</a></li>
-            <li><a class="dropdown-item" href="men-derby.html">Derby</a></li>
-            <li><a class="dropdown-item" href="men-monk.html">Monk Straps</a></li>
-          </ul>
-        </li>
-        <!-- Boots -->
-        <li class="dropdown-submenu">
-          <a class="dropdown-item dropdown-toggle" href="men-boots.html">Boots</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="men-zipper-boots.html">Zipper boots</a></li>
-            <li><a class="dropdown-item" href="men-wingtip-boots.html">Wingtip boots</a></li>
-            <li><a class="dropdown-item" href="men-chelsea-boots.html">Chelsea boots</a></li>
-            <li><a class="dropdown-item" href="men-captoe-boots.html">Captoe boots</a></li>
-            <li><a class="dropdown-item" href="men-jodhpur-boots.html">Jodhpur boots</a></li>
-            <li><a class="dropdown-item" href="men-balmoral-boots.html">Balmoral boots</a></li>
-          </ul>
-        </li>
-        <li><a class="dropdown-item" href="men-slippers.html">Slippers/Sandals</a></li>
-        <li><a class="dropdown-item" href="men-mules.html">Mules</a></li>
-      </ul>
-    </div>
-
-    <!-- WOMEN Dropdown -->
-    <div class="dropdown">
-      <a class="dropdown-toggle" href="women.html" data-bs-toggle="dropdown" aria-expanded="false">WOMEN</a>
-      <ul class="dropdown-menu">
-        <!-- Shoes -->
-        <li class="dropdown-submenu">
-          <a class="dropdown-item dropdown-toggle" href="women-shoes.html">Shoes</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="women-loafers.html">Loafers</a></li>
-            <li><a class="dropdown-item" href="women-oxford.html">Oxford</a></li>
-            <li><a class="dropdown-item" href="women-derby.html">Derby</a></li>
-            <li><a class="dropdown-item" href="women-monk.html">Monk Straps</a></li>
-          </ul>
-        </li>
-        <!-- Boots -->
-        <li class="dropdown-submenu">
-          <a class="dropdown-item dropdown-toggle" href="women-boots.html">Boots</a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="women-zipper-boots.html">Zipper boots</a></li>
-            <li><a class="dropdown-item" href="women-wingtip-boots.html">Wingtip boots</a></li>
-            <li><a class="dropdown-item" href="women-chelsea-boots.html">Chelsea boots</a></li>
-            <li><a class="dropdown-item" href="women-captoe-boots.html">Captoe boots</a></li>
-            <li><a class="dropdown-item" href="women-jodhpur-boots.html">Jodhpur boots</a></li>
-            <li><a class="dropdown-item" href="women-balmoral-boots.html">Balmoral boots</a></li>
-          </ul>
-        </li>
-        <li><a class="dropdown-item" href="women-slippers.html">Slippers/Sandals</a></li>
-        <li><a class="dropdown-item" href="women-mules.html">Mules</a></li>
-      </ul>
-    </div>
-
-    <a href="customize.html" class="nav-link">CUSTOMIZE</a>
-    <a href="mto.html" class="nav-link">MTO</a>
-    <a href="outlet-shoes.html" class="nav-link">OUTLET SHOES</a>
-  </div>
-
-  <!-- Right-side Shoemaking and Cart -->
-  <ul class="navbar-nav flex-row gap-3 ms-auto">
-    <li class="nav-item">
-      <a class="nav-link" href="#">Shoemaking</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <i class="fas fa-shopping-cart"></i> Cart
+  <header class="sticky-top bg-white border-bottom shadow-sm">
+    <!-- First Row: Logo and Search Icon -->
+    <div class="d-flex justify-content-between align-items-center px-4 py-1 mb-1">
+      <a href="index.html" class="navbar-brand d-flex align-items-center">
+        <img src="images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 50px;">
+        <span class="nav-brand-title">DeeReel Footies</span>
       </a>
-    </li>
-  </ul>
-</nav>
+      <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <button class="btn d-none d-lg-inline">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
 
-  <!-- Mobile Menu -->
-  <div class="collapse" id="mobileMenu">
-    <div class="bg-white p-4">
-      <ul class="navbar-nav flex-column gap-3">
+    <!-- Mobile Navigation Collapse -->
+    <nav class="d-lg-none">
+      <button class="btn btn-outline-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+        ☰ Menu
+      </button>
+
+      <div class="collapse" id="mobileMenu">
+        <ul class="navbar-nav">
+
+          <!-- MEN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="men.html" data-bs-toggle="dropdown" aria-expanded="false">MEN</a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="men-shoes.html">Shoes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="men-loafers.html">Loafers</a></li>
+                  <li><a class="dropdown-item" href="men-oxford.html">Oxford</a></li>
+                  <li><a class="dropdown-item" href="men-derby.html">Derby</a></li>
+                  <li><a class="dropdown-item" href="men-monk.html">Monk Straps</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="men-boots.html">Boots</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="men-zipper-boots.html">Zipper boots</a></li>
+                  <li><a class="dropdown-item" href="men-wingtip-boots.html">Wingtip boots</a></li>
+                  <li><a class="dropdown-item" href="men-chelsea-boots.html">Chelsea boots</a></li>
+                  <li><a class="dropdown-item" href="men-captoe-boots.html">Captoe boots</a></li>
+                  <li><a class="dropdown-item" href="men-jodhpur-boots.html">Jodhpur boots</a></li>
+                  <li><a class="dropdown-item" href="men-balmoral-boots.html">Balmoral boots</a></li>
+                </ul>
+              </li>
+              <li><a class="dropdown-item" href="men-slippers.html">Slippers/Sandals</a></li>
+              <li><a class="dropdown-item" href="men-mules.html">Mules</a></li>
+            </ul>
+          </li>
+
+          <!-- WOMEN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="women.html" data-bs-toggle="dropdown" aria-expanded="false">WOMEN</a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="women-shoes.html">Shoes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="women-loafers.html">Loafers</a></li>
+                  <li><a class="dropdown-item" href="women-oxford.html">Oxford</a></li>
+                  <li><a class="dropdown-item" href="women-derby.html">Derby</a></li>
+                  <li><a class="dropdown-item" href="women-monk.html">Monk Straps</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="women-boots.html">Boots</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="women-zipper-boots.html">Zipper boots</a></li>
+                  <li><a class="dropdown-item" href="women-wingtip-boots.html">Wingtip boots</a></li>
+                  <li><a class="dropdown-item" href="women-chelsea-boots.html">Chelsea boots</a></li>
+                  <li><a class="dropdown-item" href="women-captoe-boots.html">Captoe boots</a></li>
+                  <li><a class="dropdown-item" href="women-jodhpur-boots.html">Jodhpur boots</a></li>
+                  <li><a class="dropdown-item" href="women-balmoral-boots.html">Balmoral boots</a></li>
+                </ul>
+              </li>
+              <li><a class="dropdown-item" href="women-slippers.html">Slippers/Sandals</a></li>
+              <li><a class="dropdown-item" href="women-mules.html">Mules</a></li>
+            </ul>
+          </li>
+
+          <!-- Warehouse -->
+          <li class="nav-item">
+            <a class="nav-link" href="outlet-shoes.html">WAREHOUSE</a>
+          </li>
+
+          <!-- Size guide -->
+          <li class="nav-item">
+            <a class="nav-link" href="size-guide.html">SIZE GUIDE</a>
+          </li>
+
+          <!-- contact -->
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">CONTACT</a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+
+    <!-- Second Row: Main Navigation -->
+    <nav class="d-none d-md-flex w-100 align-items-center">
+    <!--<nav class="hidden md:flex items-center space-x-8 mb-2"> -->
+      <!-- Left-side navigation -->
+      <div class="d-flex align-items-center gap-4">
+        <!-- MEN Dropdown -->    
+        <div class="dropdown position-relative">
+          <a href="men.html" class="text-dark text-decoration-none" role="button">MEN</a>
+          <ul class="dropdown-menu">
+            <!-- Shoes -->
+            <li class="dropdown-submenu">
+              <a href="men-shoes.html" class="dropdown-item">Shoes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="men-loafers.html">Loafers</a></li>
+                <li><a class="dropdown-item" href="men-oxford.html">Oxford</a></li>
+                <li><a class="dropdown-item" href="men-derby.html">Derby</a></li>
+                <li><a class="dropdown-item" href="men-monk.html">Monk Straps</a></li>
+              </ul>
+            </li>
+            
+            <!-- Boots -->
+            <li class="dropdown-submenu">
+              <a href="men-boots.html" class="dropdown-item">Boots</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="men-zipper-boots.html">Zipper boots</a></li>
+                <li><a class="dropdown-item" href="men-wingtip-boots.html">Wingtip boots</a></li>
+                <li><a class="dropdown-item" href="men-chelsea-boots.html">Chelsea boots</a></li>
+                <li><a class="dropdown-item" href="men-captoe-boots.html">Captoe boots</a></li>
+                <li><a class="dropdown-item" href="men-jodhpur-boots.html">Jodhpur boots</a></li>
+                <li><a class="dropdown-item" href="men-balmoral-boots.html">Balmoral boots</a></li>
+              </ul>
+            </li>
+        
+            <li><a class="dropdown-item" href="men-slippers.html">Slippers/Sandals</a></li>
+            <li><a class="dropdown-item" href="men-mules.html">Mules</a></li>
+          </ul>
+        </div>
+        
+        
+
+        <!-- WOMEN Dropdown -->    
+        <div class="dropdown position-relative">
+          <a href="women.html" class="text-dark text-decoration-none" role="button">WOMEN</a>
+          <ul class="dropdown-menu">
+            <!-- Shoes -->
+            <li class="dropdown-submenu">
+              <a href="women-shoes.html" class="dropdown-item">Shoes</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="women-loafers.html">Loafers</a></li>
+                <li><a class="dropdown-item" href="women-oxford.html">Oxford</a></li>
+                <li><a class="dropdown-item" href="women-derby.html">Derby</a></li>
+                <li><a class="dropdown-item" href="women-monk.html">Monk Straps</a></li>
+              </ul>
+            </li>
+            
+            <!-- Boots -->
+            <li class="dropdown-submenu">
+              <a href="women-boots.html" class="dropdown-item">Boots</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="women-zipper-boots.html">Zipper boots</a></li>
+                <li><a class="dropdown-item" href="women-wingtip-boots.html">Wingtip boots</a></li>
+                <li><a class="dropdown-item" href="women-chelsea-boots.html">Chelsea boots</a></li>
+                <li><a class="dropdown-item" href="women-captoe-boots.html">Captoe boots</a></li>
+                <li><a class="dropdown-item" href="women-jodhpur-boots.html">Jodhpur boots</a></li>
+                <li><a class="dropdown-item" href="women-balmoral-boots.html">Balmoral boots</a></li>
+              </ul>
+            </li>
+        
+            <li><a class="dropdown-item" href="women-slippers.html">Slippers/Sandals</a></li>
+            <li><a class="dropdown-item" href="women-mules.html">Mules</a></li>
+          </ul>
+        </div>
+        
+        
+
+        <a href="customize.html" class="nav-link">CUSTOMIZE</a>
+        <a href="mto.html" class="nav-link">MTO</a>
+        <a href="outlet-shoes.html" class="nav-link">OUTLET SHOES</a>
+      </div>
+
+      <!-- Right-side Shoemaking and Cart -->
+      <ul class="navbar-nav flex-row gap-3 ms-auto">
         <li class="nav-item">
-          <a class="nav-link" href="men.html">Men</a>
-          <a class="nav-link" href="women.html">Women</a>
-          <a class="nav-link" href="outlet-shoes.html">Warehouse</a>
-          <a class="nav-link" href="size-guide.html">Size-guide</a>
-          <a class="nav-link" href="contact.html">Contact</a>
+          <a class="nav-link" href="#">Shoemaking</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="fas fa-shopping-cart"></i> Cart
+          </a>
         </li>
       </ul>
-    </div>
-  </div>
-</header>
+    </nav>
+    
+  </header>
 
 
   <!-- Main Content -->
@@ -623,11 +763,6 @@
         </ul>
       </div>
 
-      <div>  class="hover:underline">Careers</a>
-          </li>
-        </ul>
-      </div>
-
       <div>
         <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
         <ul class="space-y-2 text-sm">
@@ -666,10 +801,7 @@
           </li>
           <li>
             <a href="outlet-shoes.html" class="hover:underline">Outlet</a>
-          </li>
-          <li>
-            <a href="gift-cards.html" class="hover:underline">Gift Cards</a>
-          </li>
+          </li>          
         </ul>
       </div>
 
@@ -680,34 +812,32 @@
           <div class="flex flex-col space-y-2">
             <input
               type="email"
-              placeholder="Your email address"
               class="px-4 py-2 border border-gray-300 focus:outline-none"
+              placeholder="Your email address"
               required
             />
-            <button type="submit" class="bg-black text-white px-4 py-2 hover:bg-gray-800 transition">
+            <button type="submit" class="bg-black text-white px-6 py-2 hover:bg-gray-800 transition">
               SUBSCRIBE
             </button>
           </div>
         </form>
+        
 
         <h3 class="font-medium mb-4">FOLLOW US</h3>
         <div class="flex space-x-4">
-          <a href="#" class="hover:text-gray-600">
+          <a href="instagram.com/deereelfooties" class="hover:text-gray-600">
             <i class="fab fa-instagram text-lg"></i>
             <span class="sr-only">Instagram</span>
           </a>
-          <a href="#" class="hover:text-gray-600">
-            <i class="fab fa-facebook text-lg"></i>
-            <span class="sr-only">Facebook</span>
+          <a href="tiktok.com/deereel.footies" class="hover:text-gray-600">
+            <i class="fab fa-tiktok text-lg"></i>
+            <span class="sr-only">Tiktok</span>
           </a>
-          <a href="#" class="hover:text-gray-600">
-            <i class="fab fa-twitter text-lg"></i>
+          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
+            <i class="fab fa-whatsapp text-lg"></i>
             <span class="sr-only">Twitter</span>
           </a>
-          <a href="#" class="hover:text-gray-600">
-            <i class="fab fa-youtube text-lg"></i>
-            <span class="sr-only">YouTube</span>
-          </a>
+          
         </div>
       </div>
     </div>
@@ -715,7 +845,7 @@
     <!-- Bottom Footer -->
     <div class="border-t py-6 px-4">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
-        <div class="mb-4 md:mb-0">
+        <div class="mb-2 mb-md-0">
           <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
         </div>
         <div class="flex flex-wrap justify-center gap-4">
@@ -726,8 +856,28 @@
         </div>
       </div>
     </div>
+    
   </footer>
 
+  <!-- Scroll to Top Button -->
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
+      element.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+        if (submenu && submenu.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          submenu.classList.toggle('show');
+          e.stopPropagation();
+        }
+      });
+    });
+  </script>
+  
   <script src="js/main.js"></script>
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -737,6 +887,57 @@
     document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
+  <script>
+    // Enable dropdowns on hover
+    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+      dropdown.addEventListener('mouseenter', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.show();
+        }
+      });
+      dropdown.addEventListener('mouseleave', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.hide();
+        }
+      });
+    });
+  
+    // Also add hover support for nested submenus (if you're using them)
+    document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
+      submenu.addEventListener('mouseenter', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.add('show');
+      });
+      submenu.addEventListener('mouseleave', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.remove('show');
+      });
+    });
+  </script>
+  <script>
+    const scrollBtn = document.getElementById("scrollToTop");
+  
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollBtn.style.display = "flex";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    });
+  
+    scrollBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+  
 </body>
 </html>

@@ -605,7 +605,7 @@ details[open] summary {
   font-size: 1.75rem; /* Large size */
   font-family: 'Cinzel', serif; /* Fancy but professional font */
   font-weight: 600;
-  color: #2c2c2c; /* Deep grey-black */
+  color: #381819 !important; /* Dark chocolate */
   letter-spacing: 1px;
   text-shadow:
     1px 1px 0 #fff,
@@ -613,8 +613,7 @@ details[open] summary {
     1px -1px 0 #fff,
     -1px 1px 0 #fff,
     0 0 5px rgba(0, 0, 0, 0.2); /* Slight bevel highlight */
-  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* Removed gradient clip to allow color to show */
   text-rendering: optimizeLegibility;
 }
+
