@@ -191,4 +191,51 @@ document.addEventListener('DOMContentLoaded', () => {
   const cart = loadCart();
   updateCartCount(cart);
   if (location.pathname.includes('cart.html')) renderCartPage(cart);
+
+  const decreaseBtns = document.querySelectorAll('.quantity-decrease');
+  const increaseBtns = document.querySelectorAll('.quantity-increase');
+  const quantityEls = document.querySelectorAll('.quantity');
+  const itemTotalEls = document.querySelectorAll('.item-total');
+
+  const unitPrice = 129.99; // Adjust if you have multiple items later
+  const shipping = 10.00;
+
+  function updateSummary() {
+    let subtotal = 0;
+    quantityEls.forEach((el, i) => {
+      const qty = parseInt(el.textContent);
+      const itemTotal = (qty * unitPrice).toFixed(2);
+      itemTotalEls[i].textContent = itemTotal;
+      subtotal += parseFloat(itemTotal);
+    });
+
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+
+    if (subtotalEl && totalEl) {
+      subtotalEl.textContent = subtotal.toFixed(2);
+      totalEl.textContent = (subtotal + shipping).toFixed(2);
+    }
+  }
+
+  decreaseBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      let qty = parseInt(quantityEls[i].textContent);
+      if (qty > 1) {
+        quantityEls[i].textContent = qty - 1;
+        updateSummary();
+      }
+    });
+  });
+
+  increaseBtns.forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      let qty = parseInt(quantityEls[i].textContent);
+      quantityEls[i].textContent = qty + 1;
+      updateSummary();
+    });
+  });
+
+  updateSummary();
+  
 });
