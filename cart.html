@@ -331,52 +331,71 @@
 
         <div class="row">
           <!-- Cart Items -->
-          <div class="col-md-8">
-            <div class="card mb-3">
-              <div class="row g-0 align-items-center">
-                <div class="col-md-4">
-                  <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Shoe 1">
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">Handcrafted Leather Shoe</h5>
-                    <p class="card-text">Size: 42 | Color: Brown</p>
-                    <p class="card-text"><strong>$120.00</strong></p>
-                    <div class="d-flex align-items-center">
-                      <button class="btn btn-outline-secondary btn-sm me-2">-</button>
-                      <span class="mx-2">1</span>
-                      <button class="btn btn-outline-secondary btn-sm me-3">+</button>
-                      <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Repeat above card for more items -->
+          <div class="col-md-8" id="cart-items">
+            <!-- Dynamic cart content will be rendered here -->
           </div>
 
+
           <!-- Cart Summary -->
-          <div class="col-md-4">
+          <div class="col-md-4" id="cart-summary">
             <div class="card p-4 shadow-sm">
               <h4 class="text-xl font-bold mb-3">Order Summary</h4>
+
               <ul class="list-group list-group-flush mb-3">
                 <li class="list-group-item d-flex justify-content-between">
                   <span>Subtotal</span>
-                  <strong>$120.00</strong>
+                  <strong id="subtotal">€0.00</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                   <span>Shipping</span>
-                  <strong>$10.00</strong>
+                  <strong id="shipping">€0.00</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                   <span>Total</span>
-                  <strong>$130.00</strong>
+                  <strong id="total">€0.00</strong>
                 </li>
               </ul>
-              <a href="checkout.html" class="btn btn-success w-100">
+
+              <!-- Spacing -->
+              <div class="mb-3"></div>
+
+              <!-- Client Name -->
+              <div class="mb-3">
+                <label for="client-name" class="form-label">Your Name</label>
+                <input type="text" id="client-name" class="form-control" placeholder="Enter your full name" required>
+              </div>
+
+              <!-- Shipping Address -->
+              <div class="mb-3">
+                <label for="shipping-address" class="form-label">Shipping Address</label>
+                <textarea id="shipping-address" class="form-control" rows="3" placeholder="Enter full shipping address" required></textarea>
+              </div>
+
+              <!-- Bank Info -->
+              <div class="mb-3">
+                <h6 class="fw-bold">Bank Transfer Information</h6>
+                <p class="mb-2">
+                  <strong>Bank Name:</strong> OPAY Digital Bank<br>
+                  <strong>Account Name:</strong> Oladayo Quadri<br>
+                  <strong>Account Number:</strong> 8134235110
+                </p>
+                <p class="mb-0">
+                  <strong>Bank Name:</strong> Stanbic IBTC Bank<br>
+                  <strong>Account Name:</strong> Oladayo Quadri<br>
+                  <strong>Account Number:</strong> 8134235110
+                </p>
+              </div>
+
+              <!-- Proof of Payment Upload -->
+              <div class="mb-4">
+                <label for="payment-proof" class="form-label">Upload Proof of Payment</label>
+                <input class="form-control" type="file" id="payment-proof" accept="image/*,.pdf">
+              </div>
+
+              <!-- Checkout Button -->
+              <button class="btn btn-success w-100" id="checkout-btn">
                 <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
-              </a>
+              </button>
             </div>
           </div>
         </div>
