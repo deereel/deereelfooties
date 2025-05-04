@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="text-center py-12">
           <h2 class="text-2xl font-light mb-4">Your Cart is Empty</h2>
           <p class="mb-6">Looks like you haven't added any items to your cart yet.</p>
-          <a href="men.html" class="bg-black text-white px-6 py-2 inline-block hover:bg-gray-800 transition">CONTINUE SHOPPING</a>
+          <a href="index.html" class="bg-black text-white px-6 py-2 inline-block hover:bg-gray-800 transition">CONTINUE SHOPPING</a>
         </div>`;
       summary.style.display = 'none';
       return;
