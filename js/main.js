@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cart = loadCart();
     updateCartCount(cart);
-    if (location.pathname.includes('cart.html')) renderCartPage(cart);
+    if (location.pathname.includes('/cart.html')) renderCartPage(cart);
   };
 
   initPage();
