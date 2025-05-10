@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
         card.style.display = (priceMatch && sizeMatch && colorMatch) ? 'block' : 'none';
       });
-      
+
         paginateProducts();
       
     }
@@ -62,18 +62,29 @@ document.addEventListener("DOMContentLoaded", function () {
   
     // Size filter listeners
     document.querySelectorAll('.size-filter').forEach(btn => {
-      const size = btn.dataset.size;
-      if (urlParams.get('size') === size) {
+    const size = btn.dataset.size;
+
+    // If size is in URL param, pre-select
+    if (urlParams.get('size') === size) {
         selectedSizes.add(size);
-        btn.classList.add('bg-gray-200');
-      }
-      btn.addEventListener('click', () => {
-        btn.classList.toggle('bg-gray-200');
-        if (selectedSizes.has(size)) selectedSizes.delete(size);
-        else selectedSizes.add(size);
+        btn.classList.add('bg-black', 'text-white', 'border-black');
+    }
+
+    btn.addEventListener('click', () => {
+        btn.classList.toggle('bg-black');
+        btn.classList.toggle('text-white');
+        btn.classList.toggle('border-black');
+
+        if (selectedSizes.has(size)) {
+        selectedSizes.delete(size);
+        } else {
+        selectedSizes.add(size);
+        }
+
         filterProducts();
-      });
     });
+    });
+
   
     // Color filter listeners
     document.querySelectorAll('.color-filter').forEach(dot => {

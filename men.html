@@ -219,7 +219,7 @@
                 <ul class="dropdown-menu">
                   <!-- Shoes -->
                   <li class="dropdown-submenu">
-                      <a href="products/men/products/men/men-shoes.html?gender=men&type=all" class="dropdown-item">Shoes</a>
+                      <a href="/products/men/men-shoes.html?gender=men&type=all" class="dropdown-item">Shoes</a>
                       <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=loafers">Loafers</a></li>
                         <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=oxford">Oxford</a></li>
@@ -329,18 +329,37 @@
             <div><input id="price4" type="checkbox" class="mr-2"> <label for="price4">₦90k+</label></div>
           </div>
   
-          <!-- FILTER BY SIZE (circle buttons) -->
+          <!-- FILTER BY SIZE -->
           <div class="mb-6">
             <h3 class="font-medium mb-3">FILTER BY SIZE</h3>
             <div class="flex flex-wrap gap-2">
-              <!-- Circle buttons with size numbers -->
-              ${[39, 40, 41, 42, 43, 44, 45, 46, 47].map(size => `
-                <div class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                            text-sm font-medium cursor-pointer hover:bg-gray-100 size-filter" 
-                    data-size="${size}">
-                  ${size}
-                </div>
-              `).join('')}
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="39">39</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="40">40</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="41">41</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="42">42</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="43">43</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="44">44</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="45">45</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="46">46</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="47">47</div>
             </div>
           </div>
 
@@ -377,17 +396,32 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
             <!-- Example Product -->
             <div class="group product-card"
-                 data-price="450"
-                 data-size="41,42"
-                 data-color="black"
+                 data-price="35000"
+                 data-size="40,41,42,43,44,45,46"
+                 data-color="tan"
                  data-type="oxford">
-              <a href="/oxford-cap-toe-80201.html">
+              <a href="/products/men/shoes/oxford-cap-toe-600.html">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201"
+                  <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
                        class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
                 </div>
-                <h3 class="text-lg">Oxford Cap Toe 80201</h3>
-                <p class="text-gray-500">€450</p>
+                <h3 class="text-lg">Oxford Cap Toe 600</h3>
+                <p class="text-gray-500">₦35,000</p>
+              </a>
+            </div>
+
+            <div class="group product-card"
+                 data-price="42000"
+                 data-size="40,41,42,43,44,45,46"
+                 data-color="brown"
+                 data-type="loafer">
+              <a href="/products/men/shoes/penny-loafer-600.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg">Penny Loafer 600</h3>
+                <p class="text-gray-500">₦42,000</p>
               </a>
             </div>
   
