@@ -628,6 +628,28 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
   </script>
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+
+        // If the user clicked the main link directly (not just hovering)
+        if (!submenu || !submenu.classList.contains('dropdown-menu')) {
+          return; // not a submenu
+        }
+
+        // Prevent the submenu from hijacking the click
+        const isSubmenuOpen = submenu.classList.contains('show');
+        if (!isSubmenuOpen) {
+          // Allow navigation
+          window.location.href = this.getAttribute('href');
+        }
+
+        e.preventDefault();
+      });
+    });
+  </script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Product image gallery

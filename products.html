@@ -18,6 +18,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="/js/product-grid.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
     /* Top-level dropdown appears on hover */
@@ -343,24 +345,7 @@
             </div>
           </div>
 
-          <div class="hidden md:block filter-section">
-            <h3 class="font-medium mb-3">FILTER BY DISCOUNT</h3>
-            <div class="space-y-1">
-              <div class="flex items-center">
-                <input id="discount1" type="checkbox" class="mr-2">
-                <label for="discount1">20% and above</label>
-              </div>
-              <div class="flex items-center">
-                <input id="discount2" type="checkbox" class="mr-2">
-                <label for="discount2">30% and above</label>
-              </div>
-              <div class="flex items-center">
-                <input id="discount3" type="checkbox" class="mr-2">
-                <label for="discount3">40% and above</label>
-              </div>
-            </div>
-          </div>
-
+         
           <div class="hidden md:block filter-section">
             <h3 class="font-medium mb-3">FILTER BY COLOR</h3>
             <div class="flex flex-wrap gap-2">
@@ -378,7 +363,7 @@
           <div class="flex justify-between items-center mb-6">
             <div>Showing all 8 results</div>
             <select class="border p-2">
-              <option>Sort by discount: high to low</option>
+              <option>Sort by latest</option>
               <option>Sort by price: low to high</option>
               <option>Sort by price: high to low</option>
             </select>
@@ -721,6 +706,28 @@
     scrollBtn.addEventListener("click", (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+
+        // If the user clicked the main link directly (not just hovering)
+        if (!submenu || !submenu.classList.contains('dropdown-menu')) {
+          return; // not a submenu
+        }
+
+        // Prevent the submenu from hijacking the click
+        const isSubmenuOpen = submenu.classList.contains('show');
+        if (!isSubmenuOpen) {
+          // Allow navigation
+          window.location.href = this.getAttribute('href');
+        }
+
+        e.preventDefault();
+      });
     });
   </script>
 </body>
