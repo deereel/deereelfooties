@@ -128,91 +128,28 @@
       </button>
     </div>
 
-    <!-- Mobile Navigation Collapse -->
-    <nav class="d-lg-none">
-      <button class="btn btn-outline-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
-        ☰ Menu
-      </button>
+    <!-- Mobile Navigation -->
+      <div class="mobile-nav d-lg-none">
+        <button class="btn btn-outline-secondary" id="mobileMenuToggle" aria-label="Toggle navigation">
+          ☰ Menu
+        </button>
 
-      <div class="collapse" id="mobileMenu">
-        <ul class="navbar-nav">
-
-          <!-- MEN -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/men.html" data-bs-toggle="dropdown" aria-expanded="false">MEN</a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="/products/men/men-shoes.html">Shoes</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/products/men/men-loafers.html">Loafers</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-oxford.html">Oxford</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-derby.html">Derby</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-monk.html">Monk Straps</a></li>
-                </ul>
-              </li>
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="/products/men/men-boots.html">Boots</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/products/men/men-zipper-boots.html">Zipper boots</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-wingtip-boots.html">Wingtip boots</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-chelsea-boots.html">Chelsea boots</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-captoe-boots.html">Captoe boots</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-jodhpur-boots.html">Jodhpur boots</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-balmoral-boots.html">Balmoral boots</a></li>
-                </ul>
-              </li>
-              <li><a class="dropdown-item" href="/products/men/men-slippers.html">Slippers/Sandals</a></li>
-              <li><a class="dropdown-item" href="/products/men/men-mules.html">Mules</a></li>
+        <div class="mobile-nav-overlay hidden fixed inset-0 bg-black/80 z-50">
+          <div class="mobile-nav-content bg-white h-full w-3/4 max-w-sm shadow-lg p-6 overflow-y-auto">
+            <button class="close-btn text-black text-2xl mb-4" id="closeMobileMenu" aria-label="Close navigation">
+              &times;
+            </button>
+            <ul class="space-y-4">
+              <li><a href="/men.html" class="text-lg font-medium">MEN</a></li>
+              <li><a href="/women.html" class="text-lg font-medium">WOMEN</a></li>
+              <li><a href="/products.html" class="text-lg font-medium">PRODUCTS</a></li>
+              <li><a href="/size-guide.html" class="text-lg font-medium">SIZE GUIDE</a></li>
+              <li><a href="/contact.html" class="text-lg font-medium">CONTACT</a></li>
             </ul>
-          </li>
-
-          <!-- WOMEN -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/women.html" data-bs-toggle="dropdown" aria-expanded="false">WOMEN</a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="/products/women/women-shoes.html">Shoes</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/products/women/women-loafers.html">Loafers</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-oxford.html">Oxford</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-derby.html">Derby</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-monk.html">Monk Straps</a></li>
-                </ul>
-              </li>
-              <li class="dropdown-submenu">
-                <a class="dropdown-item dropdown-toggle" href="/products/women/women-boots.html">Boots</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="/products/women/women-zipper-boots.html">Zipper boots</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-wingtip-boots.html">Wingtip boots</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-chelsea-boots.html">Chelsea boots</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-captoe-boots.html">Captoe boots</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-jodhpur-boots.html">Jodhpur boots</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-balmoral-boots.html">Balmoral boots</a></li>
-                </ul>
-              </li>
-              <li><a class="dropdown-item" href="/products/women/women-slippers.html">Slippers/Sandals</a></li>
-              <li><a class="dropdown-item" href="/products/women/women-mules.html">Mules</a></li>
-            </ul>
-          </li>
-
-          <!-- Warehouse -->
-          <li class="nav-item">
-            <a class="nav-link" href="/products.html">PRODUCTS</a>
-          </li>
-
-          <!-- Size guide -->
-          <li class="nav-item">
-            <a class="nav-link" href="/size-guide.html">SIZE GUIDE</a>
-          </li>
-
-          <!-- contact -->
-          <li class="nav-item">
-            <a class="nav-link" href="/contact.html">CONTACT</a>
-          </li>
-
-        </ul>
+          </div>
+        </div>
       </div>
-    </nav>
+    </div>
 
 
     <!-- Second Row: Main Navigation -->
@@ -327,27 +264,27 @@
         </div>
       </div>
 
-      <!-- Inner Filter Bar -->
-    <div class="flex overflow-x-auto space-x-3 whitespace-nowrap py-2 px-2 bg-white border-b">
-      <button onclick="filterByType('zipper')" data-type="zipper" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Zipper Boots
-      </button>
-      <button onclick="filterByType('wingtip')" data-type="wingtip" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Wingtip Boots
-      </button>
-      <button onclick="filterByType('chelsea')" data-type="chelsea" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Chelsea Boots
-      </button>
-      <button onclick="filterByType('captoe')" data-type="captoe" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Captoe Boots
-      </button>
-      <button onclick="filterByType('jodhpur')" data-type="jodhpur" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Jodhpur Boots
-      </button>
-      <button onclick="filterByType('balmoral')" data-type="balmoral" class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-        Balmoral Boots
-      </button>      
-    </div>
+      !-- Mobile-only Inner Filter for Boot Types -->
+      <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
+        <button onclick="filterByType('chelsea')" data-type="chelsea" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Chelsea Boots
+        </button>
+        <button onclick="filterByType('captoe')" data-type="captoe" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Captoe Boots
+        </button>
+        <button onclick="filterByType('jodhpur')" data-type="jodhpur" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Jodhpur Boots
+        </button>
+        <button onclick="filterByType('wingtip')" data-type="wingtip" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Wingtip Boots
+        </button>
+        <button onclick="filterByType('zipper')" data-type="zipper" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Zipper Boots
+        </button>
+        <button onclick="filterByType('balmoral')" data-type="balmoral" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+          Balmoral Boots
+        </button>
+      </div>
   
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Sidebar Filters -->
@@ -652,6 +589,8 @@
       });
     });
   </script>
+
+  
 
   <!-- Footer Year -->
   <script>

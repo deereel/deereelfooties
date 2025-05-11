@@ -648,14 +648,26 @@ details[open] summary {
   cursor: pointer;
 }
 
-/* Hide horizontal scrollbar on mobile nav */
-.mobile-nav .overflow-x-auto::-webkit-scrollbar {
+/* Clean horizontal scroll for mobile filter bars */
+.clean-scroll::-webkit-scrollbar {
   display: none;
 }
-.mobile-nav .overflow-x-auto {
+.clean-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
+.clean-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.clean-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.clean-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
 
 
 
