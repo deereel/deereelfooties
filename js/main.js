@@ -215,5 +215,75 @@ document.addEventListener('DOMContentLoaded', () => {
     if (location.pathname.includes('/cart.html')) renderCartPage(cart);
   };
 
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const closeMobileMenu = document.getElementById('closeMobileMenu');
+  const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+
+  mobileMenuToggle.addEventListener('click', () => {
+    mobileNavOverlay.classList.remove('hidden');
+    mobileNavOverlay.classList.add('visible');
+  });
+
+  closeMobileMenu.addEventListener('click', () => {
+    mobileNavOverlay.classList.remove('visible');
+    mobileNavOverlay.classList.add('hidden');
+  });
+
+  // Close menu when clicking outside
+  mobileNavOverlay.addEventListener('click', (e) => {
+    if (e.target === mobileNavOverlay) {
+      mobileNavOverlay.classList.remove('visible');
+      mobileNavOverlay.classList.add('hidden');
+    }
+  });
+  // Close modal when clicking outside
+  const modal = document.getElementById('added-to-cart-modal');
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }
+    });
+  }
+  // Close modal when clicking the close button
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+  }
+  
+
   initPage();
 });
+
+// MOBILE MENU FUNCTIONALITY
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('mobileMenuToggle');
+  const closeBtn = document.getElementById('closeMobileMenu');
+  const overlay = document.querySelector('.mobile-nav-overlay');
+
+  if (toggleBtn && closeBtn && overlay) {
+    toggleBtn.addEventListener('click', () => {
+      overlay.classList.remove('hidden');
+      overlay.classList.add('visible');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('visible');
+      overlay.classList.add('hidden');
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        overlay.classList.remove('visible');
+        overlay.classList.add('hidden');
+      }
+    });
+  }
+});
+
+
+

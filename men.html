@@ -9,7 +9,7 @@
   <meta name="author" content="DeeReel Footies">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Men Collections - DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
+  <title>DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -98,6 +98,13 @@
     html {
       scroll-behavior: smooth;
     }
+
+    /*.product-card {
+      display: none;
+    }
+    .product-card.visible {
+      display: block;
+    }*/
 
   </style>
   
@@ -221,10 +228,10 @@
                   <li class="dropdown-submenu">
                       <a href="/products/men/men-shoes.html?gender=men&type=all" class="dropdown-item">Shoes</a>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=loafers">Loafers</a></li>
-                        <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=oxford">Oxford</a></li>
-                        <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=derby">Derby</a></li>
-                        <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=monk">Monk Straps</a></li>
+                            <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=loafers">Loafers</a></li>
+                            <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=oxford">Oxford</a></li>
+                            <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=derby">Derby</a></li>
+                            <li><a class="dropdown-item" href="/products/men/men-shoes.html?gender=men&type=monk">Monk Straps</a></li>
                     </ul>
                   </li>
                   
@@ -241,8 +248,8 @@
                       </ul>  
                   </li>
               
-                  <li><a class="dropdown-item" href="/products/men/men-men-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-men-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -277,8 +284,8 @@
                       </ul>
                       </li>
               
-                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -305,7 +312,7 @@
     
   </header>
 
-  <!-- Main Content -->
+  <!-- Main Content -->  
   <main>
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Breadcrumb -->
@@ -313,10 +320,19 @@
         <h1 class="text-3xl font-light mb-2">MEN'S COLLECTION</h1>
         <div class="flex items-center text-sm text-gray-500">
           <a href="/index.html">Home</a>
-          <span class="mx-2">/</span>
+          <span class="mx-2">/</span>          
           <span>Men</span>
         </div>
       </div>
+
+      <!-- Horizontal Mobile Menu -->
+      <div class="flex overflow-x-auto space-x-4 whitespace-nowrap py-2 px-2 bg-white border-t border-b">
+        <a href="/products/men/men-shoes.html?gender=men&type=all" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">SHOES</a>
+        <a href="/products/men/men-boots.html?gender=men&type=all" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">BOOTS</a>
+        <a href="/products/men/men-slippers.html" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">SLIPPERS/SANDALS</a>
+        <a href="/products/men/men-mules.html" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">MULES</a>
+      </div>
+
   
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Sidebar Filters -->
@@ -381,7 +397,7 @@
         <!-- Main Product Area -->
         <div class="md:w-3/4">
           <div class="flex justify-between items-center mb-6">
-            <div>Showing results</div>
+            <div>Showing all products</div>
             <select class="border p-2" id="sortSelect">
               <option value="">Sort by latest</option>
               <option value="low">Sort by price: low to high</option>
@@ -399,7 +415,8 @@
                  data-price="35000"
                  data-size="40,41,42,43,44,45,46"
                  data-color="tan"
-                 data-type="oxford">
+                 data-type="oxford"
+                 data-gender="men">
               <a href="/products/men/shoes/oxford-cap-toe-600.html">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
                   <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
@@ -414,7 +431,8 @@
                  data-price="42000"
                  data-size="40,41,42,43,44,45,46"
                  data-color="brown"
-                 data-type="loafer">
+                 data-type="loafer"
+                 data-gender="men">
               <a href="/products/men/shoes/penny-loafer-600.html">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
                   <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
@@ -438,9 +456,8 @@
       </div>
     </div>
   </main>
-  
 
-    <!-- Footer -->
+  <!-- Footer -->
   <footer class="bg-white border-t">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -564,34 +581,20 @@
   </a>
 
 
+  <!-- JavaScript for Product Filtering and Sorting -->
   <script>
-    document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
-      element.addEventListener('click', function (e) {
-        const submenu = this.nextElementSibling;
-        if (submenu && submenu.classList.contains('dropdown-menu')) {
-          e.preventDefault();
-          submenu.classList.toggle('show');
-          e.stopPropagation();
-        }
-      });
+    const scrollBtn = document.getElementById("scrollToTop");
+    window.addEventListener("scroll", () => {
+      scrollBtn.style.display = window.scrollY > 300 ? "flex" : "none";
+    });
+    scrollBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   </script>
-  
-  <script src="/js/main.js"></script>
-  <!-- Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <script>
-    // Set the current year in the footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap JS (with Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
+  <!-- Dropdown Hover Support -->
   <script>
-    // Enable dropdowns on hover
     document.querySelectorAll('.dropdown').forEach(function (dropdown) {
       dropdown.addEventListener('mouseenter', function () {
         let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
@@ -608,8 +611,7 @@
         }
       });
     });
-  
-    // Also add hover support for nested submenus (if you're using them)
+
     document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
       submenu.addEventListener('mouseenter', function () {
         let submenuList = this.querySelector('.dropdown-menu');
@@ -621,43 +623,16 @@
       });
     });
   </script>
+
+  <!-- Footer Year -->
   <script>
-    const scrollBtn = document.getElementById("scrollToTop");
-  
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) {
-        scrollBtn.style.display = "flex";
-      } else {
-        scrollBtn.style.display = "none";
-      }
-    });
-  
-    scrollBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
 
-  <script>
-    document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
-      link.addEventListener('click', function (e) {
-        const submenu = this.nextElementSibling;
-
-        // If the user clicked the main link directly (not just hovering)
-        if (!submenu || !submenu.classList.contains('dropdown-menu')) {
-          return; // not a submenu
-        }
-
-        // Prevent the submenu from hijacking the click
-        const isSubmenuOpen = submenu.classList.contains('show');
-        if (!isSubmenuOpen) {
-          // Allow navigation
-          window.location.href = this.getAttribute('href');
-        }
-
-        e.preventDefault();
-      });
-    });
-  </script>
+  <!-- External Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/product-grid.js" defer></script>
 </body>
 </html>

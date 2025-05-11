@@ -617,5 +617,46 @@ details[open] summary {
   text-rendering: optimizeLegibility;
 }
 
+/* Mobile Navigation */
+.mobile-nav-overlay {
+  display: none;
+  transition: opacity 0.3s ease;
+}
+
+.mobile-nav-overlay.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.mobile-nav-overlay.visible {
+  display: block;
+  opacity: 1;
+}
+
+.mobile-nav-content {
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+}
+
+.mobile-nav-overlay.visible .mobile-nav-content {
+  transform: translateX(0);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Hide horizontal scrollbar on mobile nav */
+.mobile-nav .overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+.mobile-nav .overflow-x-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
 
 

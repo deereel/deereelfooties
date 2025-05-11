@@ -245,8 +245,8 @@
                       </ul>  
                   </li>
               
-                  <li><a class="dropdown-item" href="/products/men/men-men-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-men-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -281,8 +281,8 @@
                       </ul>
                       </li>
               
-                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -321,144 +321,130 @@
         </div>
       </div>
 
+      <!-- Horizontal Mobile Menu -->
+      <div class="flex overflow-x-auto space-x-4 whitespace-nowrap py-2 px-2 bg-white border-t border-b">
+        <a href="/products/women/women-shoes.html?gender=women&type=all" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">SHOES</a>
+        <a href="/products/women/women-boots.html?gender=women&type=all" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">BOOTS</a>
+        <a href="/products/men/men-slippers.html" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">SLIPPERS/SANDALS</a>
+        <a href="/products/women/women-mules.html" class="text-sm font-medium px-4 py-2 border rounded hover:bg-gray-100">MULES</a>
+      </div>
+
       <div class="flex flex-col md:flex-row gap-8">
-        <!-- Sidebar -->
+        <!-- Sidebar Filters -->
         <div class="md:w-1/4 space-y-6">
-          <div class="md:hidden flex justify-between items-center p-4 border border-gray-200 mb-4 filter-toggle">
-            <span>Filter Products</span>
-            <i class="fas fa-filter"></i>
+          <h3 class="font-medium mb-3">FILTER BY PRICE</h3>
+          <div class="space-y-1">
+            <div><input id="price1" type="checkbox" class="mr-2"> <label for="price1">₦30k - ₦50K</label></div>
+            <div><input id="price2" type="checkbox" class="mr-2"> <label for="price2">₦50K - ₦70K</label></div>
+            <div><input id="price3" type="checkbox" class="mr-2"> <label for="price3">₦70K - ₦90K</label></div>
+            <div><input id="price4" type="checkbox" class="mr-2"> <label for="price4">₦90k+</label></div>
           </div>
-
-          <div class="hidden md:block filter-section">
-            <h3 class="font-medium mb-3">CATEGORIES</h3>
-            <ul class="space-y-2">
-              <li><a href="#" class="hover:underline">All</a></li>
-              <li><a href="#" class="hover:underline">Oxfords</a></li>
-              <li><a href="#" class="hover:underline">Derbys</a></li>
-              <li><a href="#" class="hover:underline">Loafers</a></li>
-              <li><a href="#" class="hover:underline">Boots</a></li>
-              <li><a href="#" class="hover:underline">Brogues</a></li>
-              <li><a href="#" class="hover:underline">Sneakers</a></li>
-            </ul>
-          </div>
-
-          <div class="hidden md:block filter-section">
-            <h3 class="font-medium mb-3">FILTER BY PRICE</h3>
-            <div class="space-y-1">
-              <div class="flex items-center">
-                <input id="price1" type="checkbox" class="mr-2">
-                <label for="price1">€300 - €400</label>
-              </div>
-              <div class="flex items-center">
-                <input id="price2" type="checkbox" class="mr-2">
-                <label for="price2">€400 - €500</label>
-              </div>
-              <div class="flex items-center">
-                <input id="price3" type="checkbox" class="mr-2">
-                <label for="price3">€500 - €600</label>
-              </div>
+  
+          <!-- FILTER BY SIZE -->
+          <div class="mb-6">
+            <h3 class="font-medium mb-3">FILTER BY SIZE</h3>
+            <div class="flex flex-wrap gap-2">
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="39">39</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="40">40</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="41">41</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="42">42</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="43">43</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="44">44</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="45">45</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="46">46</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="47">47</div>
             </div>
           </div>
 
-          <div class="hidden md:block filter-section">
+          <!-- FILTER BY COLOR (includes white + green) -->
+          <div class="mb-6">
             <h3 class="font-medium mb-3">FILTER BY COLOR</h3>
             <div class="flex flex-wrap gap-2">
-              <div class="w-6 h-6 bg-black rounded-full cursor-pointer"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #92400e;"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #d97706;"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #991b1b;"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer" style="background-color: #1e3a8a;"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: black;" data-color="black"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #92400e;" data-color="brown"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #d97706;" data-color="tan"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #991b1b;" data-color="burgundy"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #1e3a8a;" data-color="navy"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: white;" data-color="white"></div>
+              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: green;" data-color="green"></div>
             </div>
           </div>
         </div>
-
-        <!-- Product Grid -->
+  
+        <!-- Main Product Area -->
         <div class="md:w-3/4">
           <div class="flex justify-between items-center mb-6">
-            <div>Showing all 6 results</div>
-            <select class="border p-2">
-              <option>Sort by latest</option>
-              <option>Sort by price: low to high</option>
-              <option>Sort by price: high to low</option>
+            <div>Showing all products</div>
+            <select class="border p-2" id="sortSelect">
+              <option value="">Sort by latest</option>
+              <option value="low">Sort by price: low to high</option>
+              <option value="high">Sort by price: high to low</option>
             </select>
           </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Product 1 -->
-            <div class="group">
-              <a href="women/product/1.html">
+  
+          <!-- Filter Tags Display -->
+          <div id="active-filters" class="mb-4 flex flex-wrap gap-2 text-sm"></div>
+  
+          <!-- Product Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
+            <!-- Example Product -->
+            <div class="group product-card"
+                 data-price="35000"
+                 data-size="40,41,42,43,44,45,46"
+                 data-color="tan"
+                 data-type="oxford"
+                 data-gender="men">
+              <a href="/products/men/shoes/oxford-cap-toe-600.html">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-1.jpg" alt="Penny Loafer W80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
                 </div>
-                <h3 class="text-lg">Penny Loafer W80647</h3>
-                <p class="text-gray-500">€425</p>
+                <h3 class="text-lg">Oxford Cap Toe 600</h3>
+                <p class="text-gray-500">₦35,000</p>
               </a>
             </div>
 
-            <!-- Product 2 -->
-            <div class="group">
-              <a href="women/product/2.html">
+            <div class="group product-card"
+                 data-price="42000"
+                 data-size="40,41,42,43,44,45,46"
+                 data-color="brown"
+                 data-type="loafer"
+                 data-gender="men">
+              <a href="/products/men/shoes/penny-loafer-600.html">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-2.jpg" alt="Oxford Cap Toe W80201" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
                 </div>
-                <h3 class="text-lg">Oxford Cap Toe W80201</h3>
-                <p class="text-gray-500">€450</p>
+                <h3 class="text-lg">Penny Loafer 600</h3>
+                <p class="text-gray-500">₦42,000</p>
               </a>
             </div>
-
-            <!-- Product 3 -->
-            <div class="group">
-              <a href="women/product/3.html">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-3.jpg" alt="Chelsea Boot W80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Chelsea Boot W80216</h3>
-                <p class="text-gray-500">€495</p>
-              </a>
-            </div>
-
-            <!-- Product 4 -->
-            <div class="group">
-              <a href="women/product/4.html">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-4.jpg" alt="Wing Tip W80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Wing Tip W80290</h3>
-                <p class="text-gray-500">€460</p>
-              </a>
-            </div>
-
-            <!-- Product 5 -->
-            <div class="group">
-              <a href="women/product/5.html">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-5.jpg" alt="Derby Plain Toe W80579" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Derby Plain Toe W80579</h3>
-                <p class="text-gray-500">€445</p>
-              </a>
-            </div>
-
-            <!-- Product 6 -->
-            <div class="group">
-              <a href="women/product/6.html">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/products/women/women-6.jpg" alt="Tassel Loafer W80158" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Tassel Loafer W80158</h3>
-                <p class="text-gray-500">€430</p>
-              </a>
-            </div>
+  
+            <!-- Add more products as needed -->
           </div>
-
+  
           <!-- Pagination -->
-          <div class="flex justify-center mt-12">
+          <div class="pagination flex justify-center mt-12">
             <div class="flex space-x-1">
-              <a href="#" class="px-4 py-2 border border-gray-300 bg-black text-white">1</a>
-              <a href="#" class="px-4 py-2 border border-gray-300 hover:bg-gray-100 transition">
-                <span class="sr-only">Next</span>
-                <span>→</span>
-              </a>
+              <!-- JS will insert page buttons here -->
             </div>
           </div>
         </div>
