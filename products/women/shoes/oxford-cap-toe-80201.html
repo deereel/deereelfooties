@@ -9,7 +9,7 @@
   <meta name="author" content="DeeReel Footies">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Oxford Cap Toe 600 | Handcrafted Luxury Shoes for Men and Women</title>
+  <title>Oxford Cap Toe 80201 | Handcrafted Luxury Shoes for Men and Women</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -99,41 +99,6 @@
       scroll-behavior: smooth;
     }
 
-    .selected {
-      border: 2px solid black !important;
-    }
-    .thumb:hover {
-      cursor: pointer;
-      border: 2px solid black;
-    }
-
-    .color-option:hover {
-      cursor: pointer;
-      border: 2px solid black;
-    }
-
-    .size-option:hover {
-      cursor: pointer;
-      border: 2px solid black;
-    }
-
-    .width-option:hover {
-      cursor: pointer;
-      border: 2px solid black;
-    }
-
-    .quantity-btn {
-      background-color: #381819; /* Dark chocolate background */
-      color: #fff; /* White text color */
-      border: none; /* Remove default border */
-      padding: 10px 15px; /* Add some padding */
-      cursor: pointer; /* Change cursor to pointer on hover */
-    }
-
-    .quantity-btn:hover {
-      background-color: #5a2a2b; /* Lighter chocolate on hover */
-    }
-
   </style>
   
   
@@ -156,28 +121,91 @@
       </button>
     </div>
 
-    <!-- Mobile Navigation -->
-      <div class="mobile-nav d-lg-none">
-        <button class="btn btn-outline-secondary" id="mobileMenuToggle" aria-label="Toggle navigation">
-          ☰ Menu
-        </button>
+    <!-- Mobile Navigation Collapse -->
+    <nav class="d-lg-none">
+      <button class="btn btn-outline-secondary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+        ☰ Menu
+      </button>
 
-        <div class="mobile-nav-overlay hidden fixed inset-0 bg-black/80 z-50">
-          <div class="mobile-nav-content bg-white h-full w-3/4 max-w-sm shadow-lg p-6 overflow-y-auto">
-            <button class="close-btn text-black text-2xl mb-4" id="closeMobileMenu" aria-label="Close navigation">
-              &times;
-            </button>
-            <ul class="space-y-4">
-              <li><a href="/men.html" class="text-lg font-medium">MEN</a></li>
-              <li><a href="/women.html" class="text-lg font-medium">WOMEN</a></li>
-              <li><a href="/products.html" class="text-lg font-medium">PRODUCTS</a></li>
-              <li><a href="/size-guide.html" class="text-lg font-medium">SIZE GUIDE</a></li>
-              <li><a href="/contact.html" class="text-lg font-medium">CONTACT</a></li>
+      <div class="collapse" id="mobileMenu">
+        <ul class="navbar-nav">
+
+          <!-- MEN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/men.html" data-bs-toggle="dropdown" aria-expanded="false">MEN</a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="/products/men/men-shoes.html">Shoes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/products/men/men-loafers.html">Loafers</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-oxford.html">Oxford</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-derby.html">Derby</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-monk.html">Monk Straps</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="/products/men/men-boots.html">Boots</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/products/men/men-zipper-boots.html">Zipper boots</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-wingtip-boots.html">Wingtip boots</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-chelsea-boots.html">Chelsea boots</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-captoe-boots.html">Captoe boots</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-jodhpur-boots.html">Jodhpur boots</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-balmoral-boots.html">Balmoral boots</a></li>
+                </ul>
+              </li>
+              <li><a class="dropdown-item" href="/products/men/men-slippers.html">Slippers/Sandals</a></li>
+              <li><a class="dropdown-item" href="/products/men/men-mules.html">Mules</a></li>
             </ul>
-          </div>
-        </div>
+          </li>
+
+          <!-- WOMEN -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/women.html" data-bs-toggle="dropdown" aria-expanded="false">WOMEN</a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="/products/women/women-shoes.html">Shoes</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/products/women/women-loafers.html">Loafers</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-oxford.html">Oxford</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-derby.html">Derby</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-monk.html">Monk Straps</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-item dropdown-toggle" href="/products/women/women-boots.html">Boots</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/products/women/women-zipper-boots.html">Zipper boots</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-wingtip-boots.html">Wingtip boots</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-chelsea-boots.html">Chelsea boots</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-captoe-boots.html">Captoe boots</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-jodhpur-boots.html">Jodhpur boots</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-balmoral-boots.html">Balmoral boots</a></li>
+                </ul>
+              </li>
+              <li><a class="dropdown-item" href="/products/women/women-slippers.html">Slippers/Sandals</a></li>
+              <li><a class="dropdown-item" href="/products/women/women-mules.html">Mules</a></li>
+            </ul>
+          </li>
+
+          <!-- Warehouse -->
+          <li class="nav-item">
+            <a class="nav-link" href="/products.html">PRODUCTS</a>
+          </li>
+
+          <!-- Size guide -->
+          <li class="nav-item">
+            <a class="nav-link" href="/size-guide.html">SIZE GUIDE</a>
+          </li>
+
+          <!-- contact -->
+          <li class="nav-item">
+            <a class="nav-link" href="/contact.html">CONTACT</a>
+          </li>
+
+        </ul>
       </div>
-    </div>
+    </nav>
 
 
     <!-- Second Row: Main Navigation -->
@@ -213,8 +241,8 @@
                       </ul>  
                   </li>
               
-                  <li><a class="dropdown-item" href="/products/men/men-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/men/men-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-men-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-men-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -249,8 +277,8 @@
                       </ul>
                       </li>
               
-                  <li><a class="dropdown-item" href="/products/women/women-slippers.html">Slippers/Sandals</a></li>
-                  <li><a class="dropdown-item" href="/products/women/women-mules.html">Mules</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-slippers.html">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-/products/women/women-mules.html">Mules</a></li>
                 </ul>
             </div>
             
@@ -287,40 +315,38 @@
           <span class="mx-2">/</span>
           <a href="../../men.html">Men</a>
           <span class="mx-2">/</span>
-          <span>Oxford Cap Toe 600</span>
+          <span>Oxford Cap Toe 80201</span>
         </div>
       </div>
 
       <!-- Product Details -->
-      <div class="row">
-        <div class="col-md-6">
-          <!-- Main Product Image -->
-          <div class="border mb-3">
-            <img id="mainImage" src="../..//images/Oxford Cap Toe 600.webp" class="img-fluid w-100" alt="Main Shoe Image">
+      <div class="grid md:grid-cols-2 gap-12">
+        <!-- Product Images -->
+        <div>
+          <div class="relative aspect-square overflow-hidden mb-4">
+            <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full" id="main-product-image">
           </div>
-      
-          <!-- Thumbnail Gallery -->
-          <div class="d-flex flex-row flex-wrap gap-2">
-            <img src="../..//images/product-2.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/product-3.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/Oxford Cap Toe 600.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/Oxford Cap Toe 600.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
+          <div class="grid grid-cols-4 gap-2">
+            <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
+              <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201 - View 1" class="object-cover w-full h-full">
+            </div>
+            <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
+              <img src="../..//images/oxford cap toe 80201-2.webp" alt="Oxford Cap Toe 80201 - View 2" class="object-cover w-full h-full">
+            </div>
+            <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
+              <img src="../..//images/oxford cap toe 80201-3.webp" alt="Oxford Cap Toe 80201 - View 3" class="object-cover w-full h-full">
+            </div>
+            <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
+              <img src="../..//images/oxford cap toe 80201-4.webp" alt="Oxford Cap Toe 80201 - View 4" class="object-cover w-full h-full">
+            </div>
           </div>
         </div>
-      
-        <div class="col-md-6">
-          <!-- Product Info -->
-          <h3 class="fw-bold">Oxford Cap Toe 600</h3>
-          <p class="text-muted">Premium handcrafted shoes for elegant occasions.</p>
-          <ul class="list-disc pl-5 mb-4 text-gray-600">
-            <li>Premium calfskin upper</li>
-            <li>Leather lining and insole</li>
-            <li>Goodyear welted construction</li>
-            <li>Oak-tanned leather sole</li>
-            <li>Made in Mallorca, Spain</li>
-          </ul>
-          <p class="text-2xl mb-4">₦35,000</p>
 
+        <!-- Product Info -->
+        <div>
+          <h1 class="text-3xl font-light mb-2">Oxford Cap Toe 80201</h1>
+          <p class="text-2xl mb-4">€450</p>
+          
           <div class="mb-6">
             <div class="flex items-center mb-2">
               <div class="flex">
@@ -332,19 +358,32 @@
               </div>
               <span class="ml-2 text-sm text-gray-500">4.5 (24 reviews)</span>
             </div>
-            <p class="text-sm text-gray-500">Produced on order - Ships within 5 - 7 business days</p>
+            <p class="text-sm text-gray-500">In stock - Ships within 1-2 business days</p>
+          </div>
+
+          <div class="mb-6">
+            <p class="mb-4">
+              The Oxford Cap Toe is a timeless classic, crafted with meticulous attention to detail. This elegant dress shoe features premium calfskin leather, Goodyear welt construction, and a leather sole.
+            </p>
+            <ul class="list-disc pl-5 mb-4 text-gray-600">
+              <li>Premium calfskin upper</li>
+              <li>Leather lining and insole</li>
+              <li>Goodyear welted construction</li>
+              <li>Oak-tanned leather sole</li>
+              <li>Made in Mallorca, Spain</li>
+            </ul>
           </div>
 
           <!-- Color Selection -->
-          <div class="flex space-x-2" id="color-options">
-            <button class="w-8 h-8 rounded-full bg-black ring-2 ring-black color-option" data-color="Black" aria-label="Black"></button>
-            <button class="color-option w-8 h-8 rounded-full" style="background-color: #5c3a21;" data-color="Dark Brown" aria-label="Dark Brown"></button>
-            <button class="color-option w-8 h-8 rounded-full" style="background-color: #000000;" data-color="Black" aria-label="Black"></button>
-            <button class="color-option w-8 h-8 rounded-full" style="background-color: #d2b48c;" data-color="Tan" aria-label="Tan"></button>
-            <button class="color-option w-8 h-8 rounded-full" style="background-color: #8b4513;" data-color="Brown" aria-label="Brown"></button>
-            <button class="color-option w-8 h-8 rounded-full" style="background-color: #1a2456;" data-color="Navy" aria-label="Navy"></button>
+          <div class="mb-6">
+            <h3 class="font-medium mb-2">Color</h3>
+            <div class="flex space-x-2">
+              <button class="w-8 h-8 rounded-full bg-black ring-2 ring-black" aria-label="Black"></button>
+              <button class="w-8 h-8 rounded-full" style="background-color: #5c3a21;" aria-label="Dark Brown"></button>
+              <button class="w-8 h-8 rounded-full" style="background-color: #8b4513;" aria-label="Brown"></button>
+              <button class="w-8 h-8 rounded-full" style="background-color: #1a2456;" aria-label="Navy"></button>
+            </div>
           </div>
-          
 
           <!-- Size Selection -->
           <div class="mb-6">
@@ -352,48 +391,44 @@
               <h3 class="font-medium">Size</h3>
               <button class="text-sm underline" id="size-guide-btn">Size Guide</button>
             </div>
-            <div class="grid grid-cols-4 gap-2" id="size-options">
-            
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 6">UK 6</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 7">UK 7</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 8">UK 8</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 9">UK 9</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 10">UK 10</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 11">UK 11</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 12">UK 12</button>
-              <button class="border border-gray-300 py-2 hover:border-black size-option" data-size="UK 13">UK 13</button>           
-                            
+            <div class="grid grid-cols-4 gap-2">
+              <button class="border border-gray-300 py-2 hover:border-black">UK 6</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 7</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 8</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 9</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 10</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 11</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 12</button>
+              <button class="border border-gray-300 py-2 hover:border-black">UK 13</button>
             </div>
           </div>
 
           <!-- Width Selection -->
           <div class="mb-8">
             <h3 class="font-medium mb-2">Width</h3>
-            <div class="grid grid-cols-3 gap-2" id="width-options">
-              <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="D">D (Standard)</button>
-              <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="E">E (Wide)</button>
-              <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="EE">EE (Extra Wide)</button>
+            <div class="grid grid-cols-3 gap-2">
+              <button class="border border-gray-300 py-2 hover:border-black">D (Standard)</button>
+              <button class="border border-gray-300 py-2 hover:border-black">E (Wide)</button>
+              <button class="border border-gray-300 py-2 hover:border-black">EE (Extra Wide)</button>
             </div>
           </div>
 
-          
-
-          <!-- Quantity Selection and Add to Cart Button -->
-          <div class="flex border border-gray-300">
-            <button class="px-4 py-2 quantity-btn" data-action="decrease">-</button>
-            <input type="number" value="1" min="1" class="w-12 text-center focus:outline-none" id="quantity">
-            <button class="px-4 py-2 quantity-btn" data-action="increase">+</button>
-
-            <input type="hidden" id="selected-color" value="">
-            <input type="hidden" id="selected-size" value="">
-            <input type="hidden" id="selected-width" value="">
-            <input type="hidden" id="selected-quantity" value="1">
-            <button class="btn btn-dark mt-3" id="add-to-cart-btn">Add to Cart</button>
+          <!-- Add to Cart -->
+          <div class="mb-6">
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div class="flex border border-gray-300">
+                <button class="px-4 py-2 quantity-btn" data-action="decrease">-</button>
+                <input type="number" value="1" min="1" class="w-12 text-center focus:outline-none" id="quantity">
+                <button class="px-4 py-2 quantity-btn" data-action="increase">+</button>
+              </div>
+              <button class="bg-black text-white px-8 py-3 flex-grow hover:bg-gray-800 transition" id="add-to-cart-btn">
+                ADD TO CART
+              </button>
+            </div>
           </div>
-          
 
-           <!-- Additional Options -->
-           <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <!-- Additional Options -->
+          <div class="flex flex-col sm:flex-row gap-4 mb-8">
             <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
               ADD TO WISHLIST
             </button>
@@ -413,7 +448,7 @@
               </summary>
               <div class="pt-4 pb-2 text-gray-600">
                 <p>
-                  The Oxford Cap Toe 600 is a quintessential dress shoe that embodies timeless elegance and superior craftsmanship. Featuring a sleek silhouette with a cap toe design, this Oxford is handcrafted in our workshop in Mallorca using traditional techniques that have been perfected over generations.
+                  The Oxford Cap Toe 80201 is a quintessential dress shoe that embodies timeless elegance and superior craftsmanship. Featuring a sleek silhouette with a cap toe design, this Oxford is handcrafted in our workshop in Mallorca using traditional techniques that have been perfected over generations.
                 </p>
                 <p class="mt-2">
                   The premium calfskin leather develops a beautiful patina over time, making each pair uniquely yours. The Goodyear welt construction ensures durability and allows for resoling, making this an investment piece that will last for years with proper care.
@@ -458,11 +493,9 @@
                 <p class="mt-2">Returns accepted within 30 days of delivery for unworn shoes in original packaging.</p>
               </div>
             </details>
+          </div>
         </div>
       </div>
-      
-
-        
 
       <!-- Related Products -->
       <section class="mt-16">
@@ -607,16 +640,16 @@
         </div>
         <div class="flex items-center mb-6">
           <div class="w-20 h-20 relative overflow-hidden mr-4">
-            <img src="../..//images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600" class="object-cover w-full h-full">
+            <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full">
           </div>
           <div>
-            <h3 class="font-medium">Oxford Cap Toe 600</h3>
+            <h3 class="font-medium">Oxford Cap Toe 80201</h3>
             <p class="text-gray-500">Size: UK 8 | Color: Black</p>
             <p>€450</p>
           </div>
         </div>
         <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/cart.html" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
+          <a href="../..//cart.html" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
             VIEW CART
           </a>
           <button id="continue-shopping" class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
@@ -936,90 +969,6 @@
         }
       });
     });
-
-    function changeImage(el) {
-      document.getElementById("mainImage").src = el.src;
-    }
   </script>
-
-  <script>
-    // Image switching logic
-    function changeImage(imgElement) {
-      document.getElementById('mainImage').src = imgElement.src;
-    }
-
-    // Selection tracking
-    document.querySelectorAll('.color-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('selected-color').value = btn.getAttribute('data-color');
-
-        document.querySelectorAll('.color-option').forEach(b => b.classList.remove('ring-4', 'ring-black'));
-        btn.classList.add('ring-4', 'ring-black');
-      });
-    });
-
-
-    document.querySelectorAll('.size-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('selected-size').value = btn.getAttribute('data-size');
-
-        // Optional: Highlight selection
-        document.querySelectorAll('.size-option').forEach(b => b.classList.remove('bg-dark', 'text-white'));
-        btn.classList.add('bg-dark', 'text-white');
-      });
-    });
-
-    document.querySelectorAll('.width-option').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById('selected-width').value = btn.getAttribute('data-width');
-
-        // Optional: Highlight selection
-        document.querySelectorAll('.width-option').forEach(b => b.classList.remove('bg-dark', 'text-white'));
-        btn.classList.add('bg-dark', 'text-white');
-      });
-    });
-
-    // Quantity buttons
-    document.querySelectorAll('.quantity-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const input = document.getElementById('quantity');
-        let value = parseInt(input.value);
-        if (btn.dataset.action === 'increase') {
-          input.value = value + 1;
-        } else if (btn.dataset.action === 'decrease' && value > 1) {
-          input.value = value - 1;
-        }
-        document.getElementById('selected-quantity').value = input.value;
-      });
-    });
-
-    // Add to Cart
-    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
-      const name = "Oxford Cap Toe 600";
-      const price = 450;
-      const color = document.getElementById('selected-color').value;
-      const size = document.getElementById('selected-size').value;
-      const width = document.getElementById('selected-width').value;
-      const quantity = parseInt(document.getElementById('quantity').value);
-
-      if (!color || !size || !width) {
-        alert('Please select color, size, and width.');
-        return;
-      }
-
-      const item = { name, price, color, size, width, quantity };
-
-      const cartKey = 'DRFCart';
-      const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-      cart.push(item);
-      localStorage.setItem(cartKey, JSON.stringify(cart));
-
-
-      alert('Item added to cart!');
-    });
-</script>
-
-
-
 </body>
 </html>

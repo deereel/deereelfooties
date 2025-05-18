@@ -1,49 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
   const cartKey = 'DRFCart';
-
-  // Utility Functions
-  const $ = (selector, ctx = document) => ctx.querySelector(selector);
-  const $$ = (selector, ctx = document) => ctx.querySelectorAll(selector);
+  const $ = (sel, ctx = document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx = document) => ctx.querySelectorAll(sel);
   const loadCart = () => JSON.parse(localStorage.getItem(cartKey)) || [];
   const saveCart = (cart) => localStorage.setItem(cartKey, JSON.stringify(cart));
 
   const updateCartCount = (cart) => {
     const cartCount = $('.fa-shopping-bag + span');
-    if (cartCount) {
-      cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
-    }
+    if (cartCount) cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
   };
 
-  const getSelectedOptions = () => {
-    const color = $('#selected-color')?.value || 'Black';
-    const size = $('#selected-size')?.value || 'UK 8';
-    const width = $('#selected-width')?.value || 'Standard';
-    return { color, size, width };
-  };
+  const getSelectedOptions = () => ({
+    color: $('#selected-color')?.value,
+    size: $('#selected-size')?.value,
+    width: $('#selected-width')?.value
+  });
 
   const addToCart = (item) => {
-    let cart = loadCart();
-    const index = cart.findIndex(ci =>
-      ci.id === item.id &&
-      ci.color === item.color &&
-      ci.size === item.size &&
-      ci.width === item.width
-    );
-
-    if (index > -1) {
-      cart[index].quantity += item.quantity;
-    } else {
-      cart.push(item);
+    if (!item.color || !item.size || !item.width) {
+      alert('Please select color, size, and width before adding to cart.');
+      return;
     }
 
+    const cart = loadCart();
+    const index = cart.findIndex(ci =>
+      ci.id === item.id && ci.color === item.color && ci.size === item.size && ci.width === item.width
+    );
+
+    index > -1 ? cart[index].quantity += item.quantity : cart.push(item);
     saveCart(cart);
     updateCartCount(cart);
 
     const modal = $('#added-to-cart-modal');
     if (modal) {
+      $('#modal-product-image').src = item.image;
+      $('#modal-product-image').alt = item.name;
+      $('#modal-product-name').textContent = item.name;
+      $('#modal-product-variant').textContent = `Size: ${item.size} | Width: ${item.width} | Color: ${item.color}`;
+      $('#modal-product-price').textContent = `₦${item.price.toLocaleString()}`;
       modal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+      }, 5000);
     }
+  };
+
+  const handleSelection = (groupClass, hiddenInputId) => {
+    const options = document.querySelectorAll(groupClass);
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        options.forEach(o => o.classList.remove('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white'));
+        option.classList.add('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white');
+        const type = groupClass.includes('color') ? 'color' : groupClass.includes('size') ? 'size' : 'width';
+        document.getElementById(hiddenInputId).value = option.dataset[type];
+      });
+    });
   };
 
   const initAddToCartButton = () => {
@@ -52,22 +66,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btn.addEventListener('click', () => {
       const productId = location.pathname.split('/').pop().replace('.html', '');
-      const productName = $('h3.fw-bold')?.textContent || '';
-      const productPrice = parseFloat($('p.text-2xl')?.textContent.replace('€', '') || 0);
+      const productName = $('h3.fw-bold')?.textContent.trim() || '';
+      const rawPrice = $('p.text-2xl')?.textContent || '0';
+      const productPrice = parseFloat(rawPrice.replace(/[₦€,]/g, '').trim()) || 0;
       const productImage = $('#mainImage')?.src || '';
       const quantity = parseInt($('#quantity')?.value) || 1;
       const { color, size, width } = getSelectedOptions();
 
-      addToCart({ id: productId, name: productName, price: productPrice, image: productImage, color, size, width, quantity });
+      if (!color || !size || !width) {
+        alert('Please select color, size, and width before adding to cart.');
+        return;
+      }
+
+      addToCart({
+        id: productId,
+        name: productName,
+        price: productPrice,
+        image: productImage,
+        color,
+        size,
+        width,
+        quantity
+      });
     });
   };
 
+  const updateShippingProgress = (subtotal) => {
+    const address = document.getElementById('shipping-address')?.value.toLowerCase() || '';
+    const withinLagos = address.includes('lagos');
+    const threshold = withinLagos ? 150000 : 250000;
+
+    const progress = Math.min((subtotal / threshold) * 100, 100);
+    const progressBar = document.getElementById('shipping-progress');
+    const label = document.getElementById('shipping-progress-label');
+
+    // Update width
+    progressBar.style.width = `${progress}%`;
+
+    // Reset classes
+    progressBar.classList.remove('bg-danger', 'bg-warning', 'bg-success');
+
+    // Set color based on progress
+    if (progress >= 100) {
+      progressBar.classList.add('bg-success');
+      label.textContent = '✅ You qualify for free shipping!';
+    } else if (progress >= 50) {
+      progressBar.classList.add('bg-warning');
+      const left = threshold - subtotal;
+      label.textContent = `Almost there! Spend ₦${left.toLocaleString()} more for free shipping${withinLagos ? ' in Lagos' : ''}.`;
+    } else {
+      progressBar.classList.add('bg-danger');
+      const left = threshold - subtotal;
+      label.textContent = `Spend ₦${left.toLocaleString()} more for free shipping${withinLagos ? ' in Lagos' : ''}.`;
+    }
+  };
+
+
   const renderCartPage = (cart) => {
-    const container = $('#cart-items');
-    const summary = $('#cart-summary');
+    const container = $('#cart-items'), summary = $('#cart-summary');
     if (!container || !summary) return;
 
-    if (cart.length === 0) {
+    if (!cart.length) {
       container.innerHTML = `
         <div class="text-center py-12">
           <h2 class="text-2xl font-light mb-4">Your Cart is Empty</h2>
@@ -78,212 +137,101 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const itemsHTML = cart.map((item, i) => `
+    container.innerHTML = cart.map((item, i) => `
       <div class="flex flex-col md:flex-row border-b py-6">
-        <div class="md:w-1/4 mb-4 md:mb-0">
-          <img src="${item.image}" alt="${item.name}" class="object-cover w-full h-full">
-        </div>
+        <div class="md:w-1/4 mb-4 md:mb-0"><img src="${item.image}" alt="${item.name}" class="object-cover w-full h-full"></div>
         <div class="md:w-3/4 md:pl-6 flex flex-col">
           <div class="flex justify-between mb-2">
             <h3 class="text-lg font-medium">${item.name}</h3>
             <button class="text-gray-500 remove-item" data-index="${i}"><i class="fas fa-times"></i></button>
           </div>
           <p class="text-gray-500 mb-2">Size: ${item.size} | Width: ${item.width} | Color: ${item.color}</p>
-          <p class="mb-4">€${item.price.toFixed(2)}</p>
+          <p class="mb-4">₦${item.price.toLocaleString()}</p>
           <div class="flex items-center mt-auto">
             <div class="flex border border-gray-300">
               <button class="px-3 py-1 update-quantity" data-index="${i}" data-action="decrease">-</button>
               <span class="px-3 py-1">${item.quantity}</span>
               <button class="px-3 py-1 update-quantity" data-index="${i}" data-action="increase">+</button>
             </div>
-            <p class="ml-auto font-medium">€${(item.price * item.quantity).toFixed(2)}</p>
+            <p class="ml-auto font-medium">₦${(item.price * item.quantity).toLocaleString()}</p>
           </div>
         </div>
       </div>`).join('');
 
-    container.innerHTML = itemsHTML;
-
     const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const shipping = subtotal >= 180 ? 0 : 15;
-    const total = subtotal + shipping;
 
-    $('#subtotal').textContent = `€${subtotal.toFixed(2)}`;
-    $('#shipping').textContent = shipping === 0 ? 'FREE' : `€${shipping.toFixed(2)}`;
-    $('#total').textContent = `€${total.toFixed(2)}`;
+    // Update the free shipping progress bar
+    updateShippingProgress(subtotal);
+
+    // Display prices in the summary section
+    $('#subtotal').textContent = `₦${subtotal.toLocaleString()}`;
+    $('#shipping').textContent = 'Determined by location';
+    $('#total').textContent = `₦${subtotal.toLocaleString()}`;
+
+    // Display shipping info hint
+    const hintContainer = document.getElementById('shipping-hint');
+    if (hintContainer) {
+      hintContainer.innerHTML = `
+        <p class="text-sm text-gray-500 mt-2">
+          Free shipping on orders above ₦150,000 within Lagos and ₦250,000 outside Lagos.
+        </p>
+      `;
+    }
+
+   
 
     $$('.remove-item').forEach(btn =>
-      btn.addEventListener('click', () => removeCartItem(parseInt(btn.dataset.index)))
+      btn.addEventListener('click', () => {
+        const index = parseInt(btn.dataset.index);
+        cart.splice(index, 1);
+        saveCart(cart);
+        updateCartCount(cart);
+        renderCartPage(cart);
+      })
     );
 
     $$('.update-quantity').forEach(btn =>
-      btn.addEventListener('click', () => updateQuantity(parseInt(btn.dataset.index), btn.dataset.action))
+      btn.addEventListener('click', () => {
+        const index = parseInt(btn.dataset.index);
+        const action = btn.dataset.action;
+        if (action === 'increase') cart[index].quantity += 1;
+        else if (cart[index].quantity > 1) cart[index].quantity -= 1;
+        saveCart(cart);
+        updateCartCount(cart);
+        renderCartPage(cart);
+      })
     );
-
-    $('#checkout-btn')?.addEventListener('click', () => alert('Proceeding to checkout...'));
-
-    const checkoutBtn = $('#checkout-btn');
-      if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', (e) => {
-          const name = $('#client-name')?.value.trim();
-          const address = $('#shipping-address')?.value.trim();
-          const fileInput = $('#payment-proof');
-          const file = fileInput?.files[0];
-        
-          if (!name) {
-            alert('Please enter your name before proceeding.');
-            return;
-          }
-        
-          if (!address) {
-            alert('Please enter your shipping address.');
-            return;
-          }
-        
-          if (!file) {
-            alert('Please upload proof of payment.');
-            return;
-          }
-        
-          const reader = new FileReader();
-          reader.onload = function () {
-            const base64Data = reader.result;
-        
-            const checkoutInfo = {
-              name: name,
-              address: address,
-              proof: base64Data
-            };
-        
-            localStorage.setItem('DRFCheckoutInfo', JSON.stringify(checkoutInfo));
-        
-            alert(`Thank you, ${name}! Your shipping and payment information have been saved.`);
-          };
-        
-          reader.readAsDataURL(file);
-        });
-        
-      }
-
-    };
-
-  const removeCartItem = (index) => {
-    let cart = loadCart();
-    cart.splice(index, 1);
-    saveCart(cart);
-    updateCartCount(cart);
-    renderCartPage(cart);
   };
 
-  const updateQuantity = (index, action) => {
-    let cart = loadCart();
-    if (action === 'increase') cart[index].quantity += 1;
-    else if (cart[index].quantity > 1) cart[index].quantity -= 1;
-    saveCart(cart);
-    updateCartCount(cart);
-    renderCartPage(cart);
-  };
-
-  const handleSelection = (groupClass, hiddenInputId) => {
-    const options = document.querySelectorAll(groupClass);
-    options.forEach(option => {
-      option.addEventListener('click', function () {
-        // Remove visual selection
-        options.forEach(o => o.classList.remove('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white'));
-  
-        // Add visual highlight
-        this.classList.add('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white');
-  
-        // Store selected value
-        const dataAttr = groupClass.includes('color') ? 'color'
-                        : groupClass.includes('size') ? 'size'
-                        : 'width';
-  
-        document.getElementById(hiddenInputId).value = this.dataset[dataAttr];
-      });
+  const initMobileMenu = () => {
+    const toggle = $('#mobileMenuToggle'), close = $('#closeMobileMenu'), overlay = $('.mobile-nav-overlay');
+    if (!toggle || !close || !overlay) return;
+    toggle.addEventListener('click', () => overlay.classList.replace('hidden', 'visible'));
+    close.addEventListener('click', () => overlay.classList.replace('visible', 'hidden'));
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.replace('visible', 'hidden');
     });
   };
-  
 
   const initPage = () => {
     handleSelection('.color-option', 'selected-color');
     handleSelection('.size-option', 'selected-size');
     handleSelection('.width-option', 'selected-width');
     initAddToCartButton();
+    updateCartCount(loadCart());
+    if (location.pathname.includes('/cart.html')) renderCartPage(loadCart());
+    initMobileMenu();
 
-    const cart = loadCart();
-    updateCartCount(cart);
-    if (location.pathname.includes('/cart.html')) renderCartPage(cart);
-  };
-
-  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-  const closeMobileMenu = document.getElementById('closeMobileMenu');
-  const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
-
-  mobileMenuToggle.addEventListener('click', () => {
-    mobileNavOverlay.classList.remove('hidden');
-    mobileNavOverlay.classList.add('visible');
-  });
-
-  closeMobileMenu.addEventListener('click', () => {
-    mobileNavOverlay.classList.remove('visible');
-    mobileNavOverlay.classList.add('hidden');
-  });
-
-  // Close menu when clicking outside
-  mobileNavOverlay.addEventListener('click', (e) => {
-    if (e.target === mobileNavOverlay) {
-      mobileNavOverlay.classList.remove('visible');
-      mobileNavOverlay.classList.add('hidden');
-    }
-  });
-  // Close modal when clicking outside
-  const modal = document.getElementById('added-to-cart-modal');
-  if (modal) {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      }
-    });
-  }
-  // Close modal when clicking the close button
-  const closeModalBtn = document.getElementById('close-modal-btn');
-  if (closeModalBtn) {
-    closeModalBtn.addEventListener('click', () => {
-      modal.classList.add('hidden');
+    $('#close-cart-modal')?.addEventListener('click', () => {
+      $('#added-to-cart-modal').classList.add('hidden');
       document.body.style.overflow = 'auto';
     });
-  }
-  
+
+    $('#continue-shopping')?.addEventListener('click', () => {
+      $('#added-to-cart-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    });
+  };
 
   initPage();
 });
-
-// MOBILE MENU FUNCTIONALITY
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('mobileMenuToggle');
-  const closeBtn = document.getElementById('closeMobileMenu');
-  const overlay = document.querySelector('.mobile-nav-overlay');
-
-  if (toggleBtn && closeBtn && overlay) {
-    toggleBtn.addEventListener('click', () => {
-      overlay.classList.remove('hidden');
-      overlay.classList.add('visible');
-    });
-
-    closeBtn.addEventListener('click', () => {
-      overlay.classList.remove('visible');
-      overlay.classList.add('hidden');
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.remove('visible');
-        overlay.classList.add('hidden');
-      }
-    });
-  }
-});
-
-
-

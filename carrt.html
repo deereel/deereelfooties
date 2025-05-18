@@ -18,14 +18,27 @@
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <h2 class="mb-4">Your Shopping Cart</h2>
-    <div id="cart-items"></div>
-    <div class="text-end mt-4">
-      <h4>Subtotal: €<span id="cart-subtotal">0</span></h4>
-      <button class="btn btn-dark mt-3">Proceed to Checkout</button>
+  <main>
+    <div class="max-w-4xl mx-auto px-4 py-12">
+      <h1 class="text-3xl font-light mb-8">Your Cart</h1>
+      <div id="cart-items"></div>
+      <div id="cart-summary" class="mt-8 border-t pt-6">
+        <div class="flex justify-between mb-2">
+          <span>Subtotal</span>
+          <span id="subtotal">₦0</span>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span>Shipping</span>
+          <span id="shipping">₦0</span>
+        </div>
+        <div class="flex justify-between font-medium text-lg">
+          <span>Total</span>
+          <span id="total">₦0</span>
+        </div>
+        <a href="/checkout.html" class="btn btn-dark w-full mt-6">Proceed to Checkout</a>
+      </div>
     </div>
-  </div>
+  </main>
 
   <script>
     function renderCart() {
