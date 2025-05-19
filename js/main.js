@@ -233,5 +233,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // ** Add this part to handle modal toggle for user icon **
+  const userIconButton = $('#userIcon');  // Assuming this is the user icon's button
+  const userAccountModal = new bootstrap.Modal(document.getElementById('userAccountModal'));
+
+  if (userIconButton) {
+    userIconButton.addEventListener('click', () => {
+      userAccountModal.show();
+    });
+  }
+
+  // Switch between Sign In and Sign Up forms
+  document.getElementById('switchToSignUp').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('loginForm').classList.add('d-none');
+    document.getElementById('signUpForm').classList.remove('d-none');
+  });
+
+
+   // Modal Login form validation
+  document.getElementById('modalLoginForm').addEventListener('submit', function(event) {
+    const email = document.getElementById('modalLoginEmail').value.trim();
+    const password = document.getElementById('modalLoginPassword').value.trim();
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+      alert('Please enter a valid email address.');
+      event.preventDefault();
+      return;
+    }
+    if (password.length === 0) {
+      alert('Please enter your password.');
+      event.preventDefault();
+      return;
+    }
+    // Add real login logic here later
+  });
+
+  // Modal Register form validation
+  document.getElementById('modalRegisterForm').addEventListener('submit', function(event) {
+    const name = document.getElementById('modalRegisterName').value.trim();
+    const email = document.getElementById('modalRegisterEmail').value.trim();
+    const password = document.getElementById('modalRegisterPassword').value;
+    const confirmPassword = document.getElementById('modalRegisterConfirmPassword').value;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (name.length === 0) {
+      alert('Please enter your full name.');
+      event.preventDefault();
+      return;
+    }
+    if (!emailPattern.test(email)) {
+      alert('Please enter a valid email address.');
+      event.preventDefault();
+      return;
+    }
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long.');
+      event.preventDefault();
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      event.preventDefault();
+      return;
+    }
+    // Add real registration logic here later
+  });
+
   initPage();
 });

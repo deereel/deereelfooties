@@ -244,6 +244,17 @@
             <i class="fas fa-shopping-cart"></i> Cart
           </a>
         </li>
+        <!-- User Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAccountDropdown">
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
     
@@ -358,7 +369,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
             <!-- Example Product -->
             <div class="group product-card"
-                 data-price="35000"
+                 data-price="55000"
                  data-size="40,41,42,43,44,45,46"
                  data-color="tan"
                  data-type="oxford"
@@ -369,7 +380,7 @@
                        class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
                 </div>
                 <h3 class="text-lg">Oxford Cap Toe 600</h3>
-                <p class="text-gray-500">₦35,000</p>
+                <p class="text-gray-500">₦55,000</p>
               </a>
             </div>
 
@@ -386,6 +397,22 @@
                 </div>
                 <h3 class="text-lg">Penny Loafer 600</h3>
                 <p class="text-gray-500">₦42,000</p>
+              </a>
+            </div>
+
+            <div class="group product-card"
+                 data-price="55000"
+                 data-size="39,40,41,42,43,44,45,46,47"
+                 data-color="tan,brown,black"
+                 data-type="oxford"
+                 data-gender="men">
+              <a href="/products/men/shoes/cram-solid-oxford.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="/images/cram solid oxford.webp" alt="Cram Solid oxford"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg">Cram Solid Oxford</h3>
+                <p class="text-gray-500">₦55,000</p>
               </a>
             </div>
   

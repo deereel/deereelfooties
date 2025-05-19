@@ -134,6 +134,17 @@
       background-color: #5a2a2b; /* Lighter chocolate on hover */
     }
 
+    /* Hide number input spinners */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
   </style>
   
   
@@ -272,6 +283,17 @@
             <i class="fas fa-shopping-cart"></i> Cart
           </a>
         </li>
+        <!-- User Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAccountDropdown">
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
     
@@ -296,15 +318,15 @@
         <div class="col-md-6">
           <!-- Main Product Image -->
           <div class="border mb-3">
-            <img id="mainImage" src="../..//images/Oxford Cap Toe 600.webp" class="img-fluid w-100" alt="Main Shoe Image">
+            <img id="mainImage" src="/images/Oxford Cap Toe 600.webp" class="img-fluid w-100" alt="Main Shoe Image">
           </div>
       
           <!-- Thumbnail Gallery -->
           <div class="d-flex flex-row flex-wrap gap-2">
-            <img src="../..//images/product-2.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/product-3.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/Oxford Cap Toe 600.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
-            <img src="../..//images/Oxford Cap Toe 600.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
+            <img src="/images/Oxford Cap Toe 600.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
+            <img src="/images/Oxford Cap Toe 600-1.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
+            <img src="/images/Oxford Cap Toe 600-2.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">
+            <img src="/images/Oxford Cap Toe 600-3.webp" class="img-thumbnail thumb" style="width: 80px; cursor: pointer;" onclick="changeImage(this)">            
           </div>
         </div>
       
@@ -317,9 +339,9 @@
             <li>Leather lining and insole</li>
             <li>Goodyear welted construction</li>
             <li>Oak-tanned leather sole</li>
-            <li>Made in Mallorca, Spain</li>
+            <li>Made in Lagos, Nigeria</li>
           </ul>
-          <p class="text-2xl mb-4">₦35,000</p>
+          <p class="text-2xl mb-4">₦55,000</p>
 
           <div class="mb-6">
             <div class="flex items-center mb-2">
@@ -378,22 +400,27 @@
 
           
 
-          <!-- Quantity Selection and Add to Cart Button -->
-          <div class="flex border border-gray-300">
-            <button class="px-4 py-2 quantity-btn" data-action="decrease">-</button>
-            <input type="number" value="1" min="1" class="w-12 text-center focus:outline-none" id="quantity">
-            <button class="px-4 py-2 quantity-btn" data-action="increase">+</button>
-
-            <input type="hidden" id="selected-color" value="">
-            <input type="hidden" id="selected-size" value="">
-            <input type="hidden" id="selected-width" value="">
-            <input type="hidden" id="selected-quantity" value="1">
-            <button class="btn btn-dark mt-3" id="add-to-cart-btn">Add to Cart</button>
-          </div>
           
+          <!-- Quantity Selector -->
+          <div class="flex items-center gap-2 border border-gray-300 px-2 py-1 mb-4 w-max">
+            <button class="px-3 py-1 quantity-btn" data-action="decrease">-</button>
+            <input type="number" id="quantity" value="1" min="1" class="w-12 text-center focus:outline-none no-spinner">
+            <button class="px-3 py-1 quantity-btn" data-action="increase">+</button>
+          </div>
 
-           <!-- Additional Options -->
-           <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <!-- Hidden Inputs -->
+          <input type="hidden" id="selected-color" value="">
+          <input type="hidden" id="selected-size" value="">
+          <input type="hidden" id="selected-width" value="">
+          <input type="hidden" id="selected-quantity" value="1">
+
+          <!-- Add to Cart Button -->
+          <div class="mb-6">
+            <button class="btn btn-dark w-full sm:w-auto" id="add-to-cart-btn">Add to Cart</button>
+          </div>
+
+          <!-- Additional Options -->
+          <div class="flex flex-col sm:flex-row gap-4 mb-8">
             <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
               ADD TO WISHLIST
             </button>
@@ -401,6 +428,7 @@
               CUSTOMIZE THIS SHOE
             </button>
           </div>
+
 
           <!-- Product Details Accordion -->
           <div class="border-t pt-6 space-y-4">
@@ -452,9 +480,9 @@
                 </span>
               </summary>
               <div class="pt-4 pb-2 text-gray-600">
-                <p>Free worldwide shipping on all orders over €180.</p>
-                <p class="mt-2">Standard shipping: 3-5 business days (Europe), 5-7 business days (International)</p>
-                <p class="mt-2">Express shipping: 1-2 business days (Europe), 2-3 business days (International)</p>
+                <p>Free shipping within Nigeria on all orders over ₦250k.</p>
+                <p class="mt-2">Standard shipping: 5-7 business days (Nigeria), 7-10 business days (International)</p>
+                <p class="mt-2">Express shipping: 2-4 business days (Nigeria), 5-7 business days (International)</p>
                 <p class="mt-2">Returns accepted within 30 days of delivery for unworn shoes in original packaging.</p>
               </div>
             </details>
@@ -600,22 +628,22 @@
 
     <!-- Added to Cart Modal -->
     <div id="added-to-cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-      <div class="bg-white p-8 max-w-md w-full">
-        <div class="flex justify-between items-center mb-6">
+      <div class="bg-white p-6 max-w-md w-full">
+        <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-medium">Added to Cart</h2>
           <button id="close-cart-modal" class="text-2xl">&times;</button>
         </div>
-        <div class="flex items-center mb-6">
-          <div class="w-20 h-20 relative overflow-hidden mr-4">
-            <img src="../..//images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600" class="object-cover w-full h-full">
+        <div class="flex items-center gap-4 mb-4">
+          <div class="w-20 h-20 overflow-hidden border">
+            <img id="modal-product-image" src="" alt="" class="object-cover w-full h-full">
           </div>
           <div>
-            <h3 class="font-medium">Oxford Cap Toe 600</h3>
-            <p class="text-gray-500">Size: UK 8 | Color: Black</p>
-            <p>€450</p>
+            <h3 id="modal-product-name" class="font-medium text-base"></h3>
+            <p id="modal-product-variant" class="text-gray-500 text-sm"></p>
+            <p id="modal-product-price" class="text-sm font-medium"></p>
           </div>
         </div>
-        <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex flex-col sm:flex-row gap-3">
           <a href="/cart.html" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
             VIEW CART
           </a>
@@ -624,7 +652,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div>    
   </main>
 
   <!-- Footer -->
@@ -751,101 +779,7 @@
   </a>
 
 
-  <script>
-    document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
-      element.addEventListener('click', function (e) {
-        const submenu = this.nextElementSibling;
-        if (submenu && submenu.classList.contains('dropdown-menu')) {
-          e.preventDefault();
-          submenu.classList.toggle('show');
-          e.stopPropagation();
-        }
-      });
-    });
-  </script>
-  
-  <script src="/js/main.js"></script>
-  <!-- Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <script>
-    // Set the current year in the footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap JS (with Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
-  <script>
-    // Enable dropdowns on hover
-    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
-      dropdown.addEventListener('mouseenter', function () {
-        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
-        if (toggle) {
-          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
-          dropdownInstance.show();
-        }
-      });
-      dropdown.addEventListener('mouseleave', function () {
-        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
-        if (toggle) {
-          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
-          dropdownInstance.hide();
-        }
-      });
-    });
-  
-    // Also add hover support for nested submenus (if you're using them)
-    document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
-      submenu.addEventListener('mouseenter', function () {
-        let submenuList = this.querySelector('.dropdown-menu');
-        if (submenuList) submenuList.classList.add('show');
-      });
-      submenu.addEventListener('mouseleave', function () {
-        let submenuList = this.querySelector('.dropdown-menu');
-        if (submenuList) submenuList.classList.remove('show');
-      });
-    });
-  </script>
-  <script>
-    const scrollBtn = document.getElementById("scrollToTop");
-  
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) {
-        scrollBtn.style.display = "flex";
-      } else {
-        scrollBtn.style.display = "none";
-      }
-    });
-  
-    scrollBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  </script>
-
-  <script>
-    document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
-      link.addEventListener('click', function (e) {
-        const submenu = this.nextElementSibling;
-
-        // If the user clicked the main link directly (not just hovering)
-        if (!submenu || !submenu.classList.contains('dropdown-menu')) {
-          return; // not a submenu
-        }
-
-        // Prevent the submenu from hijacking the click
-        const isSubmenuOpen = submenu.classList.contains('show');
-        if (!isSubmenuOpen) {
-          // Allow navigation
-          window.location.href = this.getAttribute('href');
-        }
-
-        e.preventDefault();
-      });
-    });
-  </script>
+  <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       // Product image gallery
@@ -880,66 +814,12 @@
         document.body.style.overflow = 'auto';
       });
       
-      // Quantity buttons
-      const quantityInput = document.getElementById('quantity');
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const action = this.dataset.action;
-          const currentValue = parseInt(quantityInput.value);
-          
-          if (action === 'increase') {
-            quantityInput.value = currentValue + 1;
-          } else if (action === 'decrease' && currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-          }
-        });
-      });
-      
-      // Add to cart
-      const addToCartBtn = document.getElementById('add-to-cart-btn');
-      const addedToCartModal = document.getElementById('added-to-cart-modal');
-      const closeCartModal = document.getElementById('close-cart-modal');
-      const continueShoppingBtn = document.getElementById('continue-shopping');
-      
-      addToCartBtn.addEventListener('click', function() {
-        // In a real implementation, this would add the product to the cart
-        addedToCartModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        
-        // Update cart count
-        const cartCount = document.querySelector('.fa-shopping-bag + span');
-        cartCount.textContent = parseInt(cartCount.textContent) + parseInt(quantityInput.value);
-      });
-      
-      closeCartModal.addEventListener('click', function() {
-        addedToCartModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-      
-      continueShoppingBtn.addEventListener('click', function() {
-        addedToCartModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-      
-      // Close modals when clicking outside
-      window.addEventListener('click', function(event) {
-        if (event.target === sizeGuideModal) {
-          sizeGuideModal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        }
-        
-        if (event.target === addedToCartModal) {
-          addedToCartModal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        }
-      });
-    });
+         
 
     function changeImage(el) {
       document.getElementById("mainImage").src = el.src;
     }
+  });
   </script>
 
   <script>
@@ -981,43 +861,70 @@
 
     // Quantity buttons
     document.querySelectorAll('.quantity-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault(); // ✅ Prevent default button behavior
+
         const input = document.getElementById('quantity');
-        let value = parseInt(input.value);
+        let value = parseInt(input.value) || 1;
+
         if (btn.dataset.action === 'increase') {
           input.value = value + 1;
         } else if (btn.dataset.action === 'decrease' && value > 1) {
           input.value = value - 1;
         }
+
+        // Optional: update hidden input too
         document.getElementById('selected-quantity').value = input.value;
       });
     });
 
-    // Add to Cart
-    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
-      const name = "Oxford Cap Toe 600";
-      const price = 450;
-      const color = document.getElementById('selected-color').value;
-      const size = document.getElementById('selected-size').value;
-      const width = document.getElementById('selected-width').value;
-      const quantity = parseInt(document.getElementById('quantity').value);
+  </script>
 
-      if (!color || !size || !width) {
-        alert('Please select color, size, and width.');
-        return;
+    
+
+<!-- Dropdown Hover Support -->
+<script>
+  document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+    dropdown.addEventListener('mouseenter', function () {
+      let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+      if (toggle) {
+        let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+        dropdownInstance.show();
       }
-
-      const item = { name, price, color, size, width, quantity };
-
-      const cartKey = 'DRFCart';
-      const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-      cart.push(item);
-      localStorage.setItem(cartKey, JSON.stringify(cart));
-
-
-      alert('Item added to cart!');
     });
+    dropdown.addEventListener('mouseleave', function () {
+      let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+      if (toggle) {
+        let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+        dropdownInstance.hide();
+      }
+    });
+  });
+
+  document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
+    submenu.addEventListener('mouseenter', function () {
+      let submenuList = this.querySelector('.dropdown-menu');
+      if (submenuList) submenuList.classList.add('show');
+    });
+    submenu.addEventListener('mouseleave', function () {
+      let submenuList = this.querySelector('.dropdown-menu');
+      if (submenuList) submenuList.classList.remove('show');
+    });
+  });
 </script>
+
+
+
+<!-- Footer Year -->
+<script>
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+
+<!-- External Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/product-grid.js" defer></script>
 
 
 

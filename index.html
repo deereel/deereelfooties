@@ -239,6 +239,17 @@
             <i class="fas fa-shopping-cart"></i> Cart
           </a>
         </li>
+        <!-- User Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAccountDropdown">
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+          </ul>
+        </li>
       </ul>
     </nav>
     
@@ -274,7 +285,7 @@
 
         <!-- Add products here -->
         <div class="group product-card"
-                 data-price="35000"
+                 data-price="55000"
                  data-size="40,41,42,43,44,45,46"
                  data-color="tan"
                  data-type="oxford">
@@ -284,7 +295,23 @@
                        class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
                 </div>
                 <h3 class="text-lg">Oxford Cap Toe 600</h3>
-                <p class="text-gray-500">₦35,000</p>
+                <p class="text-gray-500">₦55,000</p>
+              </a>
+            </div>
+
+            <div class="group product-card"
+                 data-price="55000"
+                 data-size="39,40,41,42,43,44,45,46,47"
+                 data-color="tan,brown,black"
+                 data-type="oxford"
+                 data-gender="men">
+              <a href="/products/men/shoes/cram-solid-oxford.html">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="/images/cram solid oxford.webp" alt="Cram Solid oxford"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg">Cram Solid Oxford</h3>
+                <p class="text-gray-500">₦55,000</p>
               </a>
             </div>
 
@@ -419,6 +446,55 @@
     
   </main>
 
+  <!-- User Account Placeholder Sections -->
+
+  <section id="loginSection" class="container my-5">
+    <h2 class="mb-4">Login to Your Account</h2>
+    <form>
+      <div class="mb-3">
+        <label for="loginEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="loginPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+  </section>
+
+
+  <section id="registerSection" class="container my-5">
+    <h2 class="mb-4">Create a New Account</h2>
+    <form>
+      <div class="mb-3">
+        <label for="registerName" class="form-label">Full Name</label>
+        <input type="text" class="form-control" id="registerName" placeholder="Your full name" required>
+      </div>
+      <div class="mb-3">
+        <label for="registerEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="registerEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="mb-3">
+        <label for="registerPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="registerPassword" placeholder="Create a password" required>
+      </div>
+      <div class="mb-3">
+        <label for="registerConfirmPassword" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm your password" required>
+      </div>
+      <button type="submit" class="btn btn-success">Register</button>
+    </form>
+  </section>
+
+
+  <section id="profileSection" class="container my-5">
+    <h2>User Profile</h2>
+    <p>Welcome back, [User]! Your profile information will appear here.</p>
+  </section>
+
+
+
   <!-- Footer -->
   <footer class="bg-white border-t">
     <!-- Main Footer -->
@@ -543,6 +619,50 @@
   </a>
 
 
+  <!-- Modal for Sign In / Sign Up -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="loginModalLabel">Sign In / Sign Up</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Sign In Form -->
+          <form id="loginForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign In</button>
+          </form>
+          <hr>
+          <p class="text-center">Don't have an account? <a href="#" id="switchToSignUp">Sign Up</a></p>
+
+          <!-- Sign Up Form (hidden by default) -->
+          <div id="signUpForm" class="d-none">
+            <div class="mb-3">
+              <label for="newEmail" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="newEmail" placeholder="Enter your email" required>
+            </div>
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">Password</label>
+              <input type="password" class="form-control" id="newPassword" placeholder="Enter your password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
   <script>
     document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
       element.addEventListener('click', function (e) {
@@ -555,6 +675,61 @@
       });
     });
   </script>
+
+  <script>
+    // Login form validation
+    document.querySelector('#loginSection form').addEventListener('submit', function(event) {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        event.preventDefault();
+        return;
+      }
+
+      if (password.length === 0) {
+        alert('Please enter your password.');
+        event.preventDefault();
+        return;
+      }
+    });
+
+    // Register form validation
+    document.querySelector('#registerSection form').addEventListener('submit', function(event) {
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      const name = document.getElementById('registerName').value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (name.length === 0) {
+        alert('Please enter your full name.');
+        event.preventDefault();
+        return;
+      }
+
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        event.preventDefault();
+        return;
+      }
+
+      if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        event.preventDefault();
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        event.preventDefault();
+        return;
+      }
+    });
+  </script>
+
   
   <script src="/js/main.js"></script>
   <!-- Bootstrap Bundle with Popper -->
