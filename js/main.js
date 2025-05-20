@@ -5,6 +5,52 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadCart = () => JSON.parse(localStorage.getItem(cartKey)) || [];
   const saveCart = (cart) => localStorage.setItem(cartKey, JSON.stringify(cart));
 
+  const saveCustomerInfo = () => {
+    const name = $('#client-name')?.value.trim();
+    const address = $('#shipping-address')?.value.trim();
+    const file = $('#payment-proof')?.files[0];
+
+    if (!name || !address || !file) {
+      alert('Please fill all fields.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('address', address);
+    formData.append('proof', file);
+
+    fetch('/drf/save-customer.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Customer info saved to server!');
+        } else {
+          alert('Error saving: ' + data.error);
+        }
+      });
+  };
+
+
+
+
+  const reader = new FileReader();
+  reader.onload = function () {
+    const customerInfo = {
+      name,
+      address,
+      proof: reader.result  // base64 string
+    };
+    localStorage.setItem('DRFCustomerInfo', JSON.stringify(customerInfo));
+  };
+
+  if (proofFile) reader.readAsDataURL(proofFile);
+};
+
+
   const updateCartCount = (cart) => {
     const cartCount = $('.fa-shopping-bag + span');
     if (cartCount) cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -231,6 +277,39 @@ document.addEventListener('DOMContentLoaded', () => {
       $('#added-to-cart-modal').classList.add('hidden');
       document.body.style.overflow = 'auto';
     });
+
+    $('#checkout-btn')?.addEventListener('click', () => {
+      const name = $('#client-name')?.value.trim();
+      const address = $('#shipping-address')?.value.trim();
+      const proofFile = $('#payment-proof')?.files[0];
+
+      if (!name || !address || !proofFile) {
+        alert('Please complete all required fields and upload proof of payment.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const customerInfo = {
+          name,
+          address,
+          proof: reader.result
+        };
+        localStorage.setItem('DRFCustomerInfo', JSON.stringify(customerInfo));
+        alert('✅ Customer info saved! You can now process the order or confirm checkout.');
+      };
+
+      reader.readAsDataURL(proofFile);
+    });
+
+
+    const existingCustomer = JSON.parse(localStorage.getItem('DRFCustomerInfo'));
+      if (existingCustomer) {
+        $('#client-name').value = existingCustomer.name || '';
+        $('#shipping-address').value = existingCustomer.address || '';
+        // Skipping file because browsers don't allow pre-filling file inputs for security
+      }
+
   };
 
   // ** Add this part to handle modal toggle for user icon **

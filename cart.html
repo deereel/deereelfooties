@@ -363,6 +363,17 @@
                 <label for="payment-proof" class="form-label">Upload Proof of Payment</label>
                 <input class="form-control" type="file" id="payment-proof" accept="image/*,.pdf">
               </div>
+              <!-- Proof Preview -->
+              <div id="proof-preview" class="mb-3 text-center d-none">
+                <p class="text-muted">Preview:</p>
+                <!-- Image Preview -->
+                <img id="proof-image" src="" alt="Payment Proof" class="img-fluid rounded shadow-sm mb-2" style="max-height: 200px; display: none;">
+
+                <!-- PDF Preview -->
+                <embed id="proof-pdf" type="application/pdf" width="100%" height="200px" style="display: none; border: 1px solid #ccc;" />
+              </div>
+
+
 
               <!-- Checkout Button -->
               <button class="btn btn-success w-100" id="checkout-btn">
@@ -519,19 +530,8 @@
     });
   </script>
   
-  <script src="/js/main.js"></script>
-  <!-- Bootstrap Bundle with Popper -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <script>
-    // Set the current year in the footer
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap JS (with Popper) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-
+  
+  
   <script>
     // Enable dropdowns on hover
     document.querySelectorAll('.dropdown').forEach(function (dropdown) {
@@ -601,5 +601,19 @@
       });
     });
   </script>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+    // Set the current year in the footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script src="/js/main.js"></script>
+
 </body>
 </html>
