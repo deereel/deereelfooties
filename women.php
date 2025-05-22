@@ -250,6 +250,8 @@
             <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a href="#" id="logoutBtn" class="dropdown-item">Logout</a></li>            
           </ul>
         </li>
       </ul>

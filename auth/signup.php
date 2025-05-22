@@ -1,30 +1,27 @@
 <?php
-include '../db.php';
+include '../auth/db.php';
+
+header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+    $name = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    $confirm = $_POST['confirm_password'] ?? '';
 
-    // Basic validation
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 6) {
-        die('Invalid email or password too short.');
+    if ($password !== $confirm) {
+        echo json_encode(['success' => false, 'error' => 'Passwords do not match.']);
+        exit;
     }
 
-    // Hash password
     $hashed = password_hash($password, PASSWORD_DEFAULT);
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
 
-    // Insert into DB
-    $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $email, $hashed);
-
-    if ($stmt->execute()) {
-        header("Location: /index.php?signup=success");
-        exit();
-    } else {
-        echo "Signup failed: " . $stmt->error;
+    try {
+        $stmt->execute([$name, $email, $hashed]);
+        echo json_encode(['success' => true]);
+    } catch (PDOException $e) {
+        echo json_encode(['success' => false, 'error' => 'Email may already be registered.']);
     }
-
-    $stmt->close();
-    $conn->close();
 }
 ?>

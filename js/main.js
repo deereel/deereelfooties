@@ -259,11 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const initPage = () => {
+     // ✅ Display welcome tooltip on the user icon
     const user = JSON.parse(localStorage.getItem('DRFUser'));
-    if (user) {
-      const icon = $('#userIcon');
+    if (user && user.name) {
+      const icon = document.getElementById('userIcon');
       if (icon) {
-        icon.setAttribute('title', `Logged in as ${user.name}`);
+        icon.setAttribute('title', `Welcome, ${user.name}`);
       }
     }
 
@@ -321,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ** Add this part to handle modal toggle for user icon **
   const userIconButton = $('#userIcon');  // Assuming this is the user icon's button
-  const userAccountModal = new bootstrap.Modal(document.getElementById('userAccountModal'));
+  const userAccountModal = new bootstrap.Modal(document.getElementById('loginModal'));
 
   if (userIconButton) {
     userIconButton.addEventListener('click', () => {
@@ -332,17 +333,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Switch between Sign In and Sign Up forms
   document.getElementById('switchToSignUp')?.addEventListener('click', function(e) {
     e.preventDefault();
-    document.getElementById('loginForm').classList.add('d-none');
-    document.getElementById('signUpForm').classList.remove('d-none');
+    document.getElementById('modalLoginForm').classList.add('d-none');
+    document.getElementById('modalRegisterForm').classList.remove('d-none');
   });
 
-
-
-   // Modal Login form validation
-  document.getElementById('modalLoginForm').addEventListener('submit', function(event) {
+  document.getElementById('modalLoginForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
-    const email = $('#modalLoginEmail').value.trim();
-    const password = $('#modalLoginPassword').value.trim();
+    const email = document.getElementById('modalLoginEmail').value.trim();
+    const password = document.getElementById('modalLoginPassword').value.trim();
 
     fetch('/auth/login.php', {
       method: 'POST',
@@ -354,37 +352,55 @@ document.addEventListener('DOMContentLoaded', () => {
       if (data.success) {
         localStorage.setItem('DRFUser', JSON.stringify(data.user));
         alert('Login successful!');
-        location.reload();
+        window.location.href = '/dashboard.php'; // redirect here
       } else {
         alert(data.error);
       }
     });
   });
 
-
-  // Modal Register form validation
-  document.getElementById('modalRegisterForm').addEventListener('submit', function(event) {
+  document.getElementById('modalRegisterForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
-    const name = $('#modalRegisterName').value.trim();
-    const email = $('#modalRegisterEmail').value.trim();
-    const password = $('#modalRegisterPassword').value.trim();
+    const name = document.getElementById('modalRegisterName').value.trim();
+    const email = document.getElementById('modalRegisterEmail').value.trim();
+    const password = document.getElementById('modalRegisterPassword').value;
+    const confirm = document.getElementById('modalRegisterConfirmPassword').value;
 
-    fetch('/auth/register.php', {
+    if (password !== confirm) {
+      alert('Passwords do not match.');
+      return;
+    }
+
+    fetch('/auth/signup.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+      body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&confirm_password=${encodeURIComponent(confirm)}`
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert('Registration successful! Please login.');
-        $('#signUpForm').classList.add('d-none');
-        $('#loginForm').classList.remove('d-none');
-      } else {
-        alert(data.error);
-      }
-    });
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('🎉 Account created! You can now sign in.');
+          document.getElementById('modalRegisterForm').classList.add('d-none');
+          document.getElementById('modalLoginForm').classList.remove('d-none');
+        } else {
+          alert(data.error || 'Signup failed.');
+        }
+      });
   });
+
+  document.getElementById('logoutBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    localStorage.removeItem('DRFUser');
+    alert('Logged out!');
+    location.reload();
+  });
+
+
+  function googleLogin() {
+    window.location.href = '/auth/google-login.php';
+  }
+
+
 
 
   initPage();

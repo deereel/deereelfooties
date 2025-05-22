@@ -248,6 +248,8 @@
             <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a href="#" id="logoutBtn" class="dropdown-item">Logout</a></li>            
           </ul>
         </li>
       </ul>
@@ -587,61 +589,6 @@
     });
   </script>
 
-  <script>
-    // Login form validation
-    document.querySelector('#loginSection form').addEventListener('submit', function(event) {
-      const email = document.getElementById('loginEmail').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!emailPattern.test(email)) {
-        alert('Please enter a valid email address.');
-        event.preventDefault();
-        return;
-      }
-
-      if (password.length === 0) {
-        alert('Please enter your password.');
-        event.preventDefault();
-        return;
-      }
-    });
-
-    // Register form validation
-    document.querySelector('#registerSection form').addEventListener('submit', function(event) {
-      const email = document.getElementById('registerEmail').value.trim();
-      const password = document.getElementById('registerPassword').value;
-      const confirmPassword = document.getElementById('registerConfirmPassword').value;
-      const name = document.getElementById('registerName').value.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (name.length === 0) {
-        alert('Please enter your full name.');
-        event.preventDefault();
-        return;
-      }
-
-      if (!emailPattern.test(email)) {
-        alert('Please enter a valid email address.');
-        event.preventDefault();
-        return;
-      }
-
-      if (password.length < 6) {
-        alert('Password must be at least 6 characters long.');
-        event.preventDefault();
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        alert('Passwords do not match.');
-        event.preventDefault();
-        return;
-      }
-    });
-  </script>
-
-  
   
   <script>
     // Enable dropdowns on hover
