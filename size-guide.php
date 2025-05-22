@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="DeeReel Footies – Premium handcrafted shoes for men and women. Shop loafers, boots, slippers, and custom footwear.">
+  <meta name="keywords" content="handcrafted shoes, Elegant shoes, DRF, DeeReel Footies, men's shoes, women's boots, women's shoes, men's boots, men's slippers, women's slippers, custom footwear, loafers, sandals, mules, derby, monk strap">
+  <meta name="author" content="DeeReel Footies">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Size Guide - DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="/js/product-grid.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <style>
+    /* Top-level dropdown appears on hover */
+    .dropdown:hover > .dropdown-menu {
+      display: block;
+      margin-top: 0;
+    }
+  
+    /* Basic positioning */
+    .dropdown {
+      position: relative;
+    }
+  
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+  
+    /* Remove Bootstrap's default down arrow */
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+  
+    /* Nested dropdown positioning */
+    .dropdown-submenu {
+      position: relative;
+    }
+  
+    .dropdown-submenu > .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 100%; /* Align to the right of parent */
+      margin-left: 0;
+      z-index: 1001;
+    }
+  
+    /* Show submenu on hover */
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
+    }
+  
+    /* Prevent overlap of submenus */
+    .dropdown-menu > .dropdown-submenu {
+      position: relative;
+    }
+
+    .dropdown-submenu {
+      position: relative;
+    }
+    .dropdown-submenu .dropdown-menu {
+      display: none;
+    }
+    .dropdown-submenu .dropdown-menu.show {
+      display: block;
+    }
+
+    /* Scroll to Top Custom Styling */
+    #scrollToTop {
+      background-color: #381819; /* Dark chocolate background */
+      color: #fff; /* White icon color */
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    #scrollToTop:hover {
+      background-color: #5a2a2b; /* Lighter chocolate on hover */
+      transform: scale(1.1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+  </style>
+  
+  
+    
+</head>
+<body>
+  <!-- Sticky Header -->
+  <header class="sticky-top bg-white border-bottom shadow-sm">
+    <!-- First Row: Logo and Search Icon -->
+    <div class="d-flex justify-content-between align-items-center px-4 py-1 mb-1">
+      <a href="/index.php" class="navbar-brand d-flex align-items-center">
+        <img src="/images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 50px;">
+        <span class="nav-brand-title">DeeReel Footies</span>
+      </a>
+      <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <button class="btn d-none d-lg-inline">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+      <div class="mobile-nav d-lg-none">
+        <button class="btn btn-outline-secondary" id="mobileMenuToggle" aria-label="Toggle navigation">
+          ☰ Menu
+        </button>
+
+        <div class="mobile-nav-overlay hidden fixed inset-0 bg-black/80 z-50">
+          <div class="mobile-nav-content bg-white h-full w-3/4 max-w-sm shadow-lg p-6 overflow-y-auto">
+            <button class="close-btn text-black text-2xl mb-4" id="closeMobileMenu" aria-label="Close navigation">
+              &times;
+            </button>
+            <ul class="space-y-4">
+              <li><a href="/men.php" class="text-lg font-medium">MEN</a></li>
+              <li><a href="/women.php" class="text-lg font-medium">WOMEN</a></li>
+              <li><a href="/products.php" class="text-lg font-medium">PRODUCTS</a></li>
+              <li><a href="/size-guide.php" class="text-lg font-medium">SIZE GUIDE</a></li>
+              <li><a href="/contact.php" class="text-lg font-medium">CONTACT</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Second Row: Main Navigation -->
+    <nav class="d-none d-md-flex w-100 align-items-center">
+    <!--<nav class="hidden md:flex items-center space-x-8 mb-2"> -->
+      <!-- Left-side navigation -->
+      <div class="d-flex align-items-center gap-4">
+            <!-- MEN Dropdown -->    
+            <div class="dropdown position-relative">
+                <a href="/men.php" class="text-dark text-decoration-none" role="button">MEN</a>
+                <ul class="dropdown-menu">
+                  <!-- Shoes -->
+                  <li class="dropdown-submenu">
+                      <a href="/products/men/men-shoes.php?gender=men&type=all" class="dropdown-item">Shoes</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/products/men/men-shoes.php?gender=men&type=loafers">Loafers</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-shoes.php?gender=men&type=oxford">Oxford</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-shoes.php?gender=men&type=derby">Derby</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-shoes.php?gender=men&type=monk">Monk Straps</a></li>
+                      </ul>
+                  </li>
+                  
+                  <!-- Boots -->
+                  <li class="dropdown-submenu">
+                      <a href="/products/men/men-boots.php?gender=men&type=all" class="dropdown-item">Boots</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=zipper">Zipper boots</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=wingtip">Wingtip boots</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=chelsea">Chelsea boots</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=captoe">Captoe boots</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=jodhpur">Jodhpur boots</a></li>
+                          <li><a class="dropdown-item" href="/products/men/men-boots.php?gender=men&type=balmoral">Balmoral boots</a></li>
+                      </ul>  
+                  </li>
+              
+                  <li><a class="dropdown-item" href="/products/men/men-slippers.php">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/men/men-mules.php">Mules</a></li>
+                </ul>
+            </div>
+            
+            
+
+            <!-- WOMEN Dropdown -->    
+            <div class="dropdown position-relative">
+
+                <a href="/women.php" class="text-dark text-decoration-none" role="button">WOMEN</a>
+                <ul class="dropdown-menu">
+                  <!-- Shoes -->
+                  <li class="dropdown-submenu">
+                      <a href="/products/women/women-shoes.php?gender=women&type=all" class="dropdown-item">Shoes</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/products/women/women-shoes.php?gender=women&type=loafers">Loafers</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-shoes.php?gender=women&type=oxford">Oxford</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-shoes.php?gender=women&type=derby">Derby</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-shoes.php?gender=women&type=monk">Monk Straps</a></li>
+                      </ul>
+                  </li>
+                  
+                  <!-- Boots -->
+                  <li class="dropdown-submenu">
+                      <a href="/products/women/women-boots.php?gender=women&type=all" class="dropdown-item">Boots</a>
+                      <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=zipper">Zipper boots</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=wingtip">Wingtip boots</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=chelsea">Chelsea boots</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=captoe">Captoe boots</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=jodhpur">Jodhpur boots</a></li>
+                          <li><a class="dropdown-item" href="/products/women/women-boots.php?gender=women&type=balmoral">Balmoral boots</a></li>
+                      </ul>
+                      </li>
+              
+                  <li><a class="dropdown-item" href="/products/women/women-slippers.php">Slippers/Sandals</a></li>
+                  <li><a class="dropdown-item" href="/products/women/women-mules.php">Mules</a></li>
+                </ul>
+            </div>
+            
+            
+
+            <a href="/customize.php" class="nav-link">CUSTOMIZE</a>
+            <a href="/moo.php" class="nav-link">Made on Order</a>
+            <a href="/products.php" class="nav-link">PRODUCTS</a>
+            <a href="/size-guide.php" class="nav-link">SIZE GUIDE</a>
+      </div>
+
+      <!-- Right-side Shoemaking and Cart -->
+      <ul class="navbar-nav flex-row gap-3 ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/shoemaking.php">Shoemaking</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/cart.php">
+            <i class="fas fa-shopping-cart"></i> Cart
+          </a>
+        </li>
+        <!-- User Account Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i> Account
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAccountDropdown">
+            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#profileSection">Profile</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    
+  </header>
+
+
+  <!-- Main Content -->
+  <main>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-light mb-2">SIZE GUIDE</h1>
+        <div class="flex items-center text-sm text-gray-500">
+          <a href="/index.php">Home</a>
+          <span class="mx-2">/</span>
+          <span>Size Guide</span>
+        </div>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="mb-12">
+          <p class="mb-6">
+            Finding the perfect fit is essential for comfort and longevity of your DeeReeL Footies shoes. Our sizing guide will help you determine the right size for your feet. If you have any questions or need additional assistance, please don't hesitate to <a href="/contact.php" class="underline">contact our customer service team</a>.
+          </p>
+          
+          <div class="bg-neutral-50 p-6 mb-8">
+            <h2 class="text-xl font-medium mb-4">IMPORTANT SIZING NOTES</h2>
+            <ul class="list-disc pl-5 space-y-2">
+              <li>DeeReeL Footies shoes typically run true to size, but different lasts may fit differently.</li>
+              <li>If you're between sizes, we recommend sizing up.</li>
+              <li>For wider feet, consider selecting a wider width rather than a larger size.</li>
+              <li>Our shoes are handcrafted and may have slight variations in sizing.</li>
+              <li>All measurements in the charts below are approximate.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Size Conversion Charts -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-light mb-6">SIZE CONVERSION CHARTS</h2>
+          
+          <!-- Men's Size Chart -->
+          <div class="mb-10">
+            <h3 class="text-xl font-medium mb-4">MEN'S SIZES</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th class="border p-3 text-left">UK</th>
+                    <th class="border p-3 text-left">US</th>
+                    <th class="border p-3 text-left">EU</th>
+                    <th class="border p-3 text-left">JP</th>
+                    <th class="border p-3 text-left">Foot Length (cm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border p-3">5</td>
+                    <td class="border p-3">6</td>
+                    <td class="border p-3">39</td>
+                    <td class="border p-3">24</td>
+                    <td class="border p-3">24.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">6</td>
+                    <td class="border p-3">7</td>
+                    <td class="border p-3">40</td>
+                    <td class="border p-3">25</td>
+                    <td class="border p-3">25.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">7</td>
+                    <td class="border p-3">8</td>
+                    <td class="border p-3">41</td>
+                    <td class="border p-3">26</td>
+                    <td class="border p-3">26.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">8</td>
+                    <td class="border p-3">9</td>
+                    <td class="border p-3">42</td>
+                    <td class="border p-3">27</td>
+                    <td class="border p-3">27.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">9</td>
+                    <td class="border p-3">10</td>
+                    <td class="border p-3">43</td>
+                    <td class="border p-3">28</td>
+                    <td class="border p-3">28.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">10</td>
+                    <td class="border p-3">11</td>
+                    <td class="border p-3">44</td>
+                    <td class="border p-3">29</td>
+                    <td class="border p-3">29.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">11</td>
+                    <td class="border p-3">12</td>
+                    <td class="border p-3">45</td>
+                    <td class="border p-3">30</td>
+                    <td class="border p-3">30.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">12</td>
+                    <td class="border p-3">13</td>
+                    <td class="border p-3">46</td>
+                    <td class="border p-3">31</td>
+                    <td class="border p-3">31.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">13</td>
+                    <td class="border p-3">14</td>
+                    <td class="border p-3">47</td>
+                    <td class="border p-3">32</td>
+                    <td class="border p-3">32.0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <!-- Women's Size Chart -->
+          <div>
+            <h3 class="text-xl font-medium mb-4">WOMEN'S SIZES</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <thead>
+                  <tr class="bg-gray-100">
+                    <th class="border p-3 text-left">UK</th>
+                    <th class="border p-3 text-left">US</th>
+                    <th class="border p-3 text-left">EU</th>
+                    <th class="border p-3 text-left">JP</th>
+                    <th class="border p-3 text-left">Foot Length (cm)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="border p-3">2</td>
+                    <td class="border p-3">4</td>
+                    <td class="border p-3">34</td>
+                    <td class="border p-3">20.5</td>
+                    <td class="border p-3">21.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">3</td>
+                    <td class="border p-3">5</td>
+                    <td class="border p-3">35</td>
+                    <td class="border p-3">21.5</td>
+                    <td class="border p-3">22.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">4</td>
+                    <td class="border p-3">6</td>
+                    <td class="border p-3">36</td>
+                    <td class="border p-3">22.5</td>
+                    <td class="border p-3">23.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">5</td>
+                    <td class="border p-3">7</td>
+                    <td class="border p-3">37</td>
+                    <td class="border p-3">23.5</td>
+                    <td class="border p-3">24.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">6</td>
+                    <td class="border p-3">8</td>
+                    <td class="border p-3">38</td>
+                    <td class="border p-3">24.5</td>
+                    <td class="border p-3">25.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">7</td>
+                    <td class="border p-3">9</td>
+                    <td class="border p-3">39</td>
+                    <td class="border p-3">25.5</td>
+                    <td class="border p-3">26.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">8</td>
+                    <td class="border p-3">10</td>
+                    <td class="border p-3">40</td>
+                    <td class="border p-3">26.5</td>
+                    <td class="border p-3">27.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">9</td>
+                    <td class="border p-3">11</td>
+                    <td class="border p-3">41</td>
+                    <td class="border p-3">27.5</td>
+                    <td class="border p-3">28.0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Width Guide -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-light mb-6">WIDTH GUIDE</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Men's Width -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">MEN'S WIDTH</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="bg-gray-100">
+                      <th class="border p-3 text-left">Width</th>
+                      <th class="border p-3 text-left">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border p-3">C</td>
+                      <td class="border p-3">Narrow</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">D</td>
+                      <td class="border p-3">Standard</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">E</td>
+                      <td class="border p-3">Wide</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">EE</td>
+                      <td class="border p-3">Extra Wide</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- Women's Width -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">WOMEN'S WIDTH</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="bg-gray-100">
+                      <th class="border p-3 text-left">Width</th>
+                      <th class="border p-3 text-left">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="border p-3">A</td>
+                      <td class="border p-3">Narrow</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">B</td>
+                      <td class="border p-3">Standard</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">C</td>
+                      <td class="border p-3">Wide</td>
+                    </tr>
+                    <tr>
+                      <td class="border p-3">D</td>
+                      <td class="border p-3">Extra Wide</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- How to Measure -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-light mb-6">HOW TO MEASURE YOUR FOOT</h2>
+          
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <ol class="list-decimal pl-5 space-y-4">
+                <li>
+                  <strong>Prepare:</strong> Place a piece of paper on a hard, flat surface against a wall. Wear the socks you would typically wear with dress shoes.
+                </li>
+                <li>
+                  <strong>Position:</strong> Stand on the paper with your heel against the wall. Your weight should be evenly distributed on both feet.
+                </li>
+                <li>
+                  <strong>Mark:</strong> Mark the longest part of your foot on the paper. This is usually the tip of your big toe, but not always.
+                </li>
+                <li>
+                  <strong>Measure:</strong> Use a ruler to measure the distance from the wall (heel) to the mark (longest toe) in centimeters.
+                </li>
+                <li>
+                  <strong>Repeat:</strong> Repeat for your other foot, as most people have slight differences between their feet. Use the measurement from your larger foot.
+                </li>
+                <li>
+                  <strong>Find your size:</strong> Use the measurement to find your size in our conversion charts above.
+                </li>
+              </ol>
+              
+              <div class="mt-6 p-4 bg-neutral-50">
+                <p class="font-medium">Pro Tip:</p>
+                <p>It's best to measure your feet in the evening when they are slightly larger due to natural swelling throughout the day.</p>
+              </div>
+            </div>
+            
+            <div class="relative aspect-[3/4] overflow-hidden">
+              <img src="/images/foot-measurement.jpg" alt="How to measure your foot" class="object-cover w-full h-full">
+            </div>
+          </div>
+        </div>
+
+        <!-- Last Information -->
+        <div class="mb-12">
+          <h2 class="text-2xl font-light mb-6">UNDERSTANDING DEEREEL FOOTIES LASTS</h2>
+          
+          <p class="mb-6">
+            A shoe last is a three-dimensional mold that replicates a foot shape, used to construct shoes. Different lasts create different fits and aesthetics. Below are our most popular lasts and their characteristics:
+          </p>
+          
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Men's Lasts -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">MEN'S LASTS</h3>
+              <div class="space-y-6">
+                <div>
+                  <h4 class="font-medium">Inca (80)</h4>
+                  <p>Our most classic last. Medium width with a rounded toe. Provides excellent comfort while maintaining an elegant silhouette.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Rain (80216)</h4>
+                  <p>Slightly wider than Inca with a more contemporary, rounded toe. Excellent for those seeking additional comfort.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Simpson (80483)</h4>
+                  <p>Our most elegant last with a sleek, elongated toe. Narrower fit, ideal for formal occasions.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Oscar (80530)</h4>
+                  <p>A versatile last with a slightly chiseled toe. Medium width with excellent balance between comfort and elegance.</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Women's Lasts -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">WOMEN'S LASTS</h3>
+              <div class="space-y-6">
+                <div>
+                  <h4 class="font-medium">Madison (W80)</h4>
+                  <p>Our classic women's last. Medium width with a slightly rounded toe. Elegant yet comfortable.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Xenia (W80216)</h4>
+                  <p>A contemporary last with a rounded toe and slightly wider fit. Ideal for all-day comfort.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Elena (W80483)</h4>
+                  <p>Our most elegant women's last with a sleek, elongated toe. Perfect for formal occasions.</p>
+                </div>
+                <div>
+                  <h4 class="font-medium">Sofia (W80530)</h4>
+                  <p>A versatile last with a slightly almond-shaped toe. Balances comfort and style beautifully.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ -->
+        <div>
+          <h2 class="text-2xl font-light mb-6">FREQUENTLY ASKED QUESTIONS</h2>
+          
+          <div class="space-y-4">
+            <details class="group border p-4">
+              <summary class="flex justify-between items-center cursor-pointer">
+                <span class="font-medium">How do I know if my shoes fit correctly?</span>
+                <span class="transform group-open:rotate-180 transition-transform">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div class="pt-4 text-gray-600">
+                <p>
+                  A properly fitting shoe should feel snug but not tight. There should be about a thumb's width of space between your longest toe and the end of the shoe. The widest part of your foot should align with the widest part of the shoe, and your heel should not slip when walking.
+                </p>
+              </div>
+            </details>
+            
+            <details class="group border p-4">
+              <summary class="flex justify-between items-center cursor-pointer">
+                <span class="font-medium">Will my DeeReeL Footies shoes stretch over time?</span>
+                <span class="transform group-open:rotate-180 transition-transform">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div class="pt-4 text-gray-600">
+                <p>
+                  Yes, all leather shoes will stretch slightly with wear, particularly in width. However, they will not stretch significantly in length. If a shoe is painfully tight when new, it's likely the wrong size or width.
+                </p>
+              </div>
+            </details>
+            
+            <details class="group border p-4">
+              <summary class="flex justify-between items-center cursor-pointer">
+                <span class="font-medium">What if I'm between sizes?</span>
+                <span class="transform group-open:rotate-180 transition-transform">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div class="pt-4 text-gray-600">
+                <p>
+                  If you're between sizes, we generally recommend sizing up rather than down. You can always use insoles or tongue pads to adjust the fit of a slightly larger shoe, but a too-small shoe will cause discomfort and cannot be stretched significantly.
+                </p>
+              </div>
+            </details>
+            
+            <details class="group border p-4">
+              <summary class="flex justify-between items-center cursor-pointer">
+                <span class="font-medium">How do I choose the right width?</span>
+                <span class="transform group-open:rotate-180 transition-transform">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div class="pt-4 text-gray-600">
+                <p>
+                  If you have never had issues with standard width shoes, our standard width (D for men, B for women) should work well for you. If you find that shoes are often too tight across the ball of your foot or instep, consider a wider width. If shoes often feel too roomy, a narrower width might be better.
+                </p>
+              </div>
+            </details>
+            
+            <details class="group border p-4">
+              <summary class="flex justify-between items-center cursor-pointer">
+                <span class="font-medium">Can I return shoes if they don't fit?</span>
+                <span class="transform group-open:rotate-180 transition-transform">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div class="pt-4 text-gray-600">
+                <p>
+                  Yes, we accept returns of unworn shoes in their original packaging within 30 days of delivery. Please note that custom or MADE ON ORDER shoes cannot be returned unless there is a manufacturing defect.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t">
+    <!-- Main Footer -->
+    <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/our-history.php" class="hover:underline">Our History</a>
+          </li>
+          <li>
+            <a href="/shoemaking.php" class="hover:underline">Craftsmanship</a>
+          </li>
+          <li>
+            <a href="/contact.php" class="hover:underline">Contact Us</a>
+          </li>
+          <li>
+            <a href="/careers.php" class="hover:underline">Careers</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/shipping.php" class="hover:underline">Shipping & Delivery</a>
+          </li>
+          <li>
+            <a href="/returns.php" class="hover:underline">Returns & Exchanges</a>
+          </li>
+          <li>
+            <a href="/size-guide.php" class="hover:underline">Size Guide</a>
+          </li>
+          <li>
+            <a href="/faq.php" class="hover:underline">FAQ</a>
+          </li>
+          <li>
+            <a href="/care-guide.php" class="hover:underline">Shoe Care Guide</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">SHOP</h3>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/men.php" class="hover:underline">Men's Collection</a>
+          </li>
+          <li>
+            <a href="/women.php" class="hover:underline">Women's Collection</a>
+          </li>
+          <li>
+            <a href="/customize.php" class="hover:underline">Customize</a>
+          </li>
+          <li>
+            <a href="/moo.php" class="hover:underline">MADE ON ORDER</a>
+          </li>
+          <li>
+            <a href="/products.php" class="hover:underline">Outlet</a>
+          </li>          
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-medium mb-4">NEWSLETTER</h3>
+        <p class="text-sm mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
+        <form class="mb-6">
+          <div class="flex flex-col space-y-2">
+            <input
+              type="email"
+              class="px-4 py-2 border border-gray-300 focus:outline-none"
+              placeholder="Your email address"
+              required
+            />
+            <button type="submit" class="bg-black text-white px-6 py-2 hover:bg-gray-800 transition">
+              SUBSCRIBE
+            </button>
+          </div>
+        </form>
+        
+
+        <h3 class="font-medium mb-4">FOLLOW US</h3>
+        <div class="flex space-x-4">
+          <a href="https://www.instagram.com/deereelfooties" class="hover:text-gray-600">
+            <i class="fab fa-instagram text-lg"></i>
+            <span class="sr-only">Instagram</span>
+          </a>
+          <a href="https://www.tiktok.com/@deereel.footies" class="hover:text-gray-600">
+            <i class="fab fa-tiktok text-lg"></i>
+            <span class="sr-only">Tiktok</span>
+          </a>
+          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
+            <i class="fab fa-whatsapp text-lg"></i>
+            <span class="sr-only">Twitter</span>
+          </a>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Footer -->
+    <div class="border-t py-6 px-4">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+        <div class="mb-2 mb-md-0">
+          <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="/terms.php" class="hover:underline">Terms & Conditions</a>
+          <a href="/privacy.php" class="hover:underline">Privacy Policy</a>
+          <a href="/cookies.php" class="hover:underline">Cookie Policy</a>
+          <a href="/sitemap.php" class="hover:underline">Sitemap</a>
+        </div>
+      </div>
+    </div>
+    
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+    <i class="fas fa-chevron-up"></i>
+  </a>
+
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(function (element) {
+      element.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+        if (submenu && submenu.classList.contains('dropdown-menu')) {
+          e.preventDefault();
+          submenu.classList.toggle('show');
+          e.stopPropagation();
+        }
+      });
+    });
+  </script>
+  
+  <script src="/js/main.js"></script>
+
+  <!-- Include this inside body on all pages -->
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+  <script>
+    // Set the current year in the footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS (with Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+  <script>
+    // Enable dropdowns on hover
+    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
+      dropdown.addEventListener('mouseenter', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.show();
+        }
+      });
+      dropdown.addEventListener('mouseleave', function () {
+        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
+        if (toggle) {
+          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
+          dropdownInstance.hide();
+        }
+      });
+    });
+  
+    // Also add hover support for nested submenus (if you're using them)
+    document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
+      submenu.addEventListener('mouseenter', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.add('show');
+      });
+      submenu.addEventListener('mouseleave', function () {
+        let submenuList = this.querySelector('.dropdown-menu');
+        if (submenuList) submenuList.classList.remove('show');
+      });
+    });
+  </script>
+  <script>
+    const scrollBtn = document.getElementById("scrollToTop");
+  
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        scrollBtn.style.display = "flex";
+      } else {
+        scrollBtn.style.display = "none";
+      }
+    });
+  
+    scrollBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
+  <script>
+    document.querySelectorAll('.dropdown-submenu > a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        const submenu = this.nextElementSibling;
+
+        // If the user clicked the main link directly (not just hovering)
+        if (!submenu || !submenu.classList.contains('dropdown-menu')) {
+          return; // not a submenu
+        }
+
+        // Prevent the submenu from hijacking the click
+        const isSubmenuOpen = submenu.classList.contains('show');
+        if (!isSubmenuOpen) {
+          // Allow navigation
+          window.location.href = this.getAttribute('href');
+        }
+
+        e.preventDefault();
+      });
+    });
+  </script>
+  
+</body>
+</html>

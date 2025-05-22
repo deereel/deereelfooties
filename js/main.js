@@ -32,23 +32,22 @@ document.addEventListener('DOMContentLoaded', () => {
           alert('Error saving: ' + data.error);
         }
       });
-  };
 
 
 
 
   const reader = new FileReader();
-  reader.onload = function () {
-    const customerInfo = {
-      name,
-      address,
-      proof: reader.result  // base64 string
+    reader.onload = function () {
+      const customerInfo = {
+        name,
+        address,
+        proof: reader.result  // base64 string
+      };
+      localStorage.setItem('DRFCustomerInfo', JSON.stringify(customerInfo));
     };
-    localStorage.setItem('DRFCustomerInfo', JSON.stringify(customerInfo));
-  };
 
-  if (proofFile) reader.readAsDataURL(proofFile);
-};
+    if (proofFile) reader.readAsDataURL(proofFile);
+  };
 
 
   const updateCartCount = (cart) => {
@@ -111,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!btn) return;
 
     btn.addEventListener('click', () => {
-      const productId = location.pathname.split('/').pop().replace('.html', '');
+      const productId = location.pathname.split('/').pop().replace('.php', '');
       const productName = $('h3.fw-bold')?.textContent.trim() || '';
       const rawPrice = $('p.text-2xl')?.textContent || '0';
       const productPrice = parseFloat(rawPrice.replace(/[₦€,]/g, '').trim()) || 0;
@@ -177,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="text-center py-12">
           <h2 class="text-2xl font-light mb-4">Your Cart is Empty</h2>
           <p class="mb-6">Looks like you haven't added any items to your cart yet.</p>
-          <a href="/index.html" class="bg-black text-white px-6 py-2 inline-block hover:bg-gray-800 transition">CONTINUE SHOPPING</a>
+          <a href="/index.php" class="bg-black text-white px-6 py-2 inline-block hover:bg-gray-800 transition">CONTINUE SHOPPING</a>
         </div>`;
       summary.style.display = 'none';
       return;
@@ -260,12 +259,20 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const initPage = () => {
+    const user = JSON.parse(localStorage.getItem('DRFUser'));
+    if (user) {
+      const icon = $('#userIcon');
+      if (icon) {
+        icon.setAttribute('title', `Logged in as ${user.name}`);
+      }
+    }
+
     handleSelection('.color-option', 'selected-color');
     handleSelection('.size-option', 'selected-size');
     handleSelection('.width-option', 'selected-width');
     initAddToCartButton();
     updateCartCount(loadCart());
-    if (location.pathname.includes('/cart.html')) renderCartPage(loadCart());
+    if (location.pathname.includes('/cart.php')) renderCartPage(loadCart());
     initMobileMenu();
 
     $('#close-cart-modal')?.addEventListener('click', () => {
@@ -323,62 +330,62 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Switch between Sign In and Sign Up forms
-  document.getElementById('switchToSignUp').addEventListener('click', function(e) {
+  document.getElementById('switchToSignUp')?.addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('loginForm').classList.add('d-none');
     document.getElementById('signUpForm').classList.remove('d-none');
   });
 
 
+
    // Modal Login form validation
   document.getElementById('modalLoginForm').addEventListener('submit', function(event) {
-    const email = document.getElementById('modalLoginEmail').value.trim();
-    const password = document.getElementById('modalLoginPassword').value.trim();
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    event.preventDefault();
+    const email = $('#modalLoginEmail').value.trim();
+    const password = $('#modalLoginPassword').value.trim();
 
-    if (!emailPattern.test(email)) {
-      alert('Please enter a valid email address.');
-      event.preventDefault();
-      return;
-    }
-    if (password.length === 0) {
-      alert('Please enter your password.');
-      event.preventDefault();
-      return;
-    }
-    // Add real login logic here later
+    fetch('/auth/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        localStorage.setItem('DRFUser', JSON.stringify(data.user));
+        alert('Login successful!');
+        location.reload();
+      } else {
+        alert(data.error);
+      }
+    });
   });
+
 
   // Modal Register form validation
   document.getElementById('modalRegisterForm').addEventListener('submit', function(event) {
-    const name = document.getElementById('modalRegisterName').value.trim();
-    const email = document.getElementById('modalRegisterEmail').value.trim();
-    const password = document.getElementById('modalRegisterPassword').value;
-    const confirmPassword = document.getElementById('modalRegisterConfirmPassword').value;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    event.preventDefault();
+    const name = $('#modalRegisterName').value.trim();
+    const email = $('#modalRegisterEmail').value.trim();
+    const password = $('#modalRegisterPassword').value.trim();
 
-    if (name.length === 0) {
-      alert('Please enter your full name.');
-      event.preventDefault();
-      return;
-    }
-    if (!emailPattern.test(email)) {
-      alert('Please enter a valid email address.');
-      event.preventDefault();
-      return;
-    }
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters long.');
-      event.preventDefault();
-      return;
-    }
-    if (password !== confirmPassword) {
-      alert('Passwords do not match.');
-      event.preventDefault();
-      return;
-    }
-    // Add real registration logic here later
+    fetch('/auth/register.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert('Registration successful! Please login.');
+        $('#signUpForm').classList.add('d-none');
+        $('#loginForm').classList.remove('d-none');
+      } else {
+        alert(data.error);
+      }
+    });
   });
+
 
   initPage();
 });
