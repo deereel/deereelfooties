@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+export function initProductGrid() {
   const urlParams = new URLSearchParams(window.location.search);
   const productCards = document.querySelectorAll('.product-card');
   const activeFilters = document.getElementById('active-filters');
@@ -186,4 +186,4 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initial run
   filterProducts();
-});
+}

@@ -9,7 +9,7 @@
       <div class="modal-body">
 
         <!-- Sign In Form -->
-        <form id="modalLoginForm">
+        <form id="modalLoginForm" method="POST" action="/auth/login.php">
           <div class="mb-3">
             <label for="modalLoginEmail" class="form-label">Email address</label>
             <input type="email" class="form-control" id="modalLoginEmail" required>
@@ -19,13 +19,16 @@
             <input type="password" class="form-control" id="modalLoginPassword" required>
           </div>
           <button type="submit" class="btn btn-primary w-100">Sign In</button>
+
+
+          <!-- Footer Link for Login -->
+          <div id="login-footer-links" class="text-center mt-3">
+            <p>Don't have an account? <a href="#" id="switchToSignUp">Sign Up</a></p>
+          </div>
         </form>
 
-        <hr>
-        <p class="text-center">Don't have an account? <a href="#" id="switchToSignUp">Sign Up</a></p>
-
         <!-- Sign Up Form -->
-        <form id="modalRegisterForm" class="d-none">
+        <form id="modalRegisterForm" class="d-none" method="POST" action="/auth/signup.php">
           <div class="mb-3">
             <label for="modalRegisterName" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="modalRegisterName" required>
@@ -43,9 +46,14 @@
             <input type="password" class="form-control" id="modalRegisterConfirmPassword" required>
           </div>
           <button type="submit" class="btn btn-success w-100">Create Account</button>
+
+          <!-- Footer Link for Signup -->
+          <div id="signup-footer-links" class="text-center mt-3">
+            <p>Already have an account? <a href="#" id="switchToLogin">Sign in</a></p>
+          </div>
         </form>
 
-        <div class="text-center mt-3">
+        <div class="text-center mt-3" id="googleSignInDiv">
           <button class="btn btn-outline-dark w-100" onclick="googleLogin()">
             <i class="fab fa-google me-2"></i> Continue with Google
           </button>

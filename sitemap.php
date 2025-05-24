@@ -1,42 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sitemap - DeeReeL Footies</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .sitemap-card {
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .sitemap-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    }
-    .list-group-item a {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 500;
-    }
-    .list-group-item a:hover {
-      color: #0d6efd;
-    }
-  </style>
-</head>
+<?php include('components/header.php'); ?>
+
 <body>
 
-  <!-- Header -->
-  <header class="bg-dark text-white text-center py-4 shadow">
-    <div class="container">
-      <h1 class="mb-0">DeeReeL Footies</h1>
-      <p class="lead mb-0">Sitemap & Navigation</p>
-    </div>
-  </header>
+  <?php include('components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main class="py-5">

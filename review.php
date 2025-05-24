@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Review Your Order</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("QTreaie3I9i7MDS1C"); // <-- Replace this with your EmailJS Public Key
-    })();
-  </script>
-</head>
+<?php include('components/header.php'); ?>
+
 <body>
+  <?php include('components/navbar.php'); ?>
+  
   <div class="container py-5">
     <h2 class="mb-4">Review Your Order</h2>
 

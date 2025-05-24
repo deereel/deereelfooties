@@ -8,13 +8,8 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>User Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
+<?php include('components/header.php'); ?>
+
 <body class="bg-light">
   <div class="container py-5">
     <h2 class="mb-4">Welcome, <?= htmlspecialchars($user['name']) ?>!</h2>

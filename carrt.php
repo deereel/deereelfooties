@@ -1,22 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Your Cart</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script> <!-- Replace with your FontAwesome Kit -->
-  <style>
-    .cart-item {
-      border-bottom: 1px solid #ddd;
-      padding: 1rem 0;
-    }
-    .quantity-btn {
-      width: 32px;
-      height: 32px;
-    }
-  </style>
-</head>
+<?php include('components/header.php'); ?>
+
 <body>
   <main>
     <div class="max-w-4xl mx-auto px-4 py-12">
