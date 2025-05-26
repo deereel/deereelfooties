@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="oxford-cap-toe-600">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
   <!-- Main Content -->
@@ -204,7 +204,7 @@
           <div class="group">
             <a href="2.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-2.webp" alt="Penny Loafer 80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-2.webp" alt="Penny Loafer 80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Penny Loafer 80647</h3>
               <p class="text-gray-500">€425</p>
@@ -213,7 +213,7 @@
           <div class="group">
             <a href="3.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-3.webp" alt="Chelsea Boot 80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-3.webp" alt="Chelsea Boot 80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Chelsea Boot 80216</h3>
               <p class="text-gray-500">€495</p>
@@ -222,7 +222,7 @@
           <div class="group">
             <a href="4.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-4.webp" alt="Wing Tip 80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-4.webp" alt="Wing Tip 80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Wing Tip 80290</h3>
               <p class="text-gray-500">€460</p>
@@ -231,7 +231,7 @@
           <div class="group">
             <a href="5.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-5.webp" alt="Double Monk 80544" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-5.webp" alt="Double Monk 80544" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Double Monk 80544</h3>
               <p class="text-gray-500">€475</p>
@@ -360,8 +360,8 @@
     </div>    
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
 
   <!-- Scroll to Top Button -->
@@ -369,7 +369,7 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include('components/scripts.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
 
   

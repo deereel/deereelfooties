@@ -1,6 +1,6 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
+<body data-page="carrt">
   <main>
     <div class="max-w-4xl mx-auto px-4 py-12">
       <h1 class="text-3xl font-light mb-8">Your Cart</h1>

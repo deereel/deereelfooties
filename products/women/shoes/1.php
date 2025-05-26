@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="1">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main>
@@ -22,20 +22,20 @@
         <!-- Product Images -->
         <div>
           <div class="relative aspect-square overflow-hidden mb-4">
-            <img src="../..//images/products/women/women-1.jpg" alt="Penny Loafer W80647" class="object-cover w-full h-full" id="main-product-image">
+            <img src="/images/products/women/women-1.jpg" alt="Penny Loafer W80647" class="object-cover w-full h-full" id="main-product-image">
           </div>
           <div class="grid grid-cols-4 gap-2">
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail ring-2 ring-black">
-              <img src="../..//images/products/women/women-1.jpg" alt="Penny Loafer W80647 - View 1" class="object-cover w-full h-full">
+              <img src="/images/products/women/women-1.jpg" alt="Penny Loafer W80647 - View 1" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/products/women/women-1-2.jpg" alt="Penny Loafer W80647 - View 2" class="object-cover w-full h-full">
+              <img src="/images/products/women/women-1-2.jpg" alt="Penny Loafer W80647 - View 2" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/products/women/women-1-3.jpg" alt="Penny Loafer W80647 - View 3" class="object-cover w-full h-full">
+              <img src="/images/products/women/women-1-3.jpg" alt="Penny Loafer W80647 - View 3" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/products/women/women-1-4.jpg" alt="Penny Loafer W80647 - View 4" class="object-cover w-full h-full">
+              <img src="/images/products/women/women-1-4.jpg" alt="Penny Loafer W80647 - View 4" class="object-cover w-full h-full">
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@
           <div class="group">
             <a href="2.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/products/women/women-2.jpg" alt="Oxford Cap Toe W80201" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/products/women/women-2.jpg" alt="Oxford Cap Toe W80201" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Oxford Cap Toe W80201</h3>
               <p class="text-gray-500">€450</p>
@@ -211,7 +211,7 @@
           <div class="group">
             <a href="3.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/products/women/women-3.jpg" alt="Chelsea Boot W80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/products/women/women-3.jpg" alt="Chelsea Boot W80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Chelsea Boot W80216</h3>
               <p class="text-gray-500">€495</p>
@@ -220,7 +220,7 @@
           <div class="group">
             <a href="4.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/products/women/women-4.jpg" alt="Wing Tip W80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/products/women/women-4.jpg" alt="Wing Tip W80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Wing Tip W80290</h3>
               <p class="text-gray-500">€460</p>
@@ -229,7 +229,7 @@
           <div class="group">
             <a href="5.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/products/women/women-5.jpg" alt="Derby Plain Toe W80579" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/products/women/women-5.jpg" alt="Derby Plain Toe W80579" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Derby Plain Toe W80579</h3>
               <p class="text-gray-500">€445</p>
@@ -338,7 +338,7 @@
         </div>
         <div class="flex items-center mb-6">
           <div class="w-20 h-20 relative overflow-hidden mr-4">
-            <img src="../..//images/products/women/women-1.jpg" alt="Penny Loafer W80647" class="object-cover w-full h-full">
+            <img src="/images/products/women/women-1.jpg" alt="Penny Loafer W80647" class="object-cover w-full h-full">
           </div>
           <div>
             <h3 class="font-medium">Penny Loafer W80647</h3>
@@ -358,8 +358,8 @@
     </div>
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
 
   <!-- Scroll to Top Button -->
@@ -367,7 +367,7 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include('components/scripts.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
   
 </body>
 </html>

@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="women-slippers">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
   <!-- Main Content -->
@@ -142,8 +142,8 @@
     </div>
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
 
   <!-- Scroll to Top Button -->
@@ -151,83 +151,9 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include('components/scripts.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
 
-  <!-- JavaScript for Product Filtering and Sorting -->
-  <script>
-    const scrollBtn = document.getElementById("scrollToTop");
-    window.addEventListener("scroll", () => {
-      scrollBtn.style.display = window.scrollY > 300 ? "flex" : "none";
-    });
-    scrollBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  </script>
-
-  <!-- Dropdown Hover Support -->
-  <script>
-    document.querySelectorAll('.dropdown').forEach(function (dropdown) {
-      dropdown.addEventListener('mouseenter', function () {
-        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
-        if (toggle) {
-          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
-          dropdownInstance.show();
-        }
-      });
-      dropdown.addEventListener('mouseleave', function () {
-        let toggle = this.querySelector('[data-bs-toggle="dropdown"]');
-        if (toggle) {
-          let dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(toggle);
-          dropdownInstance.hide();
-        }
-      });
-    });
-
-    document.querySelectorAll('.dropdown-submenu').forEach(function (submenu) {
-      submenu.addEventListener('mouseenter', function () {
-        let submenuList = this.querySelector('.dropdown-menu');
-        if (submenuList) submenuList.classList.add('show');
-      });
-      submenu.addEventListener('mouseleave', function () {
-        let submenuList = this.querySelector('.dropdown-menu');
-        if (submenuList) submenuList.classList.remove('show');
-      });
-    });
-  </script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const type = (urlParams.get('type') || '').toLowerCase().replace(/s$/, '').trim();
-
-      document.querySelectorAll('.type-filter').forEach(btn => {
-        const btnType = btn.dataset.type.toLowerCase().replace(/s$/, '').trim();
-        if (btnType === type) {
-          btn.classList.add('bg-black', 'text-white', 'border-black');
-        }
-      });
-    });
-  </script>
-
-
-  <!-- Footer Year -->
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
-
-  <!-- External Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-  <!-- Include this inside body on all pages -->
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-
-  <script type="module" src="js/main.js"></script>
-
-
-  
-
-
+ 
 </body>
 </html>

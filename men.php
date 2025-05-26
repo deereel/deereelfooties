@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="men">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->  
   <main>
@@ -189,8 +189,8 @@
     </div>
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
@@ -198,10 +198,8 @@
   </a>
 
 
-  <?php include('components/scripts.php'); ?>
-
-
-
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  
   
 </body>
 </html>

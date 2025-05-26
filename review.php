@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="review">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
   
   <div class="container py-5">
     <h2 class="mb-4">Review Your Order</h2>

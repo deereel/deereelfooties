@@ -1,50 +1,23 @@
-// modal.js
-
-const initModalLoginSignup = () => {
-  const modal = document.getElementById('modallogin');
+// /js/modal.js
+export function showAddToCartModal(item) {
+  const modal = document.getElementById('added-to-cart-modal');
   if (!modal) return;
 
-  const loginBtn = document.getElementById('openLoginBtn');
-  const switchToSignup = document.getElementById('switchToSignup');
-  const switchToLogin = document.getElementById('switchToLogin');
-  const closeModal = modal.querySelector('.modal-close');
+  const modalImage = document.getElementById('modal-product-image');
+  const modalName = document.getElementById('modal-product-name');
+  const modalVariant = document.getElementById('modal-product-variant');
+  const modalPrice = document.getElementById('modal-product-price');
 
-  if (loginBtn) {
-    loginBtn.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      modal.querySelector('#login-form').classList.remove('d-none');
-      modal.querySelector('#signup-form').classList.add('d-none');
-    });
-  }
+  if (modalImage) modalImage.src = item.image;
+  if (modalName) modalName.textContent = item.name;
+  if (modalVariant) modalVariant.textContent = `Size: ${item.size} | Width: ${item.width} | Color: ${item.color}`;
+  if (modalPrice) modalPrice.textContent = `₦${item.price.toLocaleString()}`;
 
-  if (switchToSignup) {
-    switchToSignup.addEventListener('click', () => {
-      modal.querySelector('#login-form').classList.add('d-none');
-      modal.querySelector('#signup-form').classList.remove('d-none');
-    });
-  }
+  modal.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
 
-  if (switchToLogin) {
-    switchToLogin.addEventListener('click', () => {
-      modal.querySelector('#signup-form').classList.add('d-none');
-      modal.querySelector('#login-form').classList.remove('d-none');
-    });
-  }
-
-  if (closeModal) {
-    closeModal.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    });
-  }
-
-  modal.addEventListener('click', e => {
-    if (e.target === modal) {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }
-  });
-};
-
-export { initModalLoginSignup };
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+  }, 5000);
+}

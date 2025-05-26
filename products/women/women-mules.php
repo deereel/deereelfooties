@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="women-boots">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
   <!-- Main Content -->
@@ -142,8 +142,8 @@
     </div>
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
 
   <!-- Scroll to Top Button -->
@@ -151,7 +151,7 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include('components/scripts.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
 
   

@@ -1,56 +1,64 @@
-// product.js
-import { loadCart, saveCart, updateCartCount } from './cart.js';
-import { $ } from './ui.js';
+// /js/product.js
+import { addToCart } from './cart.js';
+import { showAddToCartModal } from './modal.js';
 
-export const getSelectedOptions = () => ({
-  color: $('#selected-color')?.value,
-  size: $('#selected-size')?.value,
-  width: $('#selected-width')?.value
-});
-
-export const addToCart = (item) => {
-  const cart = loadCart();
-  const index = cart.findIndex(ci =>
-    ci.id === item.id && ci.color === item.color && ci.size === item.size && ci.width === item.width
-  );
-
-  index > -1 ? cart[index].quantity += item.quantity : cart.push(item);
-  saveCart(cart);
-  updateCartCount(cart);
-
-  const modal = $('#added-to-cart-modal');
-  if (modal) {
-    $('#modal-product-image').src = item.image;
-    $('#modal-product-name').textContent = item.name;
-    $('#modal-product-variant').textContent = `Size: ${item.size} | Width: ${item.width} | Color: ${item.color}`;
-    $('#modal-product-price').textContent = `₦${item.price.toLocaleString()}`;
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => {
-      modal.classList.add('hidden');
-      document.body.style.overflow = 'auto';
-    }, 5000);
-  }
-};
-
-export const initAddToCartButton = () => {
-  const btn = $('#add-to-cart-btn');
-  if (!btn) return;
-
-  btn.addEventListener('click', () => {
-    const productId = location.pathname.split('/').pop().replace('.php', '');
-    const productName = $('h3.fw-bold')?.textContent.trim() || '';
-    const rawPrice = $('p.text-2xl')?.textContent || '0';
-    const productPrice = parseFloat(rawPrice.replace(/[₦€,]/g, '').trim()) || 0;
-    const productImage = $('#mainImage')?.src || '';
-    const quantity = parseInt($('#quantity')?.value) || 1;
-    const { color, size, width } = getSelectedOptions();
-
-    if (!color || !size || !width) {
-      alert('Please select color, size, and width before adding to cart.');
-      return;
-    }
-
-    addToCart({ id: productId, name: productName, price: productPrice, image: productImage, color, size, width, quantity });
+export function bindProductOptions() {
+  // Color Selection
+  document.querySelectorAll('.color-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('selected-color').value = btn.getAttribute('data-color');
+      document.querySelectorAll('.color-option').forEach(b => b.classList.remove('ring-4', 'ring-black'));
+      btn.classList.add('ring-4', 'ring-black');
+    });
   });
-};
+
+  // Size Selection
+  document.querySelectorAll('.size-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('selected-size').value = btn.getAttribute('data-size');
+      document.querySelectorAll('.size-option').forEach(b => b.classList.remove('bg-dark', 'text-white'));
+      btn.classList.add('bg-dark', 'text-white');
+    });
+  });
+
+  // Width Selection
+  document.querySelectorAll('.width-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('selected-width').value = btn.getAttribute('data-width');
+      document.querySelectorAll('.width-option').forEach(b => b.classList.remove('bg-dark', 'text-white'));
+      btn.classList.add('bg-dark', 'text-white');
+    });
+  });
+
+  // Add to Cart Button
+  const addToCartBtn = document.getElementById('add-to-cart-btn');
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+
+      const color = document.getElementById('selected-color')?.value;
+      const size = document.getElementById('selected-size')?.value;
+      const width = document.getElementById('selected-width')?.value;
+      const quantity = parseInt(document.getElementById('quantity')?.value) || 1;
+
+      if (!color || !size || !width) {
+        alert('Please select color, size, and width.');
+        return;
+      }
+
+      const product = {
+        id: window.location.pathname.split('/').pop().replace('.php', ''),
+        name: document.querySelector('h1')?.textContent || 'Product',
+        price: parseInt((document.querySelector('.text-2xl')?.textContent || '0').replace(/[₦,]/g, '')) || 0,
+        image: document.getElementById('mainImage')?.src || '',
+        color,
+        size,
+        width,
+        quantity
+      };
+
+      addToCart(product);
+      showAddToCartModal(product);
+    });
+  }
+}

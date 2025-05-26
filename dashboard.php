@@ -8,7 +8,7 @@ if (!isset($_SESSION['user'])) {
 $user = $_SESSION['user'];
 ?>
 
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
 <body class="bg-light">
   <div class="container py-5">

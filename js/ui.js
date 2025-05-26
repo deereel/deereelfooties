@@ -1,25 +1,22 @@
-// ui.js
-export const $ = (sel, ctx = document) => ctx.querySelector(sel);
-export const $$ = (sel, ctx = document) => ctx.querySelectorAll(sel);
-
-export const handleSelection = (groupClass, hiddenInputId) => {
-  const options = document.querySelectorAll(groupClass);
-  options.forEach(option => {
-    option.addEventListener('click', () => {
-      options.forEach(o => o.classList.remove('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white'));
-      option.classList.add('selected', 'ring-4', 'ring-black', 'bg-dark', 'text-white');
-      const type = groupClass.includes('color') ? 'color' : groupClass.includes('size') ? 'size' : 'width';
-      document.getElementById(hiddenInputId).value = option.dataset[type];
+export function initScroll() {
+  const btns = document.querySelectorAll('.scroll-to-top, #scrollToTop');
+  window.addEventListener('scroll', () => {
+    btns.forEach(btn => btn.style.display = window.scrollY > 300 ? 'flex' : 'none');
+  });
+  btns.forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
-};
+}
 
-export const initMobileMenu = () => {
-  const toggle = $('#mobileMenuToggle'), close = $('#closeMobileMenu'), overlay = $('.mobile-nav-overlay');
-  if (!toggle || !close || !overlay) return;
-  toggle.addEventListener('click', () => overlay.classList.replace('hidden', 'visible'));
-  close.addEventListener('click', () => overlay.classList.replace('visible', 'hidden'));
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) overlay.classList.replace('visible', 'hidden');
-  });
-};
+export function initTooltips() {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+  document.querySelectorAll('[data-bs-toggle="popover"]').forEach(el => new bootstrap.Popover(el));
+}
+
+export function initFooterYear() {
+  const year = document.getElementById('current-year');
+  if (year) year.textContent = new Date().getFullYear();
+}

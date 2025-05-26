@@ -1,7 +1,7 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
-  <?php include('components/navbar.php'); ?>
+<body data-page="oxford-cap-toe-80201">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main>
@@ -22,20 +22,20 @@
         <!-- Product Images -->
         <div>
           <div class="relative aspect-square overflow-hidden mb-4">
-            <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full" id="main-product-image">
+            <img src="/images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full" id="main-product-image">
           </div>
           <div class="grid grid-cols-4 gap-2">
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201 - View 1" class="object-cover w-full h-full">
+              <img src="/images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201 - View 1" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/oxford cap toe 80201-2.webp" alt="Oxford Cap Toe 80201 - View 2" class="object-cover w-full h-full">
+              <img src="/images/oxford cap toe 80201-2.webp" alt="Oxford Cap Toe 80201 - View 2" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/oxford cap toe 80201-3.webp" alt="Oxford Cap Toe 80201 - View 3" class="object-cover w-full h-full">
+              <img src="/images/oxford cap toe 80201-3.webp" alt="Oxford Cap Toe 80201 - View 3" class="object-cover w-full h-full">
             </div>
             <div class="relative aspect-square overflow-hidden cursor-pointer product-thumbnail">
-              <img src="../..//images/oxford cap toe 80201-4.webp" alt="Oxford Cap Toe 80201 - View 4" class="object-cover w-full h-full">
+              <img src="/images/oxford cap toe 80201-4.webp" alt="Oxford Cap Toe 80201 - View 4" class="object-cover w-full h-full">
             </div>
           </div>
         </div>
@@ -202,7 +202,7 @@
           <div class="group">
             <a href="2.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-2.webp" alt="Penny Loafer 80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-2.webp" alt="Penny Loafer 80647" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Penny Loafer 80647</h3>
               <p class="text-gray-500">€425</p>
@@ -211,7 +211,7 @@
           <div class="group">
             <a href="3.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-3.webp" alt="Chelsea Boot 80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-3.webp" alt="Chelsea Boot 80216" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Chelsea Boot 80216</h3>
               <p class="text-gray-500">€495</p>
@@ -220,7 +220,7 @@
           <div class="group">
             <a href="4.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-4.webp" alt="Wing Tip 80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-4.webp" alt="Wing Tip 80290" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Wing Tip 80290</h3>
               <p class="text-gray-500">€460</p>
@@ -229,7 +229,7 @@
           <div class="group">
             <a href="5.php">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="../..//images/product-5.webp" alt="Double Monk 80544" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <img src="/images/product-5.webp" alt="Double Monk 80544" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
               </div>
               <h3 class="text-lg">Double Monk 80544</h3>
               <p class="text-gray-500">€475</p>
@@ -338,7 +338,7 @@
         </div>
         <div class="flex items-center mb-6">
           <div class="w-20 h-20 relative overflow-hidden mr-4">
-            <img src="../..//images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full">
+            <img src="/images/oxford cap toe 80201.webp" alt="Oxford Cap Toe 80201" class="object-cover w-full h-full">
           </div>
           <div>
             <h3 class="font-medium">Oxford Cap Toe 80201</h3>
@@ -358,8 +358,8 @@
     </div>
   </main>
 
-  <?php include('components/footer.php'); ?>
-  <?php include('components/account-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
 
   <!-- Scroll to Top Button -->
@@ -367,100 +367,10 @@
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include('components/scripts.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
 
   
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Product image gallery
-      const mainImage = document.getElementById('main-product-image');
-      const thumbnails = document.querySelectorAll('.product-thumbnail img');
-      
-      thumbnails.forEach(thumbnail => {
-        thumbnail.addEventListener('click', function() {
-          mainImage.src = this.src;
-          mainImage.alt = this.alt;
-          
-          // Update active thumbnail
-          thumbnails.forEach(thumb => {
-            thumb.parentElement.classList.remove('ring-2', 'ring-black');
-          });
-          this.parentElement.classList.add('ring-2', 'ring-black');
-        });
-      });
-      
-      // Size guide modal
-      const sizeGuideBtn = document.getElementById('size-guide-btn');
-      const sizeGuideModal = document.getElementById('size-guide-modal');
-      const closeSizeGuide = document.getElementById('close-size-guide');
-      
-      sizeGuideBtn.addEventListener('click', function() {
-        sizeGuideModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-      });
-      
-      closeSizeGuide.addEventListener('click', function() {
-        sizeGuideModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-      
-      // Quantity buttons
-      const quantityInput = document.getElementById('quantity');
-      const quantityBtns = document.querySelectorAll('.quantity-btn');
-      
-      quantityBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const action = this.dataset.action;
-          const currentValue = parseInt(quantityInput.value);
-          
-          if (action === 'increase') {
-            quantityInput.value = currentValue + 1;
-          } else if (action === 'decrease' && currentValue > 1) {
-            quantityInput.value = currentValue - 1;
-          }
-        });
-      });
-      
-      // Add to cart
-      const addToCartBtn = document.getElementById('add-to-cart-btn');
-      const addedToCartModal = document.getElementById('added-to-cart-modal');
-      const closeCartModal = document.getElementById('close-cart-modal');
-      const continueShoppingBtn = document.getElementById('continue-shopping');
-      
-      addToCartBtn.addEventListener('click', function() {
-        // In a real implementation, this would add the product to the cart
-        addedToCartModal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        
-        // Update cart count
-        const cartCount = document.querySelector('.fa-shopping-bag + span');
-        cartCount.textContent = parseInt(cartCount.textContent) + parseInt(quantityInput.value);
-      });
-      
-      closeCartModal.addEventListener('click', function() {
-        addedToCartModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-      
-      continueShoppingBtn.addEventListener('click', function() {
-        addedToCartModal.classList.add('hidden');
-        document.body.style.overflow = 'auto';
-      });
-      
-      // Close modals when clicking outside
-      window.addEventListener('click', function(event) {
-        if (event.target === sizeGuideModal) {
-          sizeGuideModal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        }
-        
-        if (event.target === addedToCartModal) {
-          addedToCartModal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        }
-      });
-    });
-  </script>
+  
 </body>
 </html>

@@ -1,8 +1,8 @@
-<?php include('components/header.php'); ?>
+<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body>
+<body data-page="sitemap">
 
-  <?php include('components/navbar.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main class="py-5">
