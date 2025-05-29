@@ -18,7 +18,7 @@
             <label for="modalLoginPassword" class="form-label">Password</label>
             <input type="password" class="form-control" id="modalLoginPassword" required>
           </div>
-          <button type="submit" class="btn btn-primary w-100 mb-3">Sign In</button>
+          <button type="submit" class="btn-primary w-100 mb-3">Sign In</button>
         </form>
 
         <!-- Sign Up Form (Initially Hidden) -->
@@ -39,7 +39,7 @@
             <label for="modalRegisterConfirmPassword" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" id="modalRegisterConfirmPassword" required>
           </div>
-          <button type="submit" class="btn btn-success w-100 mb-3">Create Account</button>
+          <button type="submit" class="btn-success w-100 mb-3">Create Account</button>
         </form>
 
         <!-- Social Login Buttons -->

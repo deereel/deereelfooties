@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body data-page="index">
+<body class="bg-background" data-page="index">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
@@ -165,51 +165,18 @@
               <i class="fab fa-instagram text-white text-2xl"></i>
             </div>
           </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-5.jpg" alt="Instagram Post 5" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-6.jpg" alt="Instagram Post 6" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-7.jpg" alt="Instagram Post 7" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-8.jpg" alt="Instagram Post 8" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
         </div>
       </div>
     </section>
-    
   </main>
-
-  
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
-
-  <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-  </a>
-
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/added-to-cart-modal.php'); ?>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-
-  
+  <script src="/js/search.js"></script>
 
 </body>
 </html>

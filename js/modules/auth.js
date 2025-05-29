@@ -7,10 +7,8 @@ export class AuthManager {
   init() {
     console.log('Initializing Auth Manager');
     this.loadCurrentUser();
-    this.updateUserIcon();
-    this.initModalSwitching();
-    this.initForms();
-    this.initUserIconClick();
+    this.updateUserDisplay();
+    this.setupLogoutHandler();
   }
 
   loadCurrentUser() {
@@ -18,6 +16,12 @@ export class AuthManager {
     if (userData) {
       try {
         this.currentUser = JSON.parse(userData);
+        console.log('Loaded user from localStorage:', this.currentUser);
+        
+        // If we have an email but no user_id, try to fetch it
+        if (this.currentUser.email && !this.currentUser.user_id) {
+          this.fetchUserIdByEmail(this.currentUser.email);
+        }
       } catch (e) {
         console.error('Error parsing user data:', e);
         localStorage.removeItem(this.userKey);
@@ -25,235 +29,143 @@ export class AuthManager {
     }
   }
 
-  updateUserIcon() {
-    if (this.currentUser && this.currentUser.name) {
-      const userIcon = document.getElementById('userIcon');
-      if (userIcon) {
-        userIcon.setAttribute('title', `Welcome, ${this.currentUser.name}`);
-      }
-    }
-  }
-
-  initUserIconClick() {
-    const userIcon = document.getElementById('userIcon');
-    if (userIcon) {
-      userIcon.addEventListener('click', () => {
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal) {
-          const modal = new bootstrap.Modal(loginModal);
-          modal.show();
-        }
-      });
-    }
-  }
-
-  initModalSwitching() {
-    const switchToSignUp = document.getElementById('switchToSignUp');
-    const switchToLogin = document.getElementById('switchToLogin');
-
-    if (switchToSignUp) {
-      switchToSignUp.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.showSignupForm();
-      });
-    }
-
-    if (switchToLogin) {
-      switchToLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.showLoginForm();
-      });
-    }
-
-    // Reset to login form when modal opens
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-      loginModal.addEventListener('show.bs.modal', () => {
-        this.showLoginForm();
-        this.clearForms();
-      });
-    }
-  }
-
-  showLoginForm() {
-    const loginForm = document.getElementById('modalLoginForm');
-    const signupForm = document.getElementById('modalRegisterForm');
-    const loginFooter = document.getElementById('login-footer-links');
-    const signupFooter = document.getElementById('signup-footer-links');
-    const modalTitle = document.getElementById('loginModalLabel');
-
-    if (loginForm) loginForm.classList.remove('d-none');
-    if (signupForm) signupForm.classList.add('d-none');
-    if (loginFooter) loginFooter.classList.remove('d-none');
-    if (signupFooter) signupFooter.classList.add('d-none');
-    if (modalTitle) modalTitle.textContent = 'Sign In';
-  }
-
-  showSignupForm() {
-    const loginForm = document.getElementById('modalLoginForm');
-    const signupForm = document.getElementById('modalRegisterForm');
-    const loginFooter = document.getElementById('login-footer-links');
-    const signupFooter = document.getElementById('signup-footer-links');
-    const modalTitle = document.getElementById('loginModalLabel');
-
-    if (signupForm) signupForm.classList.remove('d-none');
-    if (loginForm) loginForm.classList.add('d-none');
-    if (signupFooter) signupFooter.classList.remove('d-none');
-    if (loginFooter) loginFooter.classList.add('d-none');
-    if (modalTitle) modalTitle.textContent = 'Sign Up';
-  }
-
-  initForms() {
-    this.initLoginForm();
-    this.initSignupForm();
-    this.initSocialButtons();
-  }
-
-  initLoginForm() {
-    const loginForm = document.getElementById('modalLoginForm');
-    if (!loginForm) return;
-
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const email = document.getElementById('modalLoginEmail').value.trim();
-      const password = document.getElementById('modalLoginPassword').value;
-      const submitBtn = loginForm.querySelector('button[type="submit"]');
-
-      if (!email || !password) {
-        alert('Please fill in all fields');
-        return;
-      }
-
-      // Show loading
-      const originalText = submitBtn.textContent;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...';
-      submitBtn.disabled = true;
-
-      try {
-        const response = await fetch('/auth/login.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          localStorage.setItem(this.userKey, JSON.stringify(data.user));
-          this.currentUser = data.user;
+  fetchUserIdByEmail(email) {
+    fetch(`/api/find_user.php?email=${encodeURIComponent(email)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success && data.data) {
+          console.log('Found user in database:', data.data);
           
-          // Close modal
-          const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-          if (modal) modal.hide();
+          // Update user with database ID
+          this.currentUser.user_id = data.data.user_id;
           
-          alert('Login successful!');
-          location.reload();
+          // Save updated user data
+          localStorage.setItem(this.userKey, JSON.stringify(this.currentUser));
+          
+          // Update display
+          this.updateUserDisplay();
         } else {
-          alert(data.error || 'Login failed');
+          console.error('Could not find user by email:', email);
         }
-      } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed. Please try again.');
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    });
-  }
-
-  initSignupForm() {
-    const signupForm = document.getElementById('modalRegisterForm');
-    if (!signupForm) return;
-
-    signupForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const name = document.getElementById('modalRegisterName').value.trim();
-      const email = document.getElementById('modalRegisterEmail').value.trim();
-      const password = document.getElementById('modalRegisterPassword').value;
-      const confirmPassword = document.getElementById('modalRegisterConfirmPassword').value;
-      const submitBtn = signupForm.querySelector('button[type="submit"]');
-
-      if (!name || !email || !password || !confirmPassword) {
-        alert('Please fill in all fields');
-        return;
-      }
-
-      if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-      }
-
-      if (password.length < 6) {
-        alert('Password must be at least 6 characters');
-        return;
-      }
-
-      // Show loading
-      const originalText = submitBtn.textContent;
-      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating account...';
-      submitBtn.disabled = true;
-
-      try {
-        const response = await fetch('/auth/signup.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&confirm_password=${encodeURIComponent(confirmPassword)}`
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          alert('Account created successfully! You can now sign in.');
-          this.showLoginForm();
-          this.clearForms();
-          
-          // Pre-fill email
-          document.getElementById('modalLoginEmail').value = email;
-        } else {
-          alert(data.error || 'Signup failed');
-        }
-      } catch (error) {
-        console.error('Signup error:', error);
-        alert('Signup failed. Please try again.');
-      } finally {
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      }
-    });
-  }
-
-  initSocialButtons() {
-    const googleBtn = document.getElementById('googleLoginBtn');
-    const facebookBtn = document.getElementById('facebookLoginBtn');
-
-    if (googleBtn) {
-      googleBtn.addEventListener('click', () => {
-        window.location.href = '/auth/google-login.php';
+      })
+      .catch(error => {
+        console.error('Error fetching user by email:', error);
       });
-    }
-
-    if (facebookBtn) {
-      facebookBtn.addEventListener('click', () => {
-        window.location.href = '/auth/facebook-login.php';
-      });
-    }
   }
 
-  clearForms() {
-    const loginForm = document.getElementById('modalLoginForm');
-    const signupForm = document.getElementById('modalRegisterForm');
+  updateUserDisplay() {
+    const usernameDisplay = document.getElementById('username-display');
+    const loggedOutMenu = document.getElementById('logged-out-menu');
+    const loggedInMenu = document.getElementById('logged-in-menu');
+    const mobileLoggedOutMenu = document.getElementById('mobile-logged-out-menu');
+    const mobileLoggedInMenu = document.getElementById('mobile-logged-in-menu');
     
-    if (loginForm) loginForm.reset();
-    if (signupForm) signupForm.reset();
+    if (this.currentUser && this.currentUser.name) {
+      // Update username display
+      if (usernameDisplay) {
+        usernameDisplay.textContent = this.currentUser.name;
+      }
+      
+      // Show logged-in menu, hide logged-out menu
+      if (loggedOutMenu) loggedOutMenu.style.display = 'none';
+      if (loggedInMenu) loggedInMenu.style.display = 'block';
+      
+      // Update mobile menus
+      if (mobileLoggedOutMenu) mobileLoggedOutMenu.style.display = 'none';
+      if (mobileLoggedInMenu) mobileLoggedInMenu.style.display = 'block';
+    } else {
+      // Reset to default
+      if (usernameDisplay) {
+        usernameDisplay.textContent = 'Account';
+      }
+      
+      // Show logged-out menu, hide logged-in menu
+      if (loggedOutMenu) loggedOutMenu.style.display = 'block';
+      if (loggedInMenu) loggedInMenu.style.display = 'none';
+      
+      // Update mobile menus
+      if (mobileLoggedOutMenu) mobileLoggedOutMenu.style.display = 'block';
+      if (mobileLoggedInMenu) mobileLoggedInMenu.style.display = 'none';
+    }
+  }
+
+  setupLogoutHandler() {
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+    
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.logout();
+      });
+    }
+    
+    if (mobileLogoutBtn) {
+      mobileLogoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.logout();
+      });
+    }
+  }
+
+  login(userData) {
+    console.log('Login with user data:', userData);
+    
+    // If we have an email but no user_id, try to fetch it
+    if (userData.email && !userData.user_id) {
+      fetch(`/api/find_user.php?email=${encodeURIComponent(userData.email)}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.success && data.data) {
+            console.log('Found user in database during login:', data.data);
+            
+            // Update user with database ID
+            userData.user_id = data.data.user_id;
+            
+            // Save complete user data
+            this.currentUser = userData;
+            localStorage.setItem(this.userKey, JSON.stringify(userData));
+            this.updateUserDisplay();
+          } else {
+            // Still save what we have
+            this.currentUser = userData;
+            localStorage.setItem(this.userKey, JSON.stringify(userData));
+            this.updateUserDisplay();
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user by email during login:', error);
+          
+          // Still save what we have
+          this.currentUser = userData;
+          localStorage.setItem(this.userKey, JSON.stringify(userData));
+          this.updateUserDisplay();
+        });
+    } else {
+      // Save user data as is
+      this.currentUser = userData;
+      localStorage.setItem(this.userKey, JSON.stringify(userData));
+      this.updateUserDisplay();
+    }
+    
+    return true;
+  }
+
+  updateUserData(userData) {
+    console.log('Updating user data:', userData);
+    this.currentUser = userData;
+    localStorage.setItem(this.userKey, JSON.stringify(userData));
+    this.updateUserDisplay();
+    return true;
   }
 
   logout() {
     localStorage.removeItem(this.userKey);
     this.currentUser = null;
-    alert('Logged out successfully');
-    location.reload();
+    this.updateUserDisplay();
+    
+    // Redirect to home page
+    window.location.href = '/index.php';
   }
 
   isLoggedIn() {

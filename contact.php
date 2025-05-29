@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body data-page="contact">
+<body class="bg-background" data-page="contact">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
@@ -28,7 +28,7 @@
           <div class="space-y-6">
             <div>
               <h3 class="font-medium mb-2">CUSTOMER SERVICE</h3>
-              <p class="mb-1">Email: <a href="mailto:deereelfooties@gmail.com" class="underline">deereelfooties@gmail.com</a></p>
+              <p class="mb-1 text-accent">Email: <a href="mailto:deereelfooties@gmail.com" class="underline">deereelfooties@gmail.com</a></p>
               <p>Phone: +34 971 50 16 02</p>
               <p class="text-sm text-gray-500 mt-2">Monday to Friday: 9:00 AM - 6:00 PM (CET)</p>
             </div>
@@ -247,7 +247,7 @@
   
 
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn-primary btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 

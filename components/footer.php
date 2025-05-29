@@ -1,5 +1,5 @@
 <!-- Footer -->
-  <footer class="bg-white border-t">
+  <footer class="bg-footer">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <div>
@@ -73,7 +73,7 @@
               placeholder="Your email address"
               required
             />
-            <button type="submit" class="bg-black text-white px-6 py-2 hover:bg-gray-800 transition">
+            <button type="submit" class="btn-primary px-6 py-2 hover:bg-gray-800 transition">
               SUBSCRIBE
             </button>
           </div>
@@ -82,17 +82,17 @@
 
         <h3 class="font-medium mb-4">FOLLOW US</h3>
         <div class="flex space-x-4">
-          <a href="https://www.instagram.com/deereelfooties" class="hover:text-gray-600">
+          <a href="https://www.instagram.com/deereelfooties" class="hover:text-primary">
             <i class="fab fa-instagram text-lg"></i>
             <span class="sr-only">Instagram</span>
           </a>
-          <a href="https://www.tiktok.com/@deereel.footies" class="hover:text-gray-600">
+          <a href="https://www.tiktok.com/@deereel.footies" class="hover:text-primary">
             <i class="fab fa-tiktok text-lg"></i>
             <span class="sr-only">Tiktok</span>
           </a>
-          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
+          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-primary">
             <i class="fab fa-whatsapp text-lg"></i>
-            <span class="sr-only">Twitter</span>
+            <span class="sr-only">Whatsapp</span>
           </a>
           
         </div>
@@ -100,7 +100,7 @@
     </div>
 
     <!-- Bottom Footer -->
-    <div class="border-t py-6 px-4">
+    <div class="border-t border-white border-opacity-20 py-6 px-4">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
         <div class="mb-2 mb-md-0">
           <p>&copy; <span id="current-year"></span> DeeReeL Footies. All rights reserved.</p>

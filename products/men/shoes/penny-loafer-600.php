@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body data-page="penny-loafer-600">
+<body class="bg-background" data-page="penny-loafer-600">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
@@ -133,7 +133,7 @@
             <input type="hidden" id="selected-size" value="">
             <input type="hidden" id="selected-width" value="">
             <input type="hidden" id="selected-quantity" value="1">
-            <button class="btn btn-dark mt-3" id="add-to-cart-btn">Add to Cart</button>
+            <button class="btn-primary btn-dark mt-3" id="add-to-cart-btn">Add to Cart</button>
           </div>
           
 
@@ -377,7 +377,7 @@
   
 
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn-primary btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 

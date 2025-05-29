@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body data-page="cram-solid-oxford">
+<body class="bg-background" data-page="cram-solid-oxford">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
@@ -124,7 +124,7 @@
 
           <!-- Add to Cart Button -->
           <div class="mb-6">
-            <button class="btn btn-dark w-full sm:w-auto" id="add-to-cart-btn">Add to Cart</button>
+            <button class="btn-primary btn-dark w-full sm:w-auto" id="add-to-cart-btn">Add to Cart</button>
           </div>
 
           <!-- Additional Options -->
@@ -368,7 +368,7 @@
   
 
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn-primary btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 

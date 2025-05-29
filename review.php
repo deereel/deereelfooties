@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
 
-<body data-page="review">
+<body class="bg-background" data-page="review">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
   
   <div class="container py-5">
@@ -20,7 +20,7 @@
             <strong>Payment Proof:</strong><br>
             <img id="review-proof" src="" alt="Proof of Payment" class="img-fluid mt-2" style="max-height: 300px; display: none;" />
           </div>
-          <button class="btn btn-primary w-100" onclick="sendEmail()">Submit Order</button>
+          <button class="btn-primary btn-primary w-100" onclick="sendEmail()">Submit Order</button>
         </div>
       </div>
     </div>

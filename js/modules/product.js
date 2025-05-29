@@ -40,11 +40,11 @@ export class ProductManager {
         
         // Remove selection from all
         document.querySelectorAll('.color-option').forEach(b => {
-          b.classList.remove('ring-2', 'ring-black', 'ring-offset-2');
+          b.classList.remove('ring-2', 'selected', 'ring-offset-2');
         });
         
         // Add selection to clicked
-        btn.classList.add('ring-2', 'ring-black', 'ring-offset-2');
+        btn.classList.add('ring-2', 'selected', 'ring-offset-2');
         
         // Update selection
         this.selectedOptions.color = btn.dataset.color;
@@ -69,13 +69,13 @@ export class ProductManager {
         
         // Remove selection from all
         document.querySelectorAll('.size-option').forEach(b => {
-          b.classList.remove('bg-black', 'text-white', 'border-black');
+          b.classList.remove('selected', 'text-white', 'border-black');
           b.classList.add('border-gray-300');
         });
         
         // Add selection to clicked
         btn.classList.remove('border-gray-300');
-        btn.classList.add('bg-black', 'text-white', 'border-black');
+        btn.classList.add('selected', 'text-white', 'border-black');
         
         // Update selection
         this.selectedOptions.size = btn.dataset.size;
@@ -100,13 +100,13 @@ export class ProductManager {
         
         // Remove selection from all
         document.querySelectorAll('.width-option').forEach(b => {
-          b.classList.remove('bg-black', 'text-white', 'border-black');
+          b.classList.remove('selected', 'text-white', 'border-black');
           b.classList.add('border-gray-300');
         });
         
         // Add selection to clicked
         btn.classList.remove('border-gray-300');
-        btn.classList.add('bg-black', 'text-white', 'border-black');
+        btn.classList.add('selected', 'text-white', 'border-black');
         
         // Update selection
         this.selectedOptions.width = btn.dataset.width;
@@ -183,17 +183,14 @@ export class ProductManager {
       // Validate selections
       if (!color) { 
         alert('Please select a color'); 
-        console.log('Available colors:', Array.from(document.querySelectorAll('.color-option')).map(el => el.dataset.color));
         return; 
       }
       if (!size) { 
         alert('Please select a size'); 
-        console.log('Available sizes:', Array.from(document.querySelectorAll('.size-option')).map(el => el.dataset.size));
         return; 
       }
       if (!width) { 
         alert('Please select a width'); 
-        console.log('Available widths:', Array.from(document.querySelectorAll('.width-option')).map(el => el.dataset.width));
         return; 
       }
 
@@ -227,11 +224,57 @@ export class ProductManager {
   }
 
   getProductDataFromPage() {
-    // Try multiple selectors for product name
-    const productName = document.querySelector('h1')?.textContent || 
-                       document.querySelector('.product-title')?.textContent || 
-                       document.querySelector('h3.fw-bold')?.textContent || 
-                       'Product';
+    // Get product name directly from h3 element within product card
+    let productName = '';
+    
+    // Try to get product name from h3 within the product details section
+    const productTitle = document.querySelector('.product-details h3, .product-info h3');
+    if (productTitle) {
+      productName = productTitle.textContent.trim();
+      console.log('Found product name from product details h3:', productName);
+    }
+    
+    // If not found, try h3 within the product card
+    if (!productName) {
+      const h3Element = document.querySelector('h3');
+      if (h3Element) {
+        productName = h3Element.textContent.trim();
+        console.log('Found product name from h3:', productName);
+      }
+    }
+    
+    // If still not found, try h1
+    if (!productName) {
+      const h1Element = document.querySelector('h1');
+      if (h1Element) {
+        productName = h1Element.textContent.trim();
+        console.log('Found product name from h1:', productName);
+      }
+    }
+    
+    // If still not found, try product title class
+    if (!productName) {
+      const titleElement = document.querySelector('.product-title');
+      if (titleElement) {
+        productName = titleElement.textContent.trim();
+        console.log('Found product name from .product-title:', productName);
+      }
+    }
+    
+    // If still not found, try page title without site name
+    if (!productName) {
+      const pageTitle = document.title;
+      if (pageTitle && pageTitle.includes('|')) {
+        productName = pageTitle.split('|')[0].trim();
+        console.log('Found product name from page title:', productName);
+      }
+    }
+    
+    // Fallback
+    if (!productName) {
+      productName = 'Product';
+      console.warn('Could not find product name, using fallback');
+    }
 
     // Better price extraction logic
     let price = 0;
@@ -240,7 +283,6 @@ export class ProductManager {
     const priceFromData = document.querySelector('[data-price]');
     if (priceFromData) {
       price = parseInt(priceFromData.dataset.price) || 0;
-      console.log('Price from data attribute:', price);
     }
     
     // If no data attribute, try common price selectors
@@ -251,36 +293,18 @@ export class ProductManager {
         '.price',
         '.text-xl',
         'p.text-2xl',
-        '.fw-bold'
+        '.text-accent'
       ];
 
       for (const selector of priceSelectors) {
         const priceElement = document.querySelector(selector);
         if (priceElement) {
           const priceText = priceElement.textContent;
-          console.log('Checking price text:', priceText, 'from selector:', selector);
           
           // Extract number from price text (handles ₦, commas, etc.)
           const priceMatch = priceText.match(/[\d,]+/);
           if (priceMatch) {
             price = parseInt(priceMatch[0].replace(/,/g, ''));
-            console.log('Price extracted:', price, 'from:', priceText);
-            break;
-          }
-        }
-      }
-    }
-
-    // If still no price found, try finding any element containing ₦
-    if (!price) {
-      const allElements = document.querySelectorAll('*');
-      for (const element of allElements) {
-        if (element.textContent && element.textContent.includes('₦')) {
-          const priceText = element.textContent;
-          const priceMatch = priceText.match(/₦[\d,]+/);
-          if (priceMatch) {
-            price = parseInt(priceMatch[0].replace(/[₦,]/g, ''));
-            console.log('Price found in element:', price, 'from:', priceText);
             break;
           }
         }
@@ -290,34 +314,18 @@ export class ProductManager {
     // Try to get main product image
     const productImage = document.getElementById('mainImage')?.src || 
                         document.querySelector('.product-image img')?.src ||
-                        document.querySelector('img[alt*="product"], img[alt*="Product"]')?.src ||
                         document.querySelector('img')?.src || 
                         '';
 
     const pathParts = window.location.pathname.split('/');
     const productId = pathParts[pathParts.length - 1].replace('.php', '');
 
-    const productData = {
+    return {
       id: productId,
-      name: productName.trim(),
+      name: productName,
       price: price,
       image: productImage
     };
-
-    console.log('Final product data extracted:', productData);
-    
-    // Warn if price is 0
-    if (price === 0) {
-      console.warn('Price extraction failed - price is 0. Check your HTML structure.');
-      console.log('Available elements with text content:');
-      document.querySelectorAll('*').forEach(el => {
-        if (el.textContent && el.textContent.includes('₦')) {
-          console.log('Element with ₦:', el.tagName, el.className, el.textContent.trim());
-        }
-      });
-    }
-    
-    return productData;
   }
 
   initSizeGuideModal() {
@@ -325,32 +333,26 @@ export class ProductManager {
     const sizeGuideModal = document.getElementById('size-guide-modal');
     const closeSizeGuide = document.getElementById('close-size-guide');
 
-    console.log('Size guide elements:', {
-      btn: !!sizeGuideBtn,
-      modal: !!sizeGuideModal,
-      close: !!closeSizeGuide
-    });
-
     if (sizeGuideBtn && sizeGuideModal) {
       sizeGuideBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('Size guide opened');
         sizeGuideModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
       });
     }
 
     if (closeSizeGuide && sizeGuideModal) {
       closeSizeGuide.addEventListener('click', () => {
-        console.log('Size guide closed');
         sizeGuideModal.classList.add('hidden');
+        document.body.style.overflow = 'auto';
       });
     }
 
     if (sizeGuideModal) {
       sizeGuideModal.addEventListener('click', (e) => {
         if (e.target === sizeGuideModal) {
-          console.log('Size guide closed by clicking outside');
           sizeGuideModal.classList.add('hidden');
+          document.body.style.overflow = 'auto';
         }
       });
     }
@@ -360,12 +362,12 @@ export class ProductManager {
     console.log('Initializing category page functionality');
   }
 
-  // Add this method to help debug price extraction
+  // Debug price extraction
   debugPriceElements() {
     console.log('=== PRICE DEBUG INFO ===');
     
     // Check for common price selectors
-    const selectors = ['.text-2xl', '.price', '.product-price', 'h3 + p', '.fw-bold'];
+    const selectors = ['.text-2xl', '.price', '.product-price', '.text-accent'];
     selectors.forEach(selector => {
       const elements = document.querySelectorAll(selector);
       if (elements.length > 0) {
@@ -373,14 +375,6 @@ export class ProductManager {
         elements.forEach((el, i) => {
           console.log(`  ${i}: "${el.textContent.trim()}"`);
         });
-      }
-    });
-    
-    // Check for any element containing ₦
-    console.log('Elements containing ₦:');
-    document.querySelectorAll('*').forEach(el => {
-      if (el.textContent && el.textContent.includes('₦') && el.children.length === 0) {
-        console.log(`  ${el.tagName}.${el.className}: "${el.textContent.trim()}"`);
       }
     });
     
