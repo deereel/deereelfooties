@@ -14,7 +14,7 @@ if (!$email) {
 
 try {
     // Find user by email
-    $stmt = $pdo->prepare("SELECT user_id, name, email, phone, created_at FROM users WHERE email = ?");
+    $stmt = $pdo->prepare("SELECT user_id, name, email, phone, gender, created_at FROM users WHERE email = ?");
     $stmt->execute([$email]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     

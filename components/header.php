@@ -10,17 +10,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
-  <link href="/css/styles.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/colors.css">
-  <link rel="stylesheet" href="/css/tailwind-custom.css">
-  <link rel="stylesheet" href="/css/dashboard.css">
+  <<link href="/css/styles.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+ <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+        // Suppress Tailwind production warning
+        window.process = {env: {NODE_ENV: 'production'}};
+    </script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -42,11 +45,6 @@
       left: 0;
       z-index: 1000;
       margin-top: 0.5rem;
-      background-color: white;
-      border: 1px solid var(--color-border);
-      border-radius: 0.25rem;
-      min-width: 10rem;
-      padding: 0.5rem 0;
     }
   
     /* Remove Bootstrap's default down arrow */
@@ -86,55 +84,6 @@
     }
     .dropdown-submenu .dropdown-menu.show {
       display: block;
-    }
-
-    /* Dropdown item styling */
-    .dropdown-item {
-      display: block;
-      width: 100%;
-      padding: 0.25rem 1.5rem;
-      clear: both;
-      font-weight: 400;
-      color: var(--color-text-primary);
-      text-align: inherit;
-      white-space: nowrap;
-      background-color: transparent;
-      border: 0;
-    }
-
-    .dropdown-item:hover, .dropdown-item:focus {
-      color: var(--color-primary);
-      text-decoration: none;
-      background-color: var(--color-secondary);
-    }
-
-    /* Mobile navigation */
-    .mobile-nav-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.8);
-      z-index: 1000;
-      display: none;
-    }
-
-    .mobile-nav-overlay.show {
-      display: block;
-    }
-
-    .mobile-nav-content {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 75%;
-      max-width: 300px;
-      height: 100%;
-      background-color: white;
-      overflow-y: auto;
-      padding: 1.5rem;
-      z-index: 1001;
     }
 
     /* Scroll to Top Custom Styling */
@@ -201,13 +150,19 @@
       -moz-appearance: textfield;
     }
 
-    /* Fix for mobile navigation */
-    .hidden {
-      display: none !important;
-    }
-
   </style>
   
   
     
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+  <!-- Your custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
 </head>

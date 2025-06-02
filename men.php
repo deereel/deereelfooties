@@ -1,205 +1,256 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+<?php
+require_once 'auth/db.php';
+include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
+?>
 
-<body class="bg-background" data-page="men">
+<body data-page="men">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
-  <!-- Main Content -->  
-  <main>
-    <div class="max-w-7xl mx-auto px-4 py-8">
-      <!-- Breadcrumb -->
-      <div class="mb-8">
-        <h1 class="text-3xl font-light mb-2">MEN'S COLLECTION</h1>
-        <div class="flex items-center text-sm text-gray-500">
-          <a href="/index.php">Home</a>
-          <span class="mx-2">/</span>          
-          <span>Men</span>
-        </div>
-      </div>
-      
-      <!-- Mobile-only Category Filter Bar for MEN -->
-      <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
-        <a href="/products/men/men-shoes.php?gender=men&type=all" data-cat="shoes" class="cat-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Shoes
-        </a>
-        <a href="/products/men/men-boots.php?gender=men&type=all" data-cat="boots" class="cat-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Boots
-        </a>
-        <a href="/products/men/men-slippers.php" data-cat="slippers" class="cat-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Slippers
-        </a>
-        <a href="/products/men/men-mules.php" data-cat="mules" class="cat-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Mules
-        </a>
-      </div>
-
-  
-      <div class="flex flex-col md:flex-row gap-8">
-        <!-- Sidebar Filters -->
-        <div class="md:w-1/4 space-y-6">
-          <h3 class="font-medium mb-3">FILTER BY PRICE</h3>
-          <div class="space-y-1">
-            <div><input id="price1" type="checkbox" class="mr-2"> <label for="price1">₦30k - ₦50K</label></div>
-            <div><input id="price2" type="checkbox" class="mr-2"> <label for="price2">₦50K - ₦70K</label></div>
-            <div><input id="price3" type="checkbox" class="mr-2"> <label for="price3">₦70K - ₦90K</label></div>
-            <div><input id="price4" type="checkbox" class="mr-2"> <label for="price4">₦90k+</label></div>
-          </div>
-  
-          <!-- FILTER BY SIZE -->
-          <div class="mb-6">
-            <h3 class="font-medium mb-3">FILTER BY SIZE</h3>
-            <div class="flex flex-wrap gap-2">
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="39">39</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="40">40</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="41">41</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="42">42</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="43">43</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="44">44</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="45">45</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="46">46</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="47">47</div>
-            </div>
-          </div>
-
-          <!-- FILTER BY COLOR (includes white + green) -->
-          <div class="mb-6">
-            <h3 class="font-medium mb-3">FILTER BY COLOR</h3>
-            <div class="flex flex-wrap gap-2">
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: black;" data-color="black"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #92400e;" data-color="brown"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #d97706;" data-color="tan"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #991b1b;" data-color="burgundy"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: #1e3a8a;" data-color="navy"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: white;" data-color="white"></div>
-              <div class="w-6 h-6 rounded-full cursor-pointer border border-gray-300 color-filter" style="background-color: green;" data-color="green"></div>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Main Product Area -->
-        <div class="md:w-3/4">
-          <div class="flex justify-between items-center mb-6">
-            <div>Showing all products</div>
-            <select class="border p-2" id="sortSelect">
-              <option value="">Sort by latest</option>
-              <option value="low">Sort by price: low to high</option>
-              <option value="high">Sort by price: high to low</option>
-            </select>
-          </div>
-  
-          <!-- Filter Tags Display -->
-          <div id="active-filters" class="mb-4 flex flex-wrap gap-2 text-sm"></div>
-  
-          <!-- Product Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
-            <!-- Example Product -->
-             <div class="group product-card"
-                 data-price="55000"
-                 data-size="39,40,41,42,43,44,45,46,47"
-                 data-color="tan,brown,black"
-                 data-type="oxford"
-                 data-gender="men">
-              <a href="/products/men/shoes/cram-solid-oxford.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/cram solid oxford.webp" alt="Cram Solid oxford"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Cram Solid Oxford</h3>
-                <p class="text-gray-500">₦55,000</p>
-              </a>
-            </div>
-
-
-            <div class="group product-card"
-                 data-price="55000"
-                 data-size="40,41,42,43,44,45,46"
-                 data-color="tan,black,brown"
-                 data-type="oxford"
-                 data-gender="men">
-              <a href="/products/men/shoes/oxford-cap-toe-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Oxford Cap Toe 600</h3>
-                <p class="text-gray-500">₦55,000</p>
-              </a>
-            </div>
-            
-            <div class="group product-card"
-                 data-price="35000"
-                 data-size="39,40,41,42,43,44,45,46,47"
-                 data-color="tan,green,black,white"
-                 data-type="mule"
-                 data-gender="men">
-              <a href="/products/men/mules/vintage-croc-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/Vintage Croc 600.webp" alt="Vintage Croc 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Vintage Croc 600</h3>
-                <p class="text-gray-500">₦35,000</p>
-              </a>
-            </div>
-
-            <div class="group product-card"
-                 data-price="42000"
-                 data-size="40,41,42,43,44,45,46"
-                 data-color="brown"
-                 data-type="loafer"
-                 data-gender="men">
-              <a href="/products/men/shoes/penny-loafer-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Penny Loafer 600</h3>
-                <p class="text-gray-500">₦42,000</p>
-              </a>
-            </div>
-  
-            <!-- Add more products as needed -->
-          </div>
-  
-          <!-- Pagination -->
-          <div class="pagination flex justify-center mt-12">
-            <div class="flex space-x-1">
-              <!-- JS will insert page buttons here -->
+  <!-- Hero Section -->
+  <section class="relative">
+    <div class="swiper hero-swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <div class="slide-bg" style="background-image: url('images/penny loafer 600.webp');"></div>
+          <div class="slide-content">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl">
+                <h1 class="text-5xl md:text-6xl font-light mb-4">Men's Collection</h1>
+                <p class="text-xl mb-8">Handcrafted luxury footwear for the modern gentleman.</p>
+                <a href="#categories" class="btn-primary px-8 py-3 bg-white text-black hover:bg-gray-100 transition">Explore Now</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <!-- Categories Section -->
+  <section id="categories" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-light mb-12 text-center">Shop by Category</h2>
+      
+      <!-- Category Grid - 4 Categories like Women's Page -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- Shoes Category -->
+        <a href="/products/men/men-shoes.php" class="group relative overflow-hidden rounded-lg shadow-lg">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/images/Oxford Cap Toe 600.webp" 
+                 alt="Men's Shoes" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+              <div>
+                <h3 class="text-xl font-light text-white mb-1">Shoes</h3>
+                <p class="text-white/80 text-sm mb-2">Formal & Professional</p>
+                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                  Shop Now
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Boots Category -->
+        <a href="/products/men/men-boots.php" class="group relative overflow-hidden rounded-lg shadow-lg">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/images/penny loafer 600.webp" 
+                 alt="Men's Boots" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+              <div>
+                <h3 class="text-xl font-light text-white mb-1">Boots</h3>
+                <p class="text-white/80 text-sm mb-2">Style & Durability</p>
+                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                  Shop Now
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Mules Category -->
+        <a href="/products/men/men-mules.php" class="group relative overflow-hidden rounded-lg shadow-lg">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/images/cram solid oxford.webp" 
+                 alt="Men's Mules" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+              <div>
+                <h3 class="text-xl font-light text-white mb-1">Mules</h3>
+                <p class="text-white/80 text-sm mb-2">Easy Slip-On Style</p>
+                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                  Shop Now
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Slippers Category -->
+        <a href="/products/men/men-slippers.php" class="group relative overflow-hidden rounded-lg shadow-lg">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/images/penny loafer 600.webp" 
+                 alt="Men's Slippers" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+              <div>
+                <h3 class="text-xl font-light text-white mb-1">Slippers</h3>
+                <p class="text-white/80 text-sm mb-2">Comfort & Casual</p>
+                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                  Shop Now
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-light mb-12 text-center">Featured Products</h2>      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <?php
+        try {
+          // Get featured men's products
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_featured = 1 ORDER BY created_at DESC LIMIT 4");
+          $stmt->execute();
+          $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          if (count($featuredProducts) > 0) {
+            foreach ($featuredProducts as $product):
+        ?>
+          <div class="group hover-accent">
+            <!-- Add wishlist button inside each product card -->
+            <div class="absolute top-2 right-2 z-10">
+              <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
+                      data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
+                      data-product-name="<?= $product['name'] ?>"
+                      data-product-price="<?= $product['price'] ?>"
+                      data-product-image="<?= $product['main_image'] ?>">
+                <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
+              </button>
+            </div>
+            <a href="product.php?slug=<?= $product['slug'] ?>">
+              <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
+                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+              </div>
+              <h3 class="text-lg"><?= $product['name'] ?></h3>
+              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+            </a>
+          </div>
+        <?php 
+            endforeach;
+          } else {
+            // Show placeholder if no featured products
+            for ($i = 0; $i < 4; $i++):
+        ?>
+          <div class="group hover-accent">
+            <a href="/products/men/men-shoes.php">
+              <div class="relative aspect-[3/4] overflow-hidden mb-4 bg-gray-200">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <span class="text-gray-400">No image</span>
+                </div>
+              </div>
+              <h3 class="text-lg">Sample Product</h3>
+              <p class="text-gray-500">₦0</p>
+            </a>
+          </div>
+        <?php 
+            endfor;
+          }
+        } catch (PDOException $e) {
+          echo '<div class="col-span-full text-center py-8">Error loading products</div>';
+        }
+        ?>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/products.php?gender=men" class="btn-primary px-8 py-3">View All Men's Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- New Arrivals Section -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-light mb-12 text-center">New Arrivals</h2>      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <?php
+        try {
+          // Get new collection men's products
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_new_collection = 1 ORDER BY created_at DESC LIMIT 4");
+          $stmt->execute();
+          $newProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          if (count($newProducts) > 0) {
+            foreach ($newProducts as $product):
+        ?>
+          <div class="group hover-accent">
+            <!-- Add wishlist button inside each product card -->
+            <div class="absolute top-2 right-2 z-10">
+              <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
+                      data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
+                      data-product-name="<?= $product['name'] ?>"
+                      data-product-price="<?= $product['price'] ?>"
+                      data-product-image="<?= $product['main_image'] ?>">
+                <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
+              </button>
+            </div>            
+            <a href="product.php?slug=<?= $product['slug'] ?>">
+              <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
+                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+              </div>
+              <h3 class="text-lg"><?= $product['name'] ?></h3>
+              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+            </a>
+          </div>
+        <?php 
+            endforeach;
+          } else {
+            // Show placeholder if no new collection products
+            for ($i = 0; $i < 4; $i++):
+        ?>
+          <div class="group hover-accent">
+            <a href="/products/men/men-shoes.php">
+              <div class="relative aspect-[3/4] overflow-hidden mb-4 bg-gray-200">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <span class="text-gray-400">No image</span>
+                </div>
+              </div>
+              <h3 class="text-lg">Sample Product</h3>
+              <p class="text-gray-500">₦0</p>
+            </a>
+          </div>
+        <?php 
+            endfor;
+          }
+        } catch (PDOException $e) {
+          echo '<div class="col-span-full text-center py-8">Error loading products</div>';
+        }
+        ?>
+      </div>
+    </div>
+  </section>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
+
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn-primary position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 
 
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-  
   
 </body>
 </html>

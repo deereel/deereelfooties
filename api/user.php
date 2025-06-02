@@ -12,7 +12,7 @@ switch ($method) {
         // Get user information
         if (isset($_GET['user_id'])) {
             $userId = $_GET['user_id'];
-            $stmt = $pdo->prepare("SELECT user_id, name, email, phone, created_at FROM users WHERE user_id = ?");
+            $stmt = $pdo->prepare("SELECT user_id, name, email, phone, gender, created_at FROM users WHERE user_id = ?");
             $stmt->execute([$userId]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
@@ -45,6 +45,11 @@ switch ($method) {
             if (isset($data['phone'])) {
                 $updateFields[] = "phone = ?";
                 $params[] = $data['phone'];
+            }
+            
+            if (isset($data['gender'])) {
+                $updateFields[] = "gender = ?";
+                $params[] = $data['gender'];
             }
             
             // Add user_id as the last parameter

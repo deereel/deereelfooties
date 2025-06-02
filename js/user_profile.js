@@ -37,10 +37,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const fullNameInput = document.getElementById('fullName');
     const emailInput = document.getElementById('email');
     const phoneInput = document.getElementById('phone');
+    const genderSelect = document.getElementById('gender');
     
     if (fullNameInput) fullNameInput.value = user.name || '';
     if (emailInput) emailInput.value = user.email || '';
     if (phoneInput) phoneInput.value = user.phone || '';
+    if (genderSelect && user.gender) genderSelect.value = user.gender;
     
     // Get the user's email to find them in the database
     const userEmail = user.email;
@@ -79,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateUserData() {
     const fullNameInput = document.getElementById('fullName');
     const phoneInput = document.getElementById('phone');
+    const genderSelect = document.getElementById('gender');
     const currentPasswordInput = document.getElementById('currentPassword');
     const newPasswordInput = document.getElementById('newPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
@@ -118,6 +121,10 @@ document.addEventListener('DOMContentLoaded', function() {
       userData.phone = phoneInput.value;
     }
     
+    if (genderSelect.value) {
+      userData.gender = genderSelect.value;
+    }
+    
     console.log('Sending update with data:', userData);
     
     // Send update to API
@@ -135,6 +142,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update local user data
         user.name = fullNameInput.value;
         user.phone = phoneInput.value;
+        user.gender = genderSelect.value;
         
         // Update stored user data
         window.app.auth.updateUserData(user);

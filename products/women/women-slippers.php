@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
 
-<body class="bg-background" data-page="women-slippers">
+<body data-page="women-slippers">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 
@@ -95,40 +96,54 @@
   
           <!-- Product Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
-            <!-- Example Product -->
-            <div class="group product-card"
-                 data-price="35000"
-                 data-size="40,41,42,43,44,45,46"
-                 data-color="tan"
-                 data-type="oxford"
-                 data-gender="men">
-              <a href="/products/men/shoes/oxford-cap-toe-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Oxford Cap Toe 600</h3>
-                <p class="text-gray-500">₦35,000</p>
-              </a>
-            </div>
+            <?php
+              // Get products from database            
+              $gender = 'women';
+              $category = 'slippers';
+              $singularCategory = rtrim($category, 's'); // Remove trailing 's' to get singular form
 
-            <div class="group product-card"
-                 data-price="42000"
-                 data-size="40,41,42,43,44,45,46"
-                 data-color="brown"
-                 data-type="loafer"
-                 data-gender="men">
-              <a href="/products/men/shoes/penny-loafer-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Penny Loafer 600</h3>
-                <p class="text-gray-500">₦42,000</p>
-              </a>
-            </div>
-  
-            <!-- Add more products as needed -->
+              $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = ? AND 
+                                    (category = ? OR category = ? OR 
+                                    type LIKE ? OR type LIKE ?) 
+                                    ORDER BY created_at DESC");
+
+              $stmt->execute([
+                  $gender, 
+                  $category, 
+                  $singularCategory,
+                  "%$category%",  // Will match both singular and plural in type field
+                  "%$singularCategory%"  // Will match both singular and plural in type field
+              ]);
+              $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              
+
+            
+              if (count($products) > 0) {
+                foreach ($products as $product):
+                  $colors = explode(',', $product['colors'] ?? '');
+                  $sizes = explode(',', $product['sizes'] ?? '');
+            ?>
+              <div class="group product-card"
+                  data-price="<?= $product['price'] ?>"
+                  data-size="<?= $product['sizes'] ?>"
+                  data-color="<?= $product['colors'] ?>"
+                  data-type="<?= $product['type'] ?>"
+                  data-gender="<?= $product['gender'] ?>">
+                <a href="/product.php?slug=<?= $product['slug'] ?>">
+                  <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                    <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
+                        class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  </div>
+                  <h3 class="text-lg"><?= $product['name'] ?></h3>
+                  <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+                </a>
+              </div>
+            <?php 
+              endforeach;
+            } else {
+              echo '<div class="col-span-3 text-center py-8">No products found in this category yet.</div>';
+            }
+            ?>
           </div>
   
           <!-- Pagination -->
@@ -143,17 +158,17 @@
   </main>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
 
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn-primary btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
-
- 
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?> 
 </body>
 </html>

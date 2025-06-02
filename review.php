@@ -1,6 +1,11 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-
+<<<<<<< HEAD
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
 <body class="bg-background" data-page="review">
+=======
+
+<body data-page="review">
+>>>>>>> parent of f36b17c (checkout page)
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
   
   <div class="container py-5">
@@ -20,7 +25,7 @@
             <strong>Payment Proof:</strong><br>
             <img id="review-proof" src="" alt="Proof of Payment" class="img-fluid mt-2" style="max-height: 300px; display: none;" />
           </div>
-          <button class="btn-primary btn-primary w-100" onclick="sendEmail()">Submit Order</button>
+          <button class="btn btn-primary w-100" onclick="sendEmail()">Submit Order</button>
         </div>
       </div>
     </div>

@@ -444,14 +444,25 @@ document.addEventListener('DOMContentLoaded', function() {
         subtotal += itemTotal;
       }
       
+      // Check if item is custom
+      const isCustom = item.isCustom || false;
+      const materialInfo = item.materialName || item.leatherType || '';
+      
       cartHTML += `
         <div class="flex flex-col md:flex-row border-b py-4 gap-4">
           <div class="w-full md:w-24 h-24 flex-shrink-0">
             <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
           </div>
           <div class="flex-grow">
-            <h3 class="font-medium text-primary">${item.name}</h3>
-            <p class="text-muted text-sm">Size: ${item.size} | Width: ${item.width} | Color: ${item.color}</p>
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="font-medium text-primary">${item.name}</h3>
+              ${isCustom ? '<span class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium ml-2">CUSTOM</span>' : ''}
+            </div>
+            <div class="text-muted text-sm space-y-1">
+              <p>Size: ${item.size} | Width: ${item.width} | Color: ${item.color}</p>
+              ${materialInfo ? `<p><strong>Material:</strong> ${materialInfo}</p>` : ''}
+              ${isCustom && item.styleName ? `<p><strong>Style:</strong> ${item.styleName}</p>` : ''}
+            </div>
             <div class="flex items-center mt-2">
               <button class="update-quantity border px-2" data-index="${index}" data-action="decrease">-</button>
               <span class="px-3">${item.quantity}</span>
@@ -460,6 +471,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
           <div class="flex flex-col items-end">
             <p class="font-medium">₦${itemTotal.toLocaleString()}</p>
+            ${item.quantity > 1 ? `<p class="text-xs text-gray-500">₦${item.price.toLocaleString()} each</p>` : ''}
             <button class="text-accent text-sm remove-item mt-2" data-index="${index}">Remove</button>
           </div>
         </div>

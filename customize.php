@@ -1,380 +1,282 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
 
+// Check if we're editing an existing design
+$designId = isset($_GET['design_id']) ? intval($_GET['design_id']) : 0;
+$designData = null;
+
+if ($designId > 0) {
+  $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE design_id = ?");
+  $stmt->execute([$designId]);
+  $design = $stmt->fetch(PDO::FETCH_ASSOC);
+  
+  if ($design) {
+    $designData = json_decode($design['design_data'], true);
+  }
+}
+?>
+
+<<<<<<< HEAD
 <body class="bg-background" data-page="customize">
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); 
+  
+  // Check if we're editing an existing design
+  $designId = isset($_GET['design_id']) ? intval($_GET['design_id']) : 0;
+  $designData = null;
+=======
+<body data-page="customize">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+>>>>>>> parent of f36b17c (checkout page)
 
+  if ($designId > 0) {
+    $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE design_id = ?");
+    $stmt->execute([$designId]);
+    $design = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($design) {
+      $designData = json_decode($design['design_data'], true);
+    }
+  }
+  ?>
 
-  <!-- Main Content -->
-  <main>
-    <!-- Hero Section -->
-    <section class="relative w-full h-[500px]">
-      <img src="/images/customize-hero.jpg" alt="DRF MADE ON ORDER" class="object-cover w-full h-full">
-      <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-        <div class="text-center text-white max-w-3xl px-4">
-          <h1 class="text-4xl md:text-5xl font-light mb-4">CUSTOMIZE YOUR SHOES</h1>
-          <p class="text-lg md:text-xl">Create your own unique pair of DRF shoes</p>
+  <!-- Hero Section -->
+  <section class="hero-section" style="background-image: url('/images/cram solid oxford.webp');">
+    <div class="hero-content">
+      <div class="container mx-auto px-4 text-center">
+        <h1 class="text-5xl md:text-6xl font-light mb-6">Create Your Perfect Shoe</h1>
+        <p class="text-xl md:text-2xl mb-4">Handcrafted to your exact specifications</p>
+        <p class="text-lg mb-8 max-w-2xl mx-auto">Choose from premium materials, colors, and styles to design a one-of-a-kind pair that reflects your personal taste and fits perfectly.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#customizer" class="px-8 py-4 bg-white text-black hover:bg-gray-100 transition rounded font-medium">
+            Start Customizing
+          </a>
+          <a href="#how-it-works" class="px-8 py-4 border-2 border-white text-white hover:bg-white hover:text-black transition rounded font-medium">
+            How It Works
+          </a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Customization Introduction -->
-    <section class="py-16 px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-light mb-6">THE ULTIMATE PERSONALIZATION</h2>
-        <p class="mb-8 text-lg">
-          Our customization service allows you to create a truly personalized pair of shoes. Choose from a wide range
-          of models, leathers, colors, and details to design footwear that reflects your personal style.
-        </p>
-        <div class="grid md:grid-cols-4 gap-8 mt-12">
-          <div class="flex flex-col items-center">
-            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-2xl">1</span>
-            </div>
-            <h3 class="text-xl mb-2">SELECT MODEL</h3>
-            <p class="text-gray-600">Choose from our extensive range of classic styles</p>
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-light mb-4">How Custom Works</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Our simple 4-step process ensures you get exactly what you envision</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Step 1 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            1
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-2xl">2</span>
-            </div>
-            <h3 class="text-xl mb-2">CHOOSE LEATHER</h3>
-            <p class="text-gray-600">Select from premium leathers in various colors and finishes</p>
+          <h3 class="text-xl font-medium mb-3">Choose Your Style</h3>
+          <p class="text-gray-600">Select from our range of classic styles including Oxford, Derby, Loafer, and more.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            2
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-2xl">3</span>
-            </div>
-            <h3 class="text-xl mb-2">ADD DETAILS</h3>
-            <p class="text-gray-600">Personalize with soles, lasts, and optional monograms</p>
+          <h3 class="text-xl font-medium mb-3">Select Materials</h3>
+          <p class="text-gray-600">Choose from premium leather options, colors, and finishes to match your vision.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            3
           </div>
-          <div class="flex flex-col items-center">
-            <div class="w-16 h-16 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-2xl">4</span>
-            </div>
-            <h3 class="text-xl mb-2">PRODUCTION</h3>
-            <p class="text-gray-600">Your shoes are handcrafted in our workshop in Mallorca</p>
+          <h3 class="text-xl font-medium mb-3">Perfect Fit</h3>
+          <p class="text-gray-600">Provide your measurements or visit our store for professional fitting.</p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="text-center">
+          <div class="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+            4
           </div>
+          <h3 class="text-xl font-medium mb-3">Handcrafted</h3>
+          <p class="text-gray-600">Our skilled artisans craft your shoes with attention to every detail.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Interactive Customizer Preview -->
-    <section class="py-16 bg-neutral-100">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-light text-center mb-12">INTERACTIVE CUSTOMIZER</h2>
-        <div class="bg-white p-8 shadow-md">
-          <div class="grid md:grid-cols-2 gap-12">
-            <div class="relative aspect-square overflow-hidden bg-gray-50 flex items-center justify-center">
-              <img src="/images/shoe-customizer.jpg" alt="Shoe Preview" class="object-contain">
-              <div class="absolute inset-0 flex items-center justify-center">
-                <div class="bg-black/70 text-white py-3 px-6 rounded">
-                  <p>Interactive 3D preview coming soon</p>
-                </div>
-              </div>
+  <!-- Customizer Section -->
+  <section id="customizer" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-light mb-4">Design Your Shoe</h2>
+        <p class="text-gray-600">Use our interactive customizer to create your perfect pair</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Preview Area -->
+        <div class="order-2 lg:order-1">
+          <div class="bg-white rounded-lg shadow-lg p-8">
+            <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center mb-6">
+              <img src="/images/Oxford Cap Toe 600.webp" 
+                   alt="Shoe Preview" 
+                   class="max-w-full max-h-full object-contain"
+                   id="shoe-preview">
             </div>
+            <div class="text-center">
+              <h3 class="text-xl font-medium mb-2" id="preview-title">Oxford Cap Toe</h3>
+              <p class="text-gray-600 mb-4" id="preview-description">Classic formal shoe with cap toe detail</p>
+              <p class="text-2xl font-bold" id="preview-price">₦85,000</p>
+              <p class="text-sm text-gray-500">*Custom pricing includes premium materials and handcrafting</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customization Options -->
+        <div class="order-1 lg:order-2">
+          <div class="space-y-8">
+            <!-- Style Selection -->
             <div>
-              <div class="space-y-8">
-                <div>
-                  <h3 class="text-xl font-medium mb-4 flex items-center">
-                    <i class="fas fa-shoe-prints mr-2"></i> Select Your Model
-                  </h3>
-                  <div class="grid grid-cols-2 gap-4">
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Oxford
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Derby
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Loafer
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Monk
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 class="text-xl font-medium mb-4 flex items-center">
-                    <i class="fas fa-palette mr-2"></i> Choose Leather & Color
-                  </h3>
-                  <div class="space-y-4">
-                    <div class="grid grid-cols-2 gap-4">
-                      <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                        Calfskin
-                      </button>
-                      <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                        Suede
-                      </button>
-                      <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                        Shell Cordovan
-                      </button>
-                      <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                        Museum Calf
-                      </button>
-                    </div>
-                    <div class="flex flex-wrap gap-3">
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: black;" aria-label="black color"></button>
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: brown;" aria-label="brown color"></button>
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: burgundy;" aria-label="burgundy color"></button>
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: navy;" aria-label="navy color"></button>
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: tan;" aria-label="tan color"></button>
-                      <button class="w-8 h-8 rounded-full border border-gray-300 hover:ring-2 hover:ring-black transition" style="background-color: olive;" aria-label="olive color"></button>
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 class="text-xl font-medium mb-4 flex items-center">
-                    <i class="fas fa-ruler mr-2"></i> Sole Options
-                  </h3>
-                  <div class="grid grid-cols-2 gap-4">
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Leather
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Rubber
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Dainite
-                    </button>
-                    <button class="border border-gray-300 p-3 text-center hover:border-black transition">
-                      Vibram
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <h3 class="text-xl font-medium mb-4 flex items-center">
-                    <i class="fas fa-sparkles mr-2"></i> Personal Details
-                  </h3>
-                  <div class="space-y-4">
-                    <div>
-                      <label for="initials" class="block mb-2">
-                        Initials (optional)
-                      </label>
-                      <input
-                        type="text"
-                        id="initials"
-                        maxlength="3"
-                        class="w-full p-3 border border-gray-300 focus:outline-none focus:border-black"
-                        placeholder="Up to 3 characters"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-8 pt-8 border-t">
-                <div class="flex justify-between items-center mb-4">
-                  <span class="text-lg">Estimated Price:</span>
-                  <span class="text-xl font-medium">€495</span>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-4">
-                  <button class="bg-black text-white px-8 py-3 flex-1 hover:bg-gray-800 transition">
-                    SAVE DESIGN
-                  </button>
-                  <button class="bg-black text-white px-8 py-3 flex-1 hover:bg-gray-800 transition">
-                    PROCEED TO ORDER
-                  </button>
-                </div>
+              <h3 class="text-xl font-medium mb-4">1. Choose Style</h3>
+              <div class="grid grid-cols-2 gap-4">
+                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option active" data-style="oxford">
+                  <h4 class="font-medium">Oxford</h4>
+                  <p class="text-sm text-gray-600">Classic formal</p>
+                </button>
+                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="derby">
+                  <h4 class="font-medium">Derby</h4>
+                  <p class="text-sm text-gray-600">Open lacing</p>
+                </button>
+                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="loafer">
+                  <h4 class="font-medium">Loafer</h4>
+                  <p class="text-sm text-gray-600">Slip-on style</p>
+                </button>
+                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="monk">
+                  <h4 class="font-medium">Monk Strap</h4>
+                  <p class="text-sm text-gray-600">Buckle closure</p>
+                </button>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Popular Designs -->
-    <section class="py-16 px-4">
-      <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-light text-center mb-12">POPULAR DESIGNS</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="group">
-            <div class="relative aspect-[3/4] overflow-hidden mb-4">
-              <img src="/images/custom-1.jpg" alt="Custom Design 1" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+            <!-- Color Selection -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">2. Select Color</h3>
+              <div class="flex flex-wrap gap-3">
+                <button class="w-12 h-12 rounded-full border-4 border-black custom-color active" style="background-color: #000000;" data-color="black" title="Black"></button>
+                <button class="w-12 h-12 rounded-full border-4 border-transparent hover:border-gray-400 custom-color" style="background-color: #8B4513;" data-color="brown" title="Brown"></button>
+                <button class="w-12 h-12 rounded-full border-4 border-transparent hover:border-gray-400 custom-color" style="background-color: #D2B48C;" data-color="tan" title="Tan"></button>
+                <button class="w-12 h-12 rounded-full border-4 border-transparent hover:border-gray-400 custom-color" style="background-color: #722F37;" data-color="burgundy" title="Burgundy"></button>
+                <button class="w-12 h-12 rounded-full border-4 border-transparent hover:border-gray-400 custom-color" style="background-color: #1e3a8a;" data-color="navy" title="Navy"></button>
+              </div>
             </div>
-            <h3 class="text-xl text-center mb-2">Custom Design #1</h3>
-            <p class="text-center text-gray-600 mb-4">Oxford in Museum Calf with Leather Sole</p>
-            <div class="text-center">
-              <button class="border border-black px-6 py-2 hover:bg-black hover:text-white transition">
-                USE AS TEMPLATE
+
+            <!-- Material Selection -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">3. Choose Material</h3>
+              <div class="space-y-3">
+                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                  <input type="radio" name="material" value="calf" class="mr-3" checked>
+                  <div>
+                    <h4 class="font-medium">Premium Calf Leather</h4>
+                    <p class="text-sm text-gray-600">Smooth, durable finish</p>
+                  </div>
+                </label>
+                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                  <input type="radio" name="material" value="suede" class="mr-3">
+                  <div>
+                    <h4 class="font-medium">Suede Leather</h4>
+                    <p class="text-sm text-gray-600">Soft, textured finish (+₦10,000)</p>
+                  </div>
+                </label>
+                <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
+                  <input type="radio" name="material" value="patent" class="mr-3">
+                  <div>
+                    <h4 class="font-medium">Patent Leather</h4>
+                    <p class="text-sm text-gray-600">High-gloss finish (+₦15,000)</p>
+                  </div>
+                </label>
+              </div>
+
+            <!-- Replace the size options with this -->
+            <div class="grid grid-cols-4 gap-2" id="size-options">
+              <?php for ($i = 37; $i <= 47; $i++): ?>
+              <button class="border border-gray-300 py-2 hover:border-black transition size-option" data-size="<?= $i ?>"><?= $i ?></button>
+              <?php endfor; ?>
+            </div>
+
+
+            <!-- Action Buttons -->
+            <div class="pt-6 border-t">
+              <button class="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition font-medium mb-4">
+                Add to Cart - <span id="final-price">₦85,000</span>
               </button>
-            </div>
-          </div>
-          <div class="group">
-            <div class="relative aspect-[3/4] overflow-hidden mb-4">
-              <img src="/images/custom-2.jpg" alt="Custom Design 2" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-            </div>
-            <h3 class="text-xl text-center mb-2">Custom Design #2</h3>
-            <p class="text-center text-gray-600 mb-4">Oxford in Museum Calf with Leather Sole</p>
-            <div class="text-center">
-              <button class="border border-black px-6 py-2 hover:bg-black hover:text-white transition">
-                USE AS TEMPLATE
-              </button>
-            </div>
-          </div>
-          <div class="group">
-            <div class="relative aspect-[3/4] overflow-hidden mb-4">
-              <img src="/images/custom-3.jpg" alt="Custom Design 3" class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-            </div>
-            <h3 class="text-xl text-center mb-2">Custom Design #3</h3>
-            <p class="text-center text-gray-600 mb-4">Oxford in Museum Calf with Leather Sole</p>
-            <div class="text-center">
-              <button class="border border-black px-6 py-2 hover:bg-black hover:text-white transition">
-                USE AS TEMPLATE
+              <button class="w-full border-2 border-black text-black py-4 rounded-lg hover:bg-black hover:text-white transition font-medium">
+                Save Design
               </button>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Testimonials -->
-    <section class="py-16 bg-neutral-100 px-4">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-light text-center mb-12">CUSTOMER TESTIMONIALS</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white p-6 shadow-sm">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-neutral-200 rounded-full mr-4"></div>
-              <div>
-                <h4 class="font-medium">Robert K.</h4>
-                <div class="flex">
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600">
-              "The customization process was intuitive and enjoyable. My custom oxfords arrived in perfect condition
-              and exactly as I designed them. The quality is exceptional."
-            </p>
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl font-light mb-4">Why Choose Custom?</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-ruler text-2xl text-black"></i>
           </div>
-          <div class="bg-white p-6 shadow-sm">
-            <div class="flex items-center mb-4">
-              <div class="w-12 h-12 bg-neutral-200 rounded-full mr-4"></div>
-              <div>
-                <h4 class="font-medium">James T.</h4>
-                <div class="flex">
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                  <i class="fas fa-star text-yellow-500"></i>
-                </div>
-              </div>
-            </div>
-            <p class="text-gray-600">
-              "I've ordered three pairs of customized DRF shoes, and each time the attention to detail and
-              craftsmanship has been outstanding. Worth every penny."
-            </p>
+          <h3 class="text-xl font-medium mb-3">Perfect Fit</h3>
+          <p class="text-gray-600">Made to your exact measurements for unparalleled comfort and fit.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-palette text-2xl text-black"></i>
           </div>
+          <h3 class="text-xl font-medium mb-3">Unique Design</h3>
+          <p class="text-gray-600">Create a one-of-a-kind shoe that reflects your personal style.</p>
+        </div>
+
+        <div class="text-center">
+          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-hammer text-2xl text-black"></i>
+          </div>
+          <h3 class="text-xl font-medium mb-3">Expert Craftsmanship</h3>
+          <p class="text-gray-600">Handcrafted by skilled artisans using traditional techniques.</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section class="py-16 px-4">
-      <div class="max-w-4xl mx-auto">
-        <h2 class="text-3xl font-light text-center mb-12">FREQUENTLY ASKED QUESTIONS</h2>
-        <div class="space-y-6">
-          <details class="border p-4 group">
-            <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
-              How long does it take to receive my customized shoes?
-              <span class="transform group-open:rotate-180 transition-transform">
-                <i class="fas fa-chevron-down"></i>
-              </span>
-            </summary>
-            <div class="mt-4 text-gray-600">
-              <p>
-                Customized shoes typically take 6-8 weeks to produce and deliver. This timeframe allows our artisans
-                to carefully craft your shoes to your exact specifications. You'll receive updates on your order
-                status throughout the process.
-              </p>
-            </div>
-          </details>
-
-          <details class="border p-4 group">
-            <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
-              Can I return or exchange my customized shoes?
-              <span class="transform group-open:rotate-180 transition-transform">
-                <i class="fas fa-chevron-down"></i>
-              </span>
-            </summary>
-            <div class="mt-4 text-gray-600">
-              <p>
-                Since customized shoes are made specifically for you, they cannot be returned or exchanged unless
-                there is a manufacturing defect. We recommend carefully reviewing your design before finalizing your
-                order.
-              </p>
-            </div>
-          </details>
-
-          <details class="border p-4 group">
-            <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
-              How do I determine my correct size for customized shoes?
-              <span class="transform group-open:rotate-180 transition-transform">
-                <i class="fas fa-chevron-down"></i>
-              </span>
-            </summary>
-            <div class="mt-4 text-gray-600">
-              <p>
-                We recommend visiting our store for a professional fitting if possible. Alternatively, you can
-                use our detailed size guide or contact our customer service team for assistance. Different lasts may
-                fit differently, so it's important to get the right size for your specific model.
-              </p>
-            </div>
-          </details>
-
-          <details class="border p-4 group">
-            <summary class="font-medium cursor-pointer list-none flex justify-between items-center">
-              Can I customize every aspect of the shoe?
-              <span class="transform group-open:rotate-180 transition-transform">
-                <i class="fas fa-chevron-down"></i>
-              </span>
-            </summary>
-            <div class="mt-4 text-gray-600">
-              <p>
-                Our customization service allows you to select the model, leather type, color, sole, and add personal
-                details like initials. While we offer extensive options, some technical aspects of construction are
-                standardized to ensure the quality and durability of our shoes.
-              </p>
-            </div>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="py-16 bg-neutral-900 text-white text-center">
-      <div class="max-w-3xl mx-auto px-4">
-        <h2 class="text-3xl font-light mb-6">READY TO CREATE YOUR UNIQUE PAIR?</h2>
-        <p class="mb-8">
-          Experience the luxury of shoes made especially for you. Delivery in approximately 6-8 weeks.
-        </p>
-        <a href="#" class="bg-white text-black px-8 py-3 inline-block hover:bg-gray-200 transition">
-          BEGIN CUSTOMIZING
-        </a>
-      </div>
-    </section>
-  </main>
+  
+  <script>
+  // Pass PHP data to JavaScript
+    var designData = <?php echo $designData ? json_encode($designData) : 'null'; ?>;
+  </script>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
 
   <!-- Scroll to Top Button -->
-  <a href="#" class="btn-primary btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
+  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 
+
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  <script src="/js/customize.js"></script> 
 
-
-
+</script>
 </body>
 </html>

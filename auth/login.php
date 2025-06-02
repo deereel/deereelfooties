@@ -25,7 +25,7 @@ try {
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user'] = [
-            'id' => $user['id'],
+            'user_id' => $user['user_id'],
             'name' => $user['name'], 
             'email' => $user['email']
         ];
@@ -34,7 +34,7 @@ try {
         echo json_encode([
             'success' => true, 
             'user' => [
-                'id' => $user['id'],
+                'user_id' => $user['user_id'],
                 'name' => $user['name'],
                 'email' => $user['email']
             ],
