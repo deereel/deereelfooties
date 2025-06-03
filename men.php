@@ -17,7 +17,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
               <div class="max-w-xl">
                 <h1 class="text-5xl md:text-6xl font-light mb-4">Men's Collection</h1>
                 <p class="text-xl mb-8">Handcrafted luxury footwear for the modern gentleman.</p>
-                <a href="#categories" class="btn-primary px-8 py-3 bg-white text-black hover:bg-gray-100 transition">Explore Now</a>
+                <a href="#categories" class="btn-primary px-8 py-3">Explore Now</a>
               </div>
             </div>
           </div>
@@ -191,20 +191,13 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
             foreach ($newProducts as $product):
         ?>
           <div class="group hover-accent">
-            <!-- Add wishlist button inside each product card -->
-            <div class="absolute top-2 right-2 z-10">
-              <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
-                      data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
-                      data-product-name="<?= $product['name'] ?>"
-                      data-product-price="<?= $product['price'] ?>"
-                      data-product-image="<?= $product['main_image'] ?>">
-                <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
-              </button>
-            </div>            
             <a href="product.php?slug=<?= $product['slug'] ?>">
               <div class="relative aspect-[3/4] overflow-hidden mb-4">
                 <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
                      class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                <?php if ($product['is_new_collection']): ?>
+                <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">NEW</span>
+                <?php endif; ?>
               </div>
               <h3 class="text-lg"><?= $product['name'] ?></h3>
               <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
@@ -213,7 +206,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
         <?php 
             endforeach;
           } else {
-            // Show placeholder if no new collection products
+            // Show placeholder if no new products
             for ($i = 0; $i < 4; $i++):
         ?>
           <div class="group hover-accent">
@@ -235,22 +228,39 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
         }
         ?>
       </div>
+      
+      <div class="text-center mt-12">
+        <a href="/products.php?gender=men&new=1" class="btn-primary px-8 py-3">View All New Arrivals</a>
+      </div>
     </div>
   </section>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-
-  <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-  </a>
-
-
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
   
+  <!-- Swiper JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/css/slider.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
 </body>
 </html>
