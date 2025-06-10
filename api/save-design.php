@@ -1,52 +1,50 @@
 <?php
-// Create this file at: api/save-design.php
 require_once '../auth/db.php';
+require_once '../auth/auth.php';
 
-// Set headers for JSON response
 header('Content-Type: application/json');
 
-// Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+// Check if user is logged in
+if (!isLoggedIn()) {
+    echo json_encode(['success' => false, 'message' => 'You must be logged in to save designs']);
     exit;
 }
 
-// Get data from request
+// Get JSON data from request
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Validate required fields
-if (!isset($data['user_id']) || !isset($data['design'])) {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+if (!$data || !isset($data['design_name']) || !isset($data['design_data'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid data']);
     exit;
 }
 
-$userId = $data['user_id'];
-$design = $data['design'];
+$userId = $_SESSION['user_id'];
+$designName = $data['design_name'];
+$designData = json_encode($data['design_data']);
 
-// Create saved_designs table if it doesn't exist
 try {
-    $pdo->exec("CREATE TABLE IF NOT EXISTS saved_designs (
-        design_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
-        design_data TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )");
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Error creating table: ' . $e->getMessage()]);
-    exit;
-}
-
-// Insert design into database
-try {
-    $stmt = $pdo->prepare("INSERT INTO saved_designs (user_id, design_data) VALUES (?, ?)");
-    $stmt->execute([$userId, json_encode($design)]);
+    // Check if we're updating an existing design
+    $designId = isset($data['design_id']) ? intval($data['design_id']) : 0;
     
-    echo json_encode([
-        'success' => true, 
-        'message' => 'Design saved successfully',
-        'design_id' => $pdo->lastInsertId()
-    ]);
+    if ($designId > 0) {
+        // Update existing design
+        $stmt = $pdo->prepare("UPDATE saved_designs SET design_name = ?, design_data = ? WHERE design_id = ? AND user_id = ?");
+        $stmt->execute([$designName, $designData, $designId, $userId]);
+        
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(['success' => true, 'message' => 'Design updated successfully', 'design_id' => $designId]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Design not found or you do not have permission to update it']);
+        }
+    } else {
+        // Create new design
+        $stmt = $pdo->prepare("INSERT INTO saved_designs (user_id, design_name, design_data) VALUES (?, ?, ?)");
+        $stmt->execute([$userId, $designName, $designData]);
+        
+        $designId = $pdo->lastInsertId();
+        echo json_encode(['success' => true, 'message' => 'Design saved successfully', 'design_id' => $designId]);
+    }
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Error saving design: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
 ?>

@@ -1,0 +1,66 @@
+/* Navbar styling */
+.navbar {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-light) !important;
+}
+
+.navbar-brand, .navbar-brand:hover, .navbar-brand:focus {
+  color: var(--color-text-light) !important;
+}
+
+.navbar-brand:hover {
+  color: var(--color-secondary) !important;
+}
+
+.navbar-nav .nav-link, .navbar a, .nav-link, header a {
+  color: var(--color-text-light) !important;
+}
+
+.navbar-nav .nav-link:hover, .navbar a:hover, .nav-link:hover, header a:hover {
+  color: var(--color-secondary) !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+  background-color: var(--color-text-light) !important;
+  border-color: var(--color-border) !important;
+}
+
+.dropdown-item {
+  color: var(--color-text-dark) !important;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--color-secondary) !important;
+  color: var(--color-primary) !important;
+}
+
+/* Submenu positioning */
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0.25rem;
+  background-color: var(--color-text-light) !important;
+  border-color: var(--color-border) !important;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+/* Mobile navbar toggle */
+.navbar-toggler {
+  border-color: var(--color-secondary) !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}

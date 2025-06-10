@@ -658,7 +658,6 @@ details[open] summary {
   scroll-behavior: smooth;
 }
 .clean-scroll::-webkit-scrollbar-thumb {
-<<<<<<< HEAD
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 20px;
 }
@@ -672,19 +671,32 @@ details[open] summary {
   outline: 2px solid black;
   outline-offset: 2px;
 }
-=======
-  background: #888;
-  border-radius: 10px;
-}
-.clean-scroll::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-.clean-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
+
+.hero-section {
+  width: 100%;
+  height: 500px;
+  position: relative;
+  overflow: hidden;
 }
 
+.slide-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
 
+.slide-content h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
 
-
->>>>>>> parent of f36b17c (checkout page)
-
+.slide-content p {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}

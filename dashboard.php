@@ -1,399 +1,643 @@
-<!-- dashboard.php -->
 <?php
+// Start session
 session_start();
+
+// Check if user is logged in
 if (!isset($_SESSION['user'])) {
-  header('Location: index.php');
-  exit();
+    header('Location: index.php');
+    exit;
 }
+
 $user = $_SESSION['user'];
+$page = 'dashboard';
 ?>
 
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<<<<<<< HEAD
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
-<body class="bg-background" data-page="dashboard">
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DeeReel Footies</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Website CSS -->
+    <link rel="stylesheet" href="/css/colors.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <style>
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .sidebar-fixed {
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <?php include('components/navbar.php'); ?>
 
-  <!-- Dashboard Content -->
-  <div class="container-fluid py-5">
-    <div class="row">
-      <!-- Left Sidebar -->
-      <div class="col-12 col-md-3 mb-4">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body">
-            <h5 class="mb-4 text-primary" id="dashboard-username">My Account</h5>
-            <nav class="nav flex-column dashboard-nav">
-              <a class="nav-link active" href="#dashboard" data-section="dashboard">Dashboard</a>
-              <a class="nav-link" href="#orders" data-section="orders">My Orders</a>
-              <a class="nav-link" href="#wishlist" data-section="wishlist">Wishlist</a>
-              <a class="nav-link" href="#addresses" data-section="addresses">Address Book</a>
-              <a class="nav-link" href="#personal" data-section="personal">My Data</a>
-              <a class="nav-link" href="#designs" data-section="designs">My Designs</a>
-              
-              <div class="border-top my-4"></div>
-              
-              <a class="nav-link text-danger" href="#delete-account" data-section="delete-account">Delete Account</a>
-              <a class="nav-link text-danger" href="#" id="dashboard-logout">Logout</a>
-            </nav>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Right Content Area -->
-      <div class="col-12 col-md-9">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <!-- Dashboard Section -->
-            <section id="dashboard-section" class="dashboard-content active">
-              <h3 class="mb-4">Dashboard</h3>
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                      <h5 class="card-title">Recent Orders</h5>
-                      <p class="card-text text-muted">You have no recent orders.</p>
-                      <a href="#orders" class="btn-primary" data-section="orders">View All Orders</a>
+    <div class="container py-5">
+        <div class="row">
+            <!-- User Info -->
+            <div class="col-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">My Account</h4>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="card h-100 border-0 bg-light">
                     <div class="card-body">
-                      <h5 class="card-title">Saved Designs</h5>
-                      <p class="card-text text-muted">You have no saved designs.</p>
-                      <a href="#designs" class="btn-primary" data-section="designs">View Saved Designs</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                      <h5 class="card-title">Wishlist</h5>
-                      <p class="card-text text-muted">You have no items in your wishlist.</p>
-                      <a href="#wishlist" class="btn-primary" data-section="wishlist">View Wishlist</a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="card h-100 border-0 bg-light">
-                    <div class="card-body">
-                      <h5 class="card-title">Account Details</h5>
-                      <p class="card-text text-muted">Update your personal information.</p>
-                      <a href="#personal" class="btn-primary" data-section="personal">Edit Details</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-            
-            <!-- Orders Section -->
-            <section id="orders-section" class="dashboard-content">
-              <h3 class="mb-4">My Orders</h3>
-              <div id="orders-container">
-                <!-- Orders will be loaded here -->
-              </div>
-            </section>
-            
-            <!-- Wishlist Section -->
-            <section id="wishlist-section" class="dashboard-content">
-              <h3 class="mb-4">My Wishlist</h3>
-              <p class="text-muted mb-4">Items you've saved for later.</p>
-              
-              <div id="wishlist-container" class="row">
-                <?php
-                // Get user ID from session
-                $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
-                $userId = $user ? $user['user_id'] : 0;
-                
-                if ($userId) {
-                  try {
-                    // Check if table exists
-                    $tableExists = false;
-                    $tables = $pdo->query("SHOW TABLES LIKE 'wishlist_items'")->fetchAll();
-                    if (count($tables) > 0) {
-                      $tableExists = true;
-                    }
-                    
-                    if ($tableExists) {
-                      $stmt = $pdo->prepare("SELECT * FROM wishlist_items WHERE user_id = ? ORDER BY created_at DESC");
-                      $stmt->execute([$userId]);
-                      $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      
-                      if (count($items) > 0) {
-                        foreach ($items as $item):
-                          $createdAt = date('F j, Y', strtotime($item['created_at']));
-                ?>
-                  <div class="col-md-4 mb-4">
-                    <div class="card h-100 position-relative">
-                      <!-- Add delete button -->
-                      <button class="delete-wishlist-btn position-absolute top-0 end-0 bg-white rounded-circle p-1 m-2 border shadow-sm" 
-                              data-wishlist-id="<?= $item['wishlist_id'] ?>">
-                        <i class="fas fa-times text-danger"></i>
-                      </button>
-                      
-                      <img src="<?= $item['image'] ?>" class="card-img-top" alt="<?= $item['product_name'] ?>">
-                      <div class="card-body">
-                        <h5 class="card-title"><?= $item['product_name'] ?></h5>
-                        <p class="text-muted small">Added on <?= $createdAt ?></p>
-                        <p class="card-text text-accent">₦<?= number_format($item['price']) ?></p>
-                        <div class="d-flex justify-content-between">
-                          <button class="btn-primary btn-sm add-wishlist-to-cart" 
-                                  data-product-id="<?= $item['product_id'] ?>"
-                                  data-product-name="<?= $item['product_name'] ?>"
-                                  data-product-price="<?= $item['price'] ?>"
-                                  data-product-image="<?= $item['image'] ?>">
-                            Add to Cart
-                          </button>
-                          <a href="/product.php?slug=<?= $item['product_id'] ?>" class="btn-outline-secondary btn-sm">
-                            View Details
-                          </a>
+                        <div class="d-flex align-items-center">
+                            <div class="bg-accent rounded-circle text-white d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                                <i class="fas fa-user fa-2x"></i>
+                            </div>
+                            <div>
+                                <h4 class="mb-0"><?php echo htmlspecialchars($user['name']); ?></h4>
+                                <p class="text-muted mb-0"><?php echo htmlspecialchars($user['email']); ?></p>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                <?php
-                        endforeach;
-                      } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Your wishlist is empty.
-                    <a href="/products.php" class="alert-link">Browse products</a>
-                  </div>
-                <?php
-                      }
-                    } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Your wishlist is empty.
-                    <a href="/products.php" class="alert-link">Browse products</a>
-                  </div>
-                <?php
-                    }
-                  } catch (PDOException $e) {
-                    echo '<div class="alert alert-danger">Error loading wishlist: ' . $e->getMessage() . '</div>';
-                  }
-                } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Please log in to view your wishlist.
-                  </div>
-                <?php
-                }
-                ?>
-              </div>
-            </section>
-            
-            <!-- Address Book Section -->
-            <section id="addresses-section" class="dashboard-content">
-              <!-- Content will be loaded dynamically by addresses.js -->
-            </section>
-            
-            <!-- Personal Data Section -->
-            <section id="personal-section" class="dashboard-content">
-              <h3 class="mb-4">My Data</h3>
-              <p class="text-muted mb-4">Manage your personal information.</p>
-              
-              <form id="personal-data-form">
-                <div class="row mb-3">
-                  <div class="col-md-6 mb-3">
-                    <label for="fullName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="fullName" required>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" readonly>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="gender" class="form-label">Gender</label>
-                    <select class="form-control" id="gender">
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
-                      <option value="prefer_not_to_say">Prefer not to say</option>
-                    </select>
-                  </div>
                 </div>
-                
-                <h5 class="mt-4 mb-3">Change Password</h5>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="currentPassword" class="form-label">Current Password</label>
-                    <input type="password" class="form-control" id="currentPassword">
-                  </div>
-                  <div class="col-md-6"></div>
-                  <div class="col-md-6 mb-3">
-                    <label for="newPassword" class="form-label">New Password</label>
-                    <input type="password" class="form-control" id="newPassword">
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                    <input type="password" class="form-control" id="confirmPassword">
-                  </div>
-                </div>
-                
-                <button type="submit" class="btn-primary mt-3">Save Changes</button>
-              </form>
-            </section>
+            </div>
             
-            <!-- Designs Section -->            
-            <section id="designs-section" class="dashboard-content">
-              <h3 class="mb-4">My Designs</h3>
-              <p class="text-muted mb-4">Your saved custom shoe designs.</p>
-              
-              <div id="saved-designs-container" class="row">
-                <?php
-                // Get user ID from session
-                $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
-                $userId = $user ? $user['user_id'] : 0;
-                
-                if ($userId) {
-                  try {
-                    // Check if table exists
-                    $tableExists = false;
-                    $tables = $pdo->query("SHOW TABLES LIKE 'saved_designs'")->fetchAll();
-                    if (count($tables) > 0) {
-                      $tableExists = true;
-                    }
-                    
-                    if ($tableExists) {
-                      $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE user_id = ? ORDER BY created_at DESC");
-                      $stmt->execute([$userId]);
-                      $designs = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                      
-                      if (count($designs) > 0) {
-                        foreach ($designs as $design) {
-                          $designData = json_decode($design['design_data'], true);
-                          $designName = $designData['name'] ?? 'Custom Design';
-                          $designColor = $designData['color'] ?? 'black';
-                          $designMaterial = $designData['material'] ?? 'calf';
-                          $designSize = $designData['size'] ?? '';
-                          $designPrice = $designData['price'] ?? 0;
-                          $designImage = $designData['image'] ?? '/images/penny loafer 600.webp';
-                          $createdAt = date('F j, Y', strtotime($design['created_at']));
-                ?>
-                  <div class="col-md-4 mb-4">
-                    <div class="card h-100 position-relative">
-                      <!-- Add delete button -->
-                      <button class="delete-design-btn position-absolute top-0 end-0 bg-white rounded-circle p-1 m-2 border shadow-sm" 
-                              data-design-id="<?= $design['design_id'] ?>">
-                        <i class="fas fa-times text-danger"></i>
-                      </button>
-                      
-                      <img src="<?= $designImage ?>" class="card-img-top" alt="<?= $designName ?>">
-                      <div class="card-body">
-                        <h5 class="card-title"><?= $designName ?></h5>
-                        <p class="text-muted small">Created on <?= $createdAt ?></p>
-                        <p class="mb-2">Color: <?= ucfirst($designColor) ?></p>
-                        <p class="mb-2">Material: <?= ucfirst($designMaterial) ?></p>
-                        <p class="mb-2">Size: <?= $designSize ?></p>
-                        <p class="card-text text-accent">₦<?= number_format($designPrice) ?></p>
-                        <div class="d-flex justify-content-between">
-                          <button class="btn-primary btn-sm add-design-to-cart" 
-                                  data-design='<?= htmlspecialchars(json_encode($designData), ENT_QUOTES, 'UTF-8') ?>'>
-                            Add to Cart
-                          </button>
-                          <a href="/customize.php?design_id=<?= $design['design_id'] ?>" class="btn-outline-secondary btn-sm">
-                            Edit
-                          </a>
+            <!-- Dashboard Content -->
+            <div class="col-md-3">
+                <!-- Sidebar Navigation -->
+                <div class="sidebar-fixed">
+                    <div class="list-group mb-4 shadow" id="dashboard-tabs">
+                        <a href="#" class="list-group-item list-group-item-action active" data-tab="dashboard">
+                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-tab="orders">
+                            <i class="fas fa-box me-2"></i> My Orders
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-tab="wishlist">
+                            <i class="fas fa-heart me-2"></i> Wishlist
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-tab="address">
+                            <i class="fas fa-address-book me-2"></i> Address Book
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-tab="personal">
+                            <i class="fas fa-user-edit me-2"></i> My Data
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" data-tab="designs">
+                            <i class="fas fa-palette me-2"></i> My Designs
+                        </a>
+                        
+                        <div class="dropdown-divider my-2"></div>
+                        
+                        <a href="#" class="list-group-item list-group-item-action text-danger" data-tab="delete">
+                            <i class="fas fa-user-times me-2"></i> Delete Account
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action text-danger" id="logout-btn">
+                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-content active">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">Dashboard</h3>
                         </div>
-                      </div>
+                        <div class="card-body">
+                            <p>Welcome back, <strong><?php echo htmlspecialchars($user['name']); ?></strong>!</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-box-open fa-2x mb-3 text-primary"></i>
+                                            <h5>Orders</h5>
+                                            <p class="mb-0">View your order history</p>
+                                            <button class="btn btn-outline-primary mt-3 tab-link" data-tab="orders">View Orders</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-heart fa-2x mb-3 text-accent"></i>
+                                            <h5>Wishlist</h5>
+                                            <p class="mb-0">View your saved items</p>
+                                            <button class="btn btn-outline-primary mt-3 tab-link" data-tab="wishlist">View Wishlist</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-palette fa-2x mb-3 text-success"></i>
+                                            <h5>My Designs</h5>
+                                            <p class="mb-0">View your custom designs</p>
+                                            <button class="btn btn-outline-primary mt-3 tab-link" data-tab="designs">View Designs</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <i class="fas fa-user-edit fa-2x mb-3 text-info"></i>
+                                            <h5>Account</h5>
+                                            <p class="mb-0">Update your details</p>
+                                            <button class="btn btn-outline-primary mt-3 tab-link" data-tab="personal">Edit Details</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                <?php
-                        }
-                      } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> You have no saved designs.
-                    <a href="/customize.php" class="alert-link">Create a custom design</a>
-                  </div>
-                <?php
-                      }
-                    } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> You have no saved designs.
-                    <a href="/customize.php" class="alert-link">Create a custom design</a>
-                  </div>
-                <?php
-                    }
-                  } catch (PDOException $e) {
-                    echo '<div class="alert alert-danger">Error loading designs: ' . $e->getMessage() . '</div>';
-                  }
-                } else {
-                ?>
-                  <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Please log in to view your saved designs.
-                  </div>
-                <?php
-                }
-                ?>
-              </div>
-            </section>
-
-            
-            <!-- Delete Account Section -->
-            <section id="delete-account-section" class="dashboard-content">
-              <h3 class="mb-4">Delete Account</h3>
-              <div class="alert alert-warning">
-                <h5><i class="fas fa-exclamation-triangle me-2"></i> Warning</h5>
-                <p>Deleting your account is permanent and cannot be undone. All your data, including order history, saved designs, and personal information will be permanently removed.</p>
-              </div>
-              
-              <form id="delete-account-form">
-                <div class="mb-3">
-                  <label for="deleteConfirmation" class="form-label">To confirm, type "DELETE" below:</label>
-                  <input type="text" class="form-control" id="deleteConfirmation" required>
                 </div>
-                <div class="mb-3">
-                  <label for="deletePassword" class="form-label">Enter your password:</label>
-                  <input type="password" class="form-control" id="deletePassword" required>
+                
+                <!-- Orders Tab -->
+                <div id="orders-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">My Orders</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="orders-container">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                    <p class="mt-2">Loading your orders...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-danger">Permanently Delete Account</button>
-              </form>
-            </section>
-          </div>
+                
+                <!-- Wishlist Tab -->
+                <div id="wishlist-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">My Wishlist</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="wishlist-container">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                    <p class="mt-2">Loading your wishlist...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Address Book Tab -->
+                <div id="address-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">Address Book</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Shipping Address</h5>
+                                            <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <address>
+                                                <?php echo htmlspecialchars($user['name']); ?><br>
+                                                123 Main Street<br>
+                                                Lekki Phase 1<br>
+                                                Lagos, Nigeria<br>
+                                                Phone: +234 801 234 5678
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Billing Address</h5>
+                                            <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <address>
+                                                <?php echo htmlspecialchars($user['name']); ?><br>
+                                                123 Main Street<br>
+                                                Lekki Phase 1<br>
+                                                Lagos, Nigeria<br>
+                                                Phone: +234 801 234 5678
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personal Data Tab -->
+                <div id="personal-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">My Data</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="personal-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="fullName" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="fullName" value="<?php echo htmlspecialchars($user['name']); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" readonly>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="phone" class="form-label">Phone</label>
+                                        <input type="tel" class="form-control" id="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender">
+                                            <option value="">Select Gender</option>
+                                            <option value="male" <?php echo (isset($user['gender']) && $user['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
+                                            <option value="female" <?php echo (isset($user['gender']) && $user['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
+                                            <option value="other" <?php echo (isset($user['gender']) && $user['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Designs Tab -->
+                <div id="designs-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="mb-0">My Designs</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="designs-container">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                    <p class="mt-2">Loading your designs...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delete Account Tab -->
+                <div id="delete-tab" class="tab-content">
+                    <div class="card">
+                        <div class="card-header bg-danger">
+                            <h3 class="mb-0">Delete Account</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                <h5><i class="fas fa-exclamation-triangle me-2"></i> Warning</h5>
+                                <p>Deleting your account is permanent and cannot be undone. All your data, including order history, saved designs, and personal information will be permanently removed.</p>
+                            </div>
+                            <form id="delete-form">
+                                <div class="mb-3">
+                                    <label for="deleteConfirm" class="form-label">Type "DELETE" to confirm</label>
+                                    <input type="text" class="form-control" id="deleteConfirm" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Enter your password</label>
+                                    <input type="password" class="form-control" id="password" required>
+                                </div>
+                                <button type="submit" class="btn btn-danger">Delete My Account</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Include Address Modal -->
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/address_modal.php'); ?>
-  
-  <!-- Include Payment Proof Modal -->
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/payment_proof_modal.php'); ?>
+    <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-
-  <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-  </a>
-
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-  <script src="/js/dashboard.js"></script>
-  <script src="/js/orders.js"></script>
-  <script src="/js/addresses.js"></script>
-  <script src="/js/user_profile.js"></script>
-  <script src="/js/dashboard-orders.js"></script>
-  <script src="/js/dashboard-wishlist.js"></script>
-
-=======
-
-<body class="bg-light">
-  <div class="container py-5">
-    <h2 class="mb-4">Welcome, <?= htmlspecialchars($user['name']) ?>!</h2>
-    <p>Your email: <?= htmlspecialchars($user['email']) ?></p>
-
-    <a href="/auth/logout.php" class="btn btn-danger mt-3">Logout</a>
-  </div>
->>>>>>> parent of f36b17c (checkout page)
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    // Set current year in footer
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('current-year')) {
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        }
+        
+        // Get user data
+        const userData = localStorage.getItem('DRFUser');
+        let user = null;
+        if (userData) {
+            try {
+                user = JSON.parse(userData);
+            } catch (e) {
+                console.error('Error parsing user data:', e);
+            }
+        }
+        
+        // Tab navigation
+        const tabLinks = document.querySelectorAll('[data-tab]');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        function showTab(tabId) {
+            // Hide all tabs
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            tabLinks.forEach(link => link.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabId + '-tab').classList.add('active');
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Load data if needed
+            if (user) {
+                const userId = user.user_id || user.id;
+                if (tabId === 'orders') loadOrders(userId);
+                if (tabId === 'wishlist') loadWishlist(userId);
+                if (tabId === 'designs') loadDesigns(userId);
+            }
+        }
+        
+        // Add click event to all tab links
+        tabLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+        
+        // Also add click events to dashboard card buttons
+        document.querySelectorAll('.tab-link').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+        
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('DRFUser');
+                fetch('/auth/logout.php').finally(() => {
+                    window.location.href = '/index.php';
+                });
+            }
+        });
+        
+        // Personal data form
+        document.getElementById('personal-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (user) {
+                const userData = {
+                    user_id: user.user_id || user.id,
+                    name: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    gender: document.getElementById('gender').value
+                };
+                
+                // Update in database
+                fetch('/api/update_user.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update local storage
+                        user.name = userData.name;
+                        user.phone = userData.phone;
+                        user.gender = userData.gender;
+                        localStorage.setItem('DRFUser', JSON.stringify(user));
+                        
+                        // Update navbar username
+                        document.querySelectorAll('.user-name').forEach(el => {
+                            el.textContent = user.name;
+                        });
+                        
+                        alert('Personal information updated successfully!');
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating user data:', error);
+                    alert('An error occurred while updating your information.');
+                });
+            }
+        });
+        
+        // Delete account form
+        document.getElementById('delete-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const confirmText = document.getElementById('deleteConfirm').value;
+            const password = document.getElementById('password').value;
+            
+            if (confirmText !== 'DELETE') {
+                alert('Please type DELETE to confirm account deletion');
+                return;
+            }
+            
+            if (!password) {
+                alert('Please enter your password');
+                return;
+            }
+            
+            if (confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.')) {
+                const userId = user.user_id || user.id;
+                
+                fetch('/api/delete_account.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.removeItem('DRFUser');
+                        alert('Your account has been deleted successfully.');
+                        window.location.href = '/index.php';
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting account:', error);
+                    alert('An error occurred while trying to delete your account.');
+                });
+            }
+        });
+        
+        // API data loading functions
+        function loadOrders(userId) {
+            const container = document.getElementById('orders-container');
+            
+            fetch(`/api/orders.php?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.orders && data.orders.length > 0) {
+                        let html = '';
+                        data.orders.forEach(order => {
+                            const date = new Date(order.created_at).toLocaleDateString();
+                            html += `
+                                <div class="card mb-3">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Order #${order.order_id}</h5>
+                                        <span class="badge bg-${getStatusBadge(order.status)}">${order.status}</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Date:</strong> ${date}</p>
+                                        <p><strong>Total:</strong> ₦${parseFloat(order.total).toLocaleString()}</p>
+                                        <button class="btn btn-sm btn-outline-primary">View Details</button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        container.innerHTML = html;
+                    } else {
+                        container.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You have no orders yet.
+                                <a href="/products.php" class="alert-link">Start shopping</a>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading orders:', error);
+                    container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i> Error loading orders.
+                        </div>
+                    `;
+                });
+        }
+        
+        function loadWishlist(userId) {
+            const container = document.getElementById('wishlist-container');
+            
+            fetch(`/api/wishlist.php?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.items && data.items.length > 0) {
+                        let html = '<div class="row">';
+                        data.items.forEach(item => {
+                            html += `
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100">
+                                        <img src="${item.image}" class="card-img-top" alt="${item.product_name}">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">${item.product_name}</h5>
+                                            <p class="card-text product-price">₦${parseFloat(item.price).toLocaleString()}</p>
+                                            <div class="mt-auto d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-primary">Add to Cart</button>
+                                                <button class="btn btn-sm btn-outline-danger">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        container.innerHTML = html;
+                    } else {
+                        container.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Your wishlist is empty.
+                                <a href="/products.php" class="alert-link">Browse products</a>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading wishlist:', error);
+                    container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i> Error loading wishlist.
+                        </div>
+                    `;
+                });
+        }
+        
+        function loadDesigns(userId) {
+            const container = document.getElementById('designs-container');
+            
+            fetch(`/api/get-designs.php?user_id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.designs && data.designs.length > 0) {
+                        let html = '<div class="row">';
+                        data.designs.forEach(design => {
+                            const designData = JSON.parse(design.design_data);
+                            const date = new Date(design.created_at).toLocaleDateString();
+                            html += `
+                                <div class="col-md-4 mb-4">
+                                    <div class="card h-100">
+                                        <img src="${designData.image || '/images/default.jpg'}" class="card-img-top" alt="${designData.name || 'Design'}">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5 class="card-title">${designData.name || 'Custom Design'}</h5>
+                                            <p class="text-muted small">Created on ${date}</p>
+                                            <p class="mb-1">Color: ${designData.color || 'N/A'}</p>
+                                            <p class="mb-1">Material: ${designData.material || 'N/A'}</p>
+                                            <p class="card-text product-price">₦${(designData.price || 0).toLocaleString()}</p>
+                                            <div class="mt-auto d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-primary">Add to Cart</button>
+                                                <a href="/customize.php?design_id=${design.design_id}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        container.innerHTML = html;
+                    } else {
+                        container.innerHTML = `
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> You have no saved designs.
+                                <a href="/customize.php" class="alert-link">Create a custom design</a>
+                            </div>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading designs:', error);
+                    container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i> Error loading designs.
+                        </div>
+                    `;
+                });
+        }
+        
+        function getStatusBadge(status) {
+            switch(status?.toLowerCase()) {
+                case 'completed': return 'success';
+                case 'processing': return 'warning';
+                case 'shipped': return 'info';
+                case 'cancelled': return 'danger';
+                default: return 'secondary';
+            }
+        }
+    });
+    </script>
 </body>
 </html>

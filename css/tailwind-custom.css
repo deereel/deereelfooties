@@ -1,0 +1,74 @@
+/* Tailwind Custom CSS */
+@layer base {
+  :root {
+    --color-primary: #4B2E2E;        /* Rich Dark Brown */
+    --color-secondary: #D2B48C;      /* Tan / Light Brown */
+    --color-accent: #C69C6D;         /* Caramel / Soft Bronze */
+    --color-background: #FFF8F0;     /* Warm Off-White */
+    --color-text-dark: #2B2B2B;      /* Charcoal Black */
+    --color-text-light: #FFFFFF;     /* White */
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-primary px-4 py-2 rounded hover:bg-secondary-dark transition-colors;
+  }
+  
+  .btn-outline {
+    @apply border border-white text-white px-4 py-2 rounded hover:bg-white hover:text-primary transition-colors;
+  }
+  
+  .text-primary {
+    @apply text-[color:var(--color-primary)];
+  }
+  
+  .text-secondary {
+    @apply text-[color:var(--color-secondary)];
+  }
+  
+  .text-accent {
+    @apply text-[color:var(--color-accent)];
+  }
+  
+  .bg-primary {
+    @apply bg-[color:var(--color-primary)];
+  }
+  
+  .bg-secondary {
+    @apply bg-[color:var(--color-secondary)];
+  }
+  
+  .bg-accent {
+    @apply bg-[color:var(--color-accent)];
+  }
+  
+  .bg-background {
+    @apply bg-[color:var(--color-background)];
+  }
+  
+  /* Navbar dropdown styling */
+  .navbar .dropdown-menu {
+    @apply bg-[color:var(--color-text-light)] border border-[color:var(--color-border)];
+  }
+  
+  .navbar .dropdown-item {
+    @apply text-[color:var(--color-text-dark)] hover:bg-[color:var(--color-secondary)] hover:text-[color:var(--color-primary)];
+  }
+  
+  .navbar .dropdown-submenu > .dropdown-menu {
+    @apply bg-[color:var(--color-text-light)] border border-[color:var(--color-border)];
+  }
+  
+  .navbar-nav .nav-link, .navbar a, .nav-link, header a {
+    @apply text-[color:var(--color-text-light)] !important;
+  }
+  
+  .navbar-nav .nav-link:hover, .navbar a:hover, .nav-link:hover, header a:hover {
+    @apply text-[color:var(--color-secondary)] !important;
+  }
+}

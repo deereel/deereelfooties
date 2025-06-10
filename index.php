@@ -17,8 +17,8 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                 <h1 class="text-5xl md:text-6xl font-light mb-4">Handcrafted Excellence</h1>
                 <p class="text-xl mb-8">Premium footwear made with passion and precision</p>
                 <div class="flex flex-wrap gap-4">
-                  <a href="/men.php" class="btn-primary px-8 py-3 bg-white text-black hover:bg-gray-100 transition">Shop Men</a>
-                  <a href="/women.php" class="btn-outline px-8 py-3 border-2 border-white text-white hover:bg-white hover:text-black transition">Shop Women</a>
+                  <a href="/men.php" class="btn-primary px-8 py-3">Shop Men</a>
+                  <a href="/women.php" class="btn-outline px-8 py-3">Shop Women</a>
                 </div>
               </div>
             </div>
@@ -34,7 +34,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                 <h1 class="text-5xl md:text-6xl font-light mb-4">Luxury Redefined</h1>
                 <p class="text-xl mb-8">Experience the perfect blend of comfort and style</p>
                 <div class="flex flex-wrap gap-4 justify-end">
-                  <a href="/customize.php" class="btn-primary px-8 py-3 bg-white text-black hover:bg-gray-100 transition">Customize Now</a>
+                  <a href="/customize.php" class="btn-primary px-8 py-3">Customize Now</a>
                 </div>
               </div>
             </div>
@@ -89,7 +89,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
 
 
   <!-- New Arrivals Section -->
-  <section class="py-20 bg-gray-50">
+  <section class="py-20 bg-background">
     <div class="container mx-auto px-4">
       <div class="flex flex-wrap items-center justify-between mb-12">
         <h2 class="text-3xl font-light">New Arrivals</h2>
@@ -117,11 +117,11 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                        class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                 </div>
                 <?php if ($product['is_new_collection']): ?>
-                <span class="absolute top-4 left-4 bg-black text-white text-xs px-2 py-1">NEW</span>
+                <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">NEW</span>
                 <?php endif; ?>
               </div>
               <h3 class="font-medium text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              <p class="text-accent font-semibold">₦<?= number_format($product['price']) ?></p>
             </a>
           </div>
         <?php 
@@ -138,7 +138,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                 </div>
               </div>
               <h3 class="font-medium text-lg">New Product</h3>
-              <p class="text-gray-500">₦0</p>
+              <p class="text-accent font-semibold">₦0</p>
             </a>
           </div>
         <?php 
@@ -190,7 +190,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
   </section>
 
   <!-- Featured Products Section -->
-  <section class="py-20 bg-gray-50">
+  <section class="py-20 bg-background">
     <div class="container mx-auto px-4">
       <div class="flex flex-wrap items-center justify-between mb-12">
         <h2 class="text-3xl font-light">Featured Products</h2>
@@ -222,7 +222,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                 <?php endif; ?>
               </div>
               <h3 class="font-medium text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              <p class="text-accent font-semibold">₦<?= number_format($product['price']) ?></p>
             </a>
           </div>
         <?php 
@@ -239,7 +239,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
                 </div>
               </div>
               <h3 class="font-medium text-lg">Featured Product</h3>
-              <p class="text-gray-500">₦0</p>
+              <p class="text-accent font-semibold">₦0</p>
             </a>
           </div>
         <?php 
@@ -259,7 +259,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
       <h2 class="text-3xl font-light mb-12 text-center">What Our Customers Say</h2>
       
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+        <div class="bg-background p-8 rounded-lg shadow-sm">
           <div class="flex text-yellow-400 mb-4">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
@@ -277,7 +277,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
           </div>
         </div>
         
-        <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+        <div class="bg-background p-8 rounded-lg shadow-sm">
           <div class="flex text-yellow-400 mb-4">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
@@ -295,7 +295,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
           </div>
         </div>
         
-        <div class="bg-gray-50 p-8 rounded-lg shadow-sm">
+        <div class="bg-background p-8 rounded-lg shadow-sm">
           <div class="flex text-yellow-400 mb-4">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
@@ -310,31 +310,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
               <h4 class="font-medium">David T.</h4>
               <p class="text-sm text-gray-500">Port Harcourt, Nigeria</p>
             </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-5.jpg" alt="Instagram Post 5" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-6.jpg" alt="Instagram Post 6" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-7.jpg" alt="Instagram Post 7" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
-          <div class="relative aspect-square overflow-hidden group">
-            <img src="/images/instagram-8.jpg" alt="Instagram Post 8" class="object-cover w-full h-full">
-            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-              <i class="fab fa-instagram text-white text-2xl"></i>
-            </div>
-          </div>
+          </div>          
         </div>
       </div>
     </div>
@@ -347,25 +323,14 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
       <p class="max-w-2xl mx-auto mb-8">Subscribe to receive updates on new collections, exclusive offers, and styling tips.</p>
       <form class="max-w-md mx-auto flex flex-wrap">
         <input type="email" placeholder="Your email address" class="flex-1 min-w-[200px] px-4 py-3 rounded-l text-black">
-        <button type="submit" class="bg-black text-white px-6 py-3 rounded-r hover:bg-gray-800 transition">Subscribe</button>
+        <button type="submit" class="bg-secondary text-primary px-6 py-3 rounded-r hover:bg-secondary-dark transition">Subscribe</button>
       </form>
     </div>
   </section>
 
   
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-<<<<<<< HEAD
-=======
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
-
-  <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-  </a>
-
->>>>>>> parent of f36b17c (checkout page)
+ <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
@@ -374,16 +339,29 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
 
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-<<<<<<< HEAD
   
-=======
-
->>>>>>> parent of f36b17c (checkout page)
+  <!-- Swiper JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/css/slider.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
 
 </body>
 </html>

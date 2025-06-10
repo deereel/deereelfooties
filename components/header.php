@@ -10,21 +10,55 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
-  <<link href="/css/styles.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
- <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+  
+  <!-- Color scheme first to ensure variables are available -->
+  <link href="/css/colors.css" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="/css/tailwind-custom.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/customize.css">
+  
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  
+  <!-- Google Sign-In -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Tailwind Config -->
   <script>
-        // Suppress Tailwind production warning
-        window.process = {env: {NODE_ENV: 'production'}};
-    </script>
+    // Suppress Tailwind production warning
+    window.process = {env: {NODE_ENV: 'production'}};
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: 'var(--color-primary)',
+            secondary: 'var(--color-secondary)',
+            accent: 'var(--color-accent)',
+            background: 'var(--color-background)',
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
     /* Top-level dropdown appears on hover */
@@ -45,6 +79,15 @@
       left: 0;
       z-index: 1000;
       margin-top: 0.5rem;
+    }
+    
+    /* User account dropdown specific styling */
+    .dropdown-menu-end {
+      position: absolute !important;
+      transform: none !important;
+      top: 100% !important;
+      right: 0 !important;
+      left: auto !important;
     }
   
     /* Remove Bootstrap's default down arrow */
@@ -88,15 +131,15 @@
 
     /* Scroll to Top Custom Styling */
     #scrollToTop {
-      background-color: #381819; /* Dark chocolate background */
-      color: #fff; /* White icon color */
+      background-color: var(--color-primary); 
+      color: var(--color-text-light);
       align-items: center;
       justify-content: center;
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
     #scrollToTop:hover {
-      background-color: #5a2a2b; /* Lighter chocolate on hover */
+      background-color: var(--color-primary-hover);
       transform: scale(1.1);
     }
 
@@ -105,38 +148,38 @@
     }
 
     .selected {
-      border: 2px solid black !important;
+      border: 2px solid var(--color-primary) !important;
     }
     .thumb:hover {
       cursor: pointer;
-      border: 2px solid black;
+      border: 2px solid var(--color-primary);
     }
 
     .color-option:hover {
       cursor: pointer;
-      border: 2px solid black;
+      border: 2px solid var(--color-primary);
     }
 
     .size-option:hover {
       cursor: pointer;
-      border: 2px solid black;
+      border: 2px solid var(--color-primary);
     }
 
     .width-option:hover {
       cursor: pointer;
-      border: 2px solid black;
+      border: 2px solid var(--color-primary);
     }
 
     .quantity-btn {
-      background-color: #381819; /* Dark chocolate background */
-      color: #fff; /* White text color */
-      border: none; /* Remove default border */
-      padding: 10px 15px; /* Add some padding */
-      cursor: pointer; /* Change cursor to pointer on hover */
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
     }
 
     .quantity-btn:hover {
-      background-color: #5a2a2b; /* Lighter chocolate on hover */
+      background-color: var(--color-primary-hover);
     }
 
     /* Hide number input spinners */
@@ -149,20 +192,5 @@
       appearance: textfield;
       -moz-appearance: textfield;
     }
-
   </style>
-  
-  
-    
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-  <!-- Your custom CSS -->
-  <link rel="stylesheet" href="/css/style.css">
 </head>

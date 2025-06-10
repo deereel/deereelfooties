@@ -1,10 +1,9 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<<<<<<< HEAD
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?><body class="bg-background" data-page="men-shoes">
-=======
+<?php 
+include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); 
+require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
+?>
 
 <body data-page="men-shoes">
->>>>>>> parent of f36b17c (checkout page)
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
@@ -22,8 +21,6 @@
         </div>
       </div>
    
-      <!-- Filters and product grid structure would remain the same -->
-
       <!-- Mobile-only Inner Filter for Shoe Types -->
     <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
       <button onclick="filterByType('loafers')" data-type="loafers" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
@@ -176,7 +173,7 @@
     </div>
   </main>
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+ <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
@@ -185,9 +182,7 @@
 
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 </body>
 </html>

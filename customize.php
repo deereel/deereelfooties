@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
+<?php 
+include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
 
 // Check if we're editing an existing design
 $designId = isset($_GET['design_id']) ? intval($_GET['design_id']) : 0;
@@ -16,28 +17,8 @@ if ($designId > 0) {
 }
 ?>
 
-<<<<<<< HEAD
-<body class="bg-background" data-page="customize">
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); 
-  
-  // Check if we're editing an existing design
-  $designId = isset($_GET['design_id']) ? intval($_GET['design_id']) : 0;
-  $designData = null;
-=======
 <body data-page="customize">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
->>>>>>> parent of f36b17c (checkout page)
-
-  if ($designId > 0) {
-    $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE design_id = ?");
-    $stmt->execute([$designId]);
-    $design = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-    if ($design) {
-      $designData = json_decode($design['design_data'], true);
-    }
-  }
-  ?>
 
   <!-- Hero Section -->
   <section class="hero-section" style="background-image: url('/images/cram solid oxford.webp');">
@@ -106,6 +87,24 @@ if ($designId > 0) {
     </div>
   </section>
 
+  <!-- Saved Designs Section -->
+  <section class="py-10 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-light mb-4">Your Saved Designs</h2>
+        <p class="text-gray-600">Continue working on your previously saved designs</p>
+      </div>
+      
+      <div id="saved-designs-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Designs will be loaded here via JavaScript -->
+        <div class="text-center py-8">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2">Loading your saved designs...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Customizer Section -->
   <section id="customizer" class="py-20 bg-gray-50">
     <div class="container mx-auto px-4">
@@ -128,7 +127,10 @@ if ($designId > 0) {
               <h3 class="text-xl font-medium mb-2" id="preview-title">Oxford Cap Toe</h3>
               <p class="text-gray-600 mb-4" id="preview-description">Classic formal shoe with cap toe detail</p>
               <p class="text-2xl font-bold" id="preview-price">₦85,000</p>
-              <p class="text-sm text-gray-500">*Custom pricing includes premium materials and handcrafting</p>
+              <p class="text-sm text-gray-500 mb-4">*Custom pricing includes premium materials and handcrafting</p>
+              <button id="view-3d-btn" class="px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition">
+                <i class="fas fa-cube mr-2"></i> View in 3D
+              </button>
             </div>
           </div>
         </div>
@@ -197,21 +199,24 @@ if ($designId > 0) {
                   </div>
                 </label>
               </div>
-
-            <!-- Replace the size options with this -->
-            <div class="grid grid-cols-4 gap-2" id="size-options">
-              <?php for ($i = 37; $i <= 47; $i++): ?>
-              <button class="border border-gray-300 py-2 hover:border-black transition size-option" data-size="<?= $i ?>"><?= $i ?></button>
-              <?php endfor; ?>
             </div>
 
+            <!-- Size Selection -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">4. Select Size</h3>
+              <div class="grid grid-cols-4 gap-2" id="size-options">
+                <?php for ($i = 37; $i <= 47; $i++): ?>
+                <button class="border border-gray-300 py-2 hover:border-black transition size-option" data-size="<?= $i ?>"><?= $i ?></button>
+                <?php endfor; ?>
+              </div>
+            </div>
 
             <!-- Action Buttons -->
             <div class="pt-6 border-t">
-              <button class="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition font-medium mb-4">
+              <button id="add-to-cart-btn" class="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition font-medium mb-4">
                 Add to Cart - <span id="final-price">₦85,000</span>
               </button>
-              <button class="w-full border-2 border-black text-black py-4 rounded-lg hover:bg-black hover:text-white transition font-medium">
+              <button id="save-design-btn" class="w-full border-2 border-black text-black py-4 rounded-lg hover:bg-black hover:text-white transition font-medium">
                 Save Design
               </button>
             </div>
@@ -220,6 +225,21 @@ if ($designId > 0) {
       </div>
     </div>
   </section>
+
+  <!-- 3D Preview Modal -->
+  <div id="preview-3d-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <div class="p-4 border-b flex justify-between items-center">
+        <h3 class="text-xl font-medium">3D Preview</h3>
+        <button id="close-3d-btn" class="text-gray-500 hover:text-black">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+      <div class="p-4">
+        <canvas id="shoe-3d-canvas" class="w-full" style="height: 500px;"></canvas>
+      </div>
+    </div>
+  </div>
 
   <!-- Features Section -->
   <section class="py-20 bg-white">
@@ -256,9 +276,8 @@ if ($designId > 0) {
     </div>
   </section>
 
-  
   <script>
-  // Pass PHP data to JavaScript
+    // Pass PHP data to JavaScript
     var designData = <?php echo $designData ? json_encode($designData) : 'null'; ?>;
   </script>
 
@@ -271,12 +290,14 @@ if ($designId > 0) {
 
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-  <script src="/js/customize.js"></script> 
-
-</script>
+  
+  <!-- Three.js for 3D preview -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="/js/shoe-viewer.js"></script>
+  <script src="/js/customize.js"></script>
 </body>
 </html>

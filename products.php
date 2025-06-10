@@ -6,89 +6,7 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
 <body data-page="products">
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
-
   <!-- Main Content -->
-<<<<<<< HEAD
-  <main class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-light mb-6">All Products</h1>
-    
-    <!-- Filter and Sort Controls -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-      <div class="flex flex-wrap gap-2 mb-4 md:mb-0">
-        <button class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100 active" data-type="all">
-          All
-        </button>
-        <button class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100" data-type="oxford">
-          Oxford
-        </button>
-        <button class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100" data-type="loafer">
-          Loafers
-        </button>
-        <button class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100" data-type="boot">
-          Boots
-        </button>
-        <button class="type-filter px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100" data-type="mule">
-          Mules
-        </button>
-      </div>
-      
-      <div>
-        <select id="sortSelect" class="border p-2 rounded">
-          <option value="">Sort by latest</option>
-          <option value="low">Sort by price: low to high</option>
-          <option value="high">Sort by price: high to low</option>
-        </select>
-      </div>
-    </div>
-    
-    <!-- Product Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
-      <?php
-      try {
-        // Direct database query instead of using API
-        $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        if (count($products) > 0) {
-          foreach ($products as $product):
-      ?>
-        <div class="group product-card relative"
-            data-price="<?= $product['price'] ?>"
-            data-size="<?= $product['sizes'] ?>"
-            data-color="<?= $product['colors'] ?>"
-            data-type="<?= $product['type'] ?>"
-            data-gender="<?= $product['gender'] ?>"
-            data-name="<?= $product['name'] ?>"
-            data-description="<?= $product['short_description'] ?>">
-          <!-- Add wishlist button -->
-          <div class="absolute top-2 right-2 z-10">
-            <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
-                    data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
-                    data-product-name="<?= $product['name'] ?>"
-                    data-product-price="<?= $product['price'] ?>"
-                    data-product-image="<?= $product['main_image'] ?>">
-              <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
-            </button>
-          </div>
-          <a href="product.php?slug=<?= $product['slug'] ?>">
-            <div class="relative aspect-[3/4] overflow-hidden mb-4">
-              <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                  class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-            </div>
-            <h3 class="text-lg"><?= $product['name'] ?></h3>
-            <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-          </a>
-        </div>
-      <?php 
-          endforeach;
-        } else {
-          echo '<div class="col-span-full text-center py-8">No products found in the database.</div>';
-        }
-      } catch (PDOException $e) {
-        echo '<div class="col-span-full text-center py-8">Error loading products: ' . $e->getMessage() . '</div>';
-      }
-      ?>
-=======
   <main>
     <div class="max-w-7xl mx-auto px-4 py-8">
       <div class="mb-8">
@@ -184,72 +102,52 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
   
           <!-- Product Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
-            <!-- Example Product -->
-            <div class="group product-card"
-                  data-price="55000"
-                  data-size="40,41,42,43,44,45,46"
-                  data-color="tan"
-                  data-type="oxford"
-                  data-gender="men">
-              <a href="/products/men/shoes/oxford-cap-toe-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/Oxford Cap Toe 600.webp" alt="Oxford Cap Toe 600"
+            <?php
+            try {
+              // Direct database query instead of using API
+              $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
+              $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              
+              if (count($products) > 0) {
+                foreach ($products as $product):
+            ?>
+              <div class="group product-card relative"
+                  data-price="<?= $product['price'] ?>"
+                  data-size="<?= $product['sizes'] ?>"
+                  data-color="<?= $product['colors'] ?>"
+                  data-type="<?= $product['type'] ?>"
+                  data-gender="<?= $product['gender'] ?>"
+                  data-name="<?= $product['name'] ?>"
+                  data-description="<?= $product['short_description'] ?>">
+                <!-- Add wishlist button -->
+                <div class="absolute top-2 right-2 z-10">
+                  <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
+                          data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
+                          data-product-name="<?= $product['name'] ?>"
+                          data-product-price="<?= $product['price'] ?>"
+                          data-product-image="<?= $product['main_image'] ?>">
+                    <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
+                  </button>
+                </div>
+                <a href="product.php?slug=<?= $product['slug'] ?>">
+                  <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                    <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
                         class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Oxford Cap Toe 600</h3>
-                <p class="text-gray-500">₦55,000</p>
-              </a>
-            </div>
-
-            <div class="group product-card"
-                  data-price="42000"
-                  data-size="40,41,42,43,44,45,46"
-                  data-color="brown"
-                  data-type="loafer"
-                  data-gender="men">
-              <a href="/products/men/shoes/penny-loafer-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/penny loafer 600.webp" alt="Penny Loafer 600"
-                        class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Penny Loafer 600</h3>
-                <p class="text-gray-500">₦42,000</p>
-              </a>
-            </div>
-
-            <div class="group product-card"
-                 data-price="35000"
-                 data-size="39,40,41,42,43,44,45,46,47"
-                 data-color="tan,green,black,white"
-                 data-type="mule"
-                 data-gender="men">
-              <a href="/products/men/mules/vintage-croc-600.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/Vintage Croc 600.webp" alt="Vintage Croc 600"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Vintage Croc 600</h3>
-                <p class="text-gray-500">₦35,000</p>
-              </a>
-            </div>
-
-            <div class="group product-card"
-                 data-price="55000"
-                 data-size="39,40,41,42,43,44,45,46,47"
-                 data-color="tan,brown,black"
-                 data-type="oxford"
-                 data-gender="men">
-              <a href="/products/men/shoes/cram-solid-oxford.php">
-                <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                  <img src="/images/cram solid oxford.webp" alt="Cram Solid oxford"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                </div>
-                <h3 class="text-lg">Cram Solid Oxford</h3>
-                <p class="text-gray-500">₦55,000</p>
-              </a>
-            </div>
-  
-            <!-- Add more products as needed -->
+                  </div>
+                  <h3 class="text-lg"><?= $product['name'] ?></h3>
+                  <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+                </a>
+              </div>
+            <?php 
+                endforeach;
+              } else {
+                // Show placeholder if no products found
+                echo '<div class="col-span-full text-center py-8">No products found in the database.</div>';
+              }
+            } catch (PDOException $e) {
+              echo '<div class="col-span-full text-center py-8">Error loading products: ' . $e->getMessage() . '</div>';
+            }
+            ?>
           </div>
   
           <!-- Pagination -->
@@ -260,35 +158,19 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
           </div>
         </div>
       </div>      
->>>>>>> parent of f36b17c (checkout page)
     </div>
-
   </main>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-<<<<<<< HEAD
-=======
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
-  
 
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
->>>>>>> parent of f36b17c (checkout page)
-
-  <!-- Scroll to Top Button -->
-  <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
-    <i class="fas fa-chevron-up"></i>
-  </a>
-
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-<<<<<<< HEAD
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -345,10 +227,5 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
       });
     });
   </script>
-=======
-
-
-  
->>>>>>> parent of f36b17c (checkout page)
 </body>
 </html>

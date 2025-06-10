@@ -1,12 +1,10 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<<<<<<< HEAD
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?><body class="bg-background" data-page="women-boots">
-=======
+<?php 
+include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php');
+?>
 
 <body data-page="women-boots">
->>>>>>> parent of f36b17c (checkout page)
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
-
 
   <!-- Main Content -->
   <main>
@@ -22,28 +20,23 @@
           <span>Boots</span>
         </div>
       </div>
+      
+    <!-- Mobile-only Inner Filter for Boot Types -->
+    <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
+      <button onclick="filterByType('chelsea')" data-type="chelsea" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+        Chelsea Boots
+      </button>
+      <button onclick="filterByType('ankle')" data-type="ankle" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+        Ankle Boots
+      </button>
+      <button onclick="filterByType('knee')" data-type="knee" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+        Knee-High Boots
+      </button>
+      <button onclick="filterByType('riding')" data-type="riding" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
+        Riding Boots
+      </button>
+    </div>
 
-      !-- Mobile-only Inner Filter for Boot Types -->
-      <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
-        <button onclick="filterByType('chelsea')" data-type="chelsea" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Chelsea Boots
-        </button>
-        <button onclick="filterByType('captoe')" data-type="captoe" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Captoe Boots
-        </button>
-        <button onclick="filterByType('jodhpur')" data-type="jodhpur" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Jodhpur Boots
-        </button>
-        <button onclick="filterByType('wingtip')" data-type="wingtip" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Wingtip Boots
-        </button>
-        <button onclick="filterByType('zipper')" data-type="zipper" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Zipper Boots
-        </button>
-        <button onclick="filterByType('balmoral')" data-type="balmoral" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
-          Balmoral Boots
-        </button>
-      </div>
   
       <div class="flex flex-col md:flex-row gap-8">
         <!-- Sidebar Filters -->
@@ -62,6 +55,18 @@
             <div class="flex flex-wrap gap-2">
               <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
                           text-sm font-medium cursor-pointer transition"
+                  data-size="35">35</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="36">36</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="37">37</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
+                  data-size="38">38</div>
+              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                          text-sm font-medium cursor-pointer transition"
                   data-size="39">39</div>
               <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
                           text-sm font-medium cursor-pointer transition"
@@ -72,25 +77,10 @@
               <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
                           text-sm font-medium cursor-pointer transition"
                   data-size="42">42</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="43">43</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="44">44</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="45">45</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="46">46</div>
-              <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
-                          text-sm font-medium cursor-pointer transition"
-                  data-size="47">47</div>
             </div>
           </div>
 
-          <!-- FILTER BY COLOR (includes white + green) -->
+          <!-- FILTER BY COLOR -->
           <div class="mb-6">
             <h3 class="font-medium mb-3">FILTER BY COLOR</h3>
             <div class="flex flex-wrap gap-2">
@@ -117,11 +107,14 @@
           </div>
   
           <!-- Filter Tags Display -->
-          <div id="active-filters" class="mb-4 flex flex-wrap gap-2 text-sm"></div>  
+          <div id="active-filters" class="mb-4 flex flex-wrap gap-2 text-sm"></div>
+          
+          <!-- Product Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
             <?php
               // Get products from database            
               $gender = 'women';
-              $category = 'boots'; 
+              $category = 'boots';
               $singularCategory = rtrim($category, 's'); // Remove trailing 's' to get singular form
 
               $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = ? AND 
@@ -138,47 +131,46 @@
               ]);
               $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
               
-
-            
               if (count($products) > 0) {
                 foreach ($products as $product):
                   $colors = explode(',', $product['colors'] ?? '');
                   $sizes = explode(',', $product['sizes'] ?? '');
             ?>
-          <div class="group product-card"
-               data-price="<?= $product['price'] ?>"
-               data-size="<?= $product['sizes'] ?>"
-               data-color="<?= $product['colors'] ?>"
-               data-type="<?= $product['type'] ?>"
-               data-gender="<?= $product['gender'] ?>">
-            <a href="/product.php?slug=<?= $product['slug'] ?>">
-              <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-              </div>
-              <h3 class="text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-            </a>
-          </div>
-        <?php 
-              endforeach;
-            } else {
-              echo '<div class="col-span-3 text-center py-8">No products found in this category yet.</div>';
-            }
-            ?>
+            <div class="group product-card"
+                 data-price="<?= $product['price'] ?>"
+                 data-size="<?= $product['sizes'] ?>"
+                 data-color="<?= $product['colors'] ?>"
+                 data-type="<?= $product['type'] ?>"
+                 data-gender="<?= $product['gender'] ?>">
+              <a href="/product.php?slug=<?= $product['slug'] ?>">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg"><?= $product['name'] ?></h3>
+                <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              </a>
+            </div>
+          <?php 
+                endforeach;
+              } else {
+                echo '<div class="col-span-3 text-center py-8">No products found in this category yet.</div>';
+              }
+              ?>
           </div>
 
-        <!-- Pagination -->
-        <div class="pagination flex justify-center mt-12">
-          <div class="flex space-x-1">
-            <!-- JS will insert page buttons here -->
+          <!-- Pagination -->
+          <div class="pagination flex justify-center mt-12">
+            <div class="flex space-x-1">
+              <!-- JS will insert page buttons here -->
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+ <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
@@ -187,9 +179,7 @@
 
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 </body>
 </html>

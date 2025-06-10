@@ -1,33 +1,24 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<<<<<<< HEAD
+
 <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
-<body class="bg-background">
-=======
+<body class="bg-background data-page="cart">
+
 
 <body>
->>>>>>> parent of f36b17c (checkout page)
+
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <main class="max-w-7xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-light mb-8">Shopping Cart</h1>
-    
-    <!-- Cart Grid Layout: Items on left, Summary on right -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      
-      <!-- Cart Items (Left side - 2/3 width) -->
-      <div class="lg:col-span-2">
+
+
         <div id="cart-items">
           <!-- Cart items will be rendered here by JavaScript -->
         </div>
       </div>
       
       <!-- Cart Summary (Right side - 1/3 width) -->
-      <div class="lg:col-span-1">
-        <div id="cart-summary" class="bg-gray-50 p-6 rounded-lg sticky top-4">
-          <!-- Shipping progress will be inserted here -->
-          
-          <h3 class="text-lg font-medium mb-4">Order Summary</h3>
-          
+
+
           <div class="space-y-3 mb-6">
             <div class="flex justify-between">
               <span>Subtotal</span>
@@ -43,10 +34,44 @@
             </div>
           </div>
 
-          <!-- Customer Information Form -->
-          <div class="space-y-4">
-            <div>
-              <label for="client-name" class="block text-sm font-medium mb-1">Full Name</label>
+          <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Subtotal</span>
+                  <strong id="subtotal">₦0.00</strong>
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Shipping</span>
+                  <strong id="shipping">₦0.00</strong>
+                </li>
+                <!-- Shipping Hint & Progress -->
+                <li class="list-group-item">
+                  <small class="text-muted d-block mb-2">
+                    Shipping fee will be calculated based on your delivery address.
+                  </small>
+                  <small class="text-muted" id="shipping-hint">
+                    Free shipping on orders above ₦150,000 within Lagos and ₦250,000 outside Lagos.
+                  </small>
+                  <!-- Free Shipping Progress Bar -->
+                  <div class="progress mt-3 rounded-pill" style="height: 14px; background-color: #e9ecef;">
+                    <div
+                      class="progress-bar rounded-pill"
+                      id="shipping-progress"
+                      style="width: 0%; transition: width 0.6s ease;"
+                    ></div>
+                  </div>
+                  <small id="shipping-progress-label" class="d-block mt-2 fw-medium text-sm text-muted">
+                    <!-- Label gets updated dynamically -->
+                  </small>
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <span>Total</span>
+                  <strong id="total">₦0.00</strong>
+                </li>
+              </ul>
+
+
+
               <input type="text" id="client-name" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Enter your full name">
             </div>
             
@@ -61,8 +86,8 @@
               <p class="mb-2">
                 <strong>Bank Name:</strong> OPAY Digital Bank<br>
                 <strong>Account Name:</strong> Oladayo Quadri<br>
-                <strong>Account Number:</strong> 8134235110
-              </p>
+
+
               <p class="mb-0">
                 <strong>Bank Name:</strong> Stanbic IBTC Bank<br>
                 <strong>Account Name:</strong> Oladayo Quadri<br>
@@ -70,18 +95,8 @@
               </p>
             </div>
 
-            <!-- Proof of Payment Upload -->
-            <div class="mb-4">
-              <label for="payment-proof" class="form-label">Upload Proof of Payment</label>
-              <input class="form-control" type="file" id="payment-proof" accept="image/*,.pdf">
-            </div>
-            <!-- Proof Preview -->
-            <div id="proof-preview" class="mb-3 text-center d-none">
-              <p class="text-muted">Preview:</p>
-              <!-- Image Preview -->
-              <img id="proof-image" src="" alt="Payment Proof" class="img-fluid rounded shadow-sm mb-2" style="max-height: 200px; display: none;">
 
-              <!-- PDF Preview -->
+
               <embed id="proof-pdf" type="application/pdf" width="100%" height="200px" style="display: none; border: 1px solid #ccc;" />
             </div>
 

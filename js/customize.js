@@ -1,201 +1,147 @@
-// js/customize.js - Complete updated version
-
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Customize.js loaded');
-  
-  // Check if we're on the customize page
+  // Elements
   const shoePreview = document.getElementById('shoe-preview');
-  if (!shoePreview) {
-    console.log('Not on customize page');
-    return;
-  }
+  const previewTitle = document.getElementById('preview-title');
+  const previewDescription = document.getElementById('preview-description');
+  const previewPrice = document.getElementById('preview-price');
+  const finalPrice = document.getElementById('final-price');
+  const styleOptions = document.querySelectorAll('.custom-option');
+  const colorOptions = document.querySelectorAll('.custom-color');
+  const materialOptions = document.querySelectorAll('input[name="material"]');
+  const sizeOptions = document.querySelectorAll('.size-option');
+  const savedDesignsContainer = document.getElementById('saved-designs-container');
+  const saveDesignBtn = document.getElementById('save-design-btn');
+  const addToCartBtn = document.getElementById('add-to-cart-btn');
+  const view3dBtn = document.getElementById('view-3d-btn');
+  const preview3dModal = document.getElementById('preview-3d-modal');
+  const close3dBtn = document.getElementById('close-3d-btn');
   
-  // Initial values
-  let selectedStyle = 'oxford';
-  let selectedColor = 'black';
-  let selectedMaterial = 'calf';
-  let selectedSize = '';
-  let basePrice = 85000;
-  let totalPrice = basePrice;
-  
-  // Image mappings
-  const shoeImages = {
-    oxford: {
-      black: '/images/Oxford Cap Toe 600.webp',
-      brown: '/images/cram solid oxford.webp',
-      tan: '/images/penny loafer 600.webp',
-      burgundy: '/images/Oxford Cap Toe 600.webp',
-      navy: '/images/cram solid oxford.webp'
-    },
-    derby: {
-      black: '/images/Oxford Cap Toe 600.webp',
-      brown: '/images/cram solid oxford.webp',
-      tan: '/images/penny loafer 600.webp',
-      burgundy: '/images/Oxford Cap Toe 600.webp',
-      navy: '/images/cram solid oxford.webp'
-    },
-    loafer: {
-      black: '/images/penny loafer 600.webp',
-      brown: '/images/penny loafer 600.webp',
-      tan: '/images/penny loafer 600.webp',
-      burgundy: '/images/penny loafer 600.webp',
-      navy: '/images/penny loafer 600.webp'
-    },
-    monk: {
-      black: '/images/Vintage Croc 600.webp',
-      brown: '/images/Vintage Croc 600.webp',
-      tan: '/images/Vintage Croc 600.webp',
-      burgundy: '/images/Vintage Croc 600.webp',
-      navy: '/images/Vintage Croc 600.webp'
-    }
+  // Base prices
+  const basePrices = {
+    oxford: 85000,
+    derby: 82000,
+    loafer: 78000,
+    monk: 88000
   };
   
-  // Style names and descriptions
-  const styleInfo = {
-    oxford: {
-      name: 'Oxford Cap Toe',
-      description: 'Classic formal shoe with cap toe detail',
-      price: 85000
-    },
-    derby: {
-      name: 'Derby Plain Toe',
-      description: 'Versatile shoe with open lacing system',
-      price: 82000
-    },
-    loafer: {
-      name: 'Penny Loafer',
-      description: 'Elegant slip-on with signature strap detail',
-      price: 78000
-    },
-    monk: {
-      name: 'Monk Strap',
-      description: 'Sophisticated shoe with buckle closure',
-      price: 88000
-    }
-  };
-  
-  // Material price adjustments and display names
+  // Material price adjustments
   const materialPrices = {
     calf: 0,
     suede: 10000,
     patent: 15000
   };
-
-  const materialNames = {
-    calf: 'Calf Leather',
-    suede: 'Suede Leather',
-    patent: 'Patent Leather'
-  };
   
-  // Elements
-  const previewTitle = document.getElementById('preview-title');
-  const previewDescription = document.getElementById('preview-description');
-  const previewPrice = document.getElementById('preview-price');
-  const styleOptions = document.querySelectorAll('.custom-option[data-style]');
-  const colorOptions = document.querySelectorAll('.custom-color');
-  const materialOptions = document.querySelectorAll('input[name="material"]');
-  const sizeOptions = document.querySelectorAll('.size-option');
-  const addToCartBtn = document.querySelector('.bg-black.text-white.py-4');
-  const saveDesignBtn = document.querySelector('.border-2.border-black');
+  // Current selections
+  let currentStyle = 'oxford';
+  let currentColor = 'black';
+  let currentMaterial = 'calf';
+  let currentSize = null;
   
-  console.log('Elements found:', {
-    shoePreview: !!shoePreview,
-    previewTitle: !!previewTitle,
-    previewDescription: !!previewDescription,
-    previewPrice: !!previewPrice,
-    styleOptions: styleOptions.length,
-    colorOptions: colorOptions.length,
-    materialOptions: materialOptions.length,
-    sizeOptions: sizeOptions.length,
-    addToCartBtn: !!addToCartBtn,
-    saveDesignBtn: !!saveDesignBtn
-  });
-
-  // Function to get current price from preview pane
-  function getCurrentPrice() {
-    if (previewPrice && previewPrice.textContent) {
-      return previewPrice.textContent;
-    }
-    return '₦' + totalPrice.toLocaleString();
-  }
-
-  // Function to update button text with price
-  function updateButtonPrice() {
-    if (addToCartBtn) {
-      const currentPrice = getCurrentPrice();
-      
-      // Update button text to include price
-      const buttonContent = addToCartBtn.innerHTML;
-      
-      // Check if button already has price
-      if (buttonContent.includes('₦')) {
-        // Replace existing price
-        addToCartBtn.innerHTML = buttonContent.replace(/₦[\d,]+/, currentPrice);
-      } else {
-        // Add price to button text
-        if (buttonContent.includes('ADD TO CART')) {
-          addToCartBtn.innerHTML = buttonContent.replace('ADD TO CART', `ADD TO CART - ${currentPrice}`);
-        } else {
-          addToCartBtn.innerHTML = `ADD TO CART - ${currentPrice}`;
-        }
-      }
-      
-      console.log('Button price updated:', currentPrice);
-    }
-  }
-  
-  // Update preview function
-  function updatePreview() {
-    console.log('Updating preview:', { selectedStyle, selectedColor, selectedMaterial });
+  // Load saved design if available
+  if (window.designData) {
+    currentStyle = designData.style || currentStyle;
+    currentColor = designData.color || currentColor;
+    currentMaterial = designData.material || currentMaterial;
+    currentSize = designData.size || currentSize;
     
-    // Update image
-    const imagePath = shoeImages[selectedStyle][selectedColor] || shoeImages.oxford.black;
-    console.log('Setting image path:', imagePath);
-    shoePreview.src = imagePath;
+    // Update UI to match saved design
+    document.querySelector(`.custom-option[data-style="${currentStyle}"]`).classList.add('active');
+    document.querySelector(`.custom-color[data-color="${currentColor}"]`).classList.add('active');
+    document.querySelector(`input[name="material"][value="${currentMaterial}"]`).checked = true;
+    
+    if (currentSize) {
+      document.querySelector(`.size-option[data-size="${currentSize}"]`).classList.add('selected');
+    }
+  }
+  
+  // Load saved designs
+  function loadSavedDesigns() {
+    if (!savedDesignsContainer) return;
+    
+    fetch('/api/saved-designs.php')
+      .then(response => response.json())
+      .then(designs => {
+        if (designs.length === 0) {
+          savedDesignsContainer.innerHTML = '<div class="col-span-full text-center py-8">You have no saved designs yet.</div>';
+          return;
+        }
+        
+        savedDesignsContainer.innerHTML = '';
+        designs.forEach(design => {
+          const designData = JSON.parse(design.design_data);
+          const card = document.createElement('div');
+          card.className = 'bg-white rounded-lg shadow-md overflow-hidden';
+          
+          card.innerHTML = `
+            <div class="aspect-[3/4] bg-gray-100">
+              <img src="/images/${designData.style}-${designData.color || 'black'}.jpg" 
+                   alt="Saved Design" 
+                   class="w-full h-full object-cover">
+            </div>
+            <div class="p-4">
+              <h3 class="font-medium">${design.design_name || 'Custom Design'}</h3>
+              <p class="text-sm text-gray-500">Created: ${new Date(design.created_at).toLocaleDateString()}</p>
+              <a href="/customize.php?design_id=${design.design_id}" 
+                 class="mt-3 inline-block px-4 py-2 bg-black text-white rounded hover:bg-gray-800 transition w-full text-center">
+                Load Design
+              </a>
+            </div>
+          `;
+          
+          savedDesignsContainer.appendChild(card);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading saved designs:', error);
+        savedDesignsContainer.innerHTML = '<div class="col-span-full text-center py-8">Error loading saved designs. Please try again later.</div>';
+      });
+  }
+  
+  // Update preview and price
+  function updatePreview() {
+    // Update image (in a real app, you'd have different images for each combination)
+    shoePreview.src = `/images/${currentStyle}-${currentColor}.jpg`;
     
     // Update title and description
-    const style = styleInfo[selectedStyle];
-    if (previewTitle) previewTitle.textContent = style.name;
-    if (previewDescription) previewDescription.textContent = style.description;
+    const titles = {
+      oxford: 'Oxford Cap Toe',
+      derby: 'Derby Plain Toe',
+      loafer: 'Penny Loafer',
+      monk: 'Double Monk Strap'
+    };
     
-    // Calculate price
-    basePrice = style.price;
-    const materialAdditional = materialPrices[selectedMaterial] || 0;
-    totalPrice = basePrice + materialAdditional;
+    const descriptions = {
+      oxford: 'Classic formal shoe with cap toe detail',
+      derby: 'Versatile shoe with open lacing system',
+      loafer: 'Elegant slip-on style with penny strap',
+      monk: 'Sophisticated shoe with double buckle closure'
+    };
     
-    console.log('Price calculation:', { basePrice, materialAdditional, totalPrice });
+    previewTitle.textContent = titles[currentStyle];
+    previewDescription.textContent = descriptions[currentStyle];
     
-    // Update price displays
-    const formattedPrice = '₦' + totalPrice.toLocaleString();
-    if (previewPrice) previewPrice.textContent = formattedPrice;
+    // Calculate and update price
+    const basePrice = basePrices[currentStyle];
+    const materialAdjustment = materialPrices[currentMaterial];
+    const totalPrice = basePrice + materialAdjustment;
     
-    // Update final price on button and button text
-    updateFinalPrice();
-    updateButtonPrice();
-  }
-
-  // Update final price function - moved inside DOMContentLoaded
-  function updateFinalPrice() {
-    const finalPriceElement = document.querySelector('.bg-black.text-white.py-4 .text-xl');
-    const formattedPrice = '₦' + totalPrice.toLocaleString();
+    previewPrice.textContent = `₦${totalPrice.toLocaleString()}`;
+    finalPrice.textContent = `₦${totalPrice.toLocaleString()}`;
     
-    console.log('Updating final price:', formattedPrice);
-    
-    if (finalPriceElement) {
-      finalPriceElement.textContent = formattedPrice;
-      console.log('Final price updated successfully');
-    } else {
-      console.warn('Final price element not found');
+    // Update 3D model if viewer is initialized
+    if (window.shoeViewer) {
+      window.shoeViewer.setStyle(currentStyle);
+      window.shoeViewer.setColor(currentColor);
+      window.shoeViewer.setMaterial(currentMaterial);
     }
   }
   
   // Style selection
   styleOptions.forEach(option => {
     option.addEventListener('click', function() {
-      console.log('Style clicked:', this.dataset.style);
-      styleOptions.forEach(opt => opt.classList.remove('active', 'border-black'));
-      this.classList.add('active', 'border-black');
-      selectedStyle = this.dataset.style;
+      styleOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      currentStyle = this.dataset.style;
       updatePreview();
     });
   });
@@ -203,11 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // Color selection
   colorOptions.forEach(option => {
     option.addEventListener('click', function() {
-      console.log('Color clicked:', this.dataset.color);
-      colorOptions.forEach(opt => opt.classList.remove('active', 'border-black'));
-      this.classList.remove('border-transparent', 'hover:border-gray-400');
-      this.classList.add('active', 'border-black');
-      selectedColor = this.dataset.color;
+      colorOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      currentColor = this.dataset.color;
       updatePreview();
     });
   });
@@ -215,8 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Material selection
   materialOptions.forEach(option => {
     option.addEventListener('change', function() {
-      console.log('Material changed:', this.value);
-      selectedMaterial = this.value;
+      currentMaterial = this.value;
       updatePreview();
     });
   });
@@ -224,209 +167,183 @@ document.addEventListener('DOMContentLoaded', function() {
   // Size selection
   sizeOptions.forEach(option => {
     option.addEventListener('click', function() {
-      console.log('Size clicked:', this.dataset.size);
-      sizeOptions.forEach(opt => opt.classList.remove('active', 'border-black', 'bg-black', 'text-white'));
-      this.classList.add('active', 'border-black', 'bg-black', 'text-white');
-      selectedSize = this.dataset.size;
+      sizeOptions.forEach(opt => opt.classList.remove('selected'));
+      this.classList.add('selected');
+      currentSize = this.dataset.size;
     });
   });
   
-  // Helper function to check if user is logged in
-  function isUserLoggedIn() {
-    return !!(
-      window.app?.auth?.isLoggedIn?.() || 
-      window.app?.auth?.getCurrentUser?.() ||
-      document.querySelector('[data-user-id]') ||
-      document.querySelector('.user-menu') ||
-      document.querySelector('.logout-btn') ||
-      localStorage.getItem('isLoggedIn') === 'true' ||
-      sessionStorage.getItem('user_id')
-    );
-  }
-
-  // Helper function to get user ID
-  function getUserId() {
-    if (window.app?.auth?.getCurrentUser?.()) {
-      return window.app.auth.getCurrentUser().user_id;
-    }
-    
-    const userIdElement = document.querySelector('[data-user-id]');
-    if (userIdElement) {
-      return userIdElement.dataset.userId;
-    }
-    
-    return sessionStorage.getItem('user_id') || localStorage.getItem('user_id');
-  }
-
-  // Fixed add to cart functionality
-  if (addToCartBtn) {
-    addToCartBtn.addEventListener('click', function() {
-      if (!selectedSize) {
-        alert('Please select a size before adding to cart');
-        return;
-      }
-      
-      const product = {
-        id: 'custom-' + Date.now(),
-        name: styleInfo[selectedStyle].name,
-        price: totalPrice,
-        image: shoeImages[selectedStyle][selectedColor],
-        color: selectedColor,
-        size: selectedSize,
-        material: selectedMaterial,
-        materialName: materialNames[selectedMaterial],
-        leatherType: materialNames[selectedMaterial], // For backward compatibility
-        width: 'D',
-        quantity: 1,
-        isCustom: true,
-        style: selectedStyle,
-        styleName: styleInfo[selectedStyle].name,
-        // Additional product details for cart display
-        productDetails: {
-          style: styleInfo[selectedStyle].name,
-          color: selectedColor,
-          material: materialNames[selectedMaterial],
-          size: selectedSize,
-          width: 'D (Standard)'
-        }
-      };
-      
-      console.log('Adding product to cart:', product);
-      
-      // Use the CartManager if available
-      if (window.app?.cart?.addToCart) {
-        console.log('Using CartManager');
-        window.app.cart.addToCart(product);
-        alert(`${product.name} added to cart!`);
-        return;
-      }
-      
-      // Fallback to direct localStorage manipulation
-      const isLoggedIn = isUserLoggedIn();
-      console.log('User logged in status:', isLoggedIn);
-      
-      if (isLoggedIn) {
-        const userId = getUserId();
-        console.log('User ID:', userId);
-        
-        if (userId) {
-          const userCartKey = `DRFCart_${userId}`;
-          let cart = JSON.parse(localStorage.getItem(userCartKey) || '[]');
-          cart.push(product);
-          localStorage.setItem(userCartKey, JSON.stringify(cart));
-          console.log('Added to user cart:', userCartKey);
-        } else {
-          console.warn('Could not determine user ID, falling back to guest cart');
-          let cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
-          cart.push(product);
-          localStorage.setItem('DRFCart', JSON.stringify(cart));
-        }
-      } else {
-        console.log('Adding to guest cart');
-        let cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
-        cart.push(product);
-        localStorage.setItem('DRFCart', JSON.stringify(cart));
-      }
-      
-      alert(`${product.name} added to cart!`);
-      
-      // Update cart count if function exists
-      if (window.app?.cart?.updateCartCount) {
-        window.app.cart.updateCartCount();
-      }
-    });
-  }
-  
-  // Save design button
+  // Save design
   if (saveDesignBtn) {
     saveDesignBtn.addEventListener('click', function() {
-      if (!selectedSize) {
-        alert('Please select a size before saving your design');
+      if (!currentSize) {
+        alert('Please select a size before saving your design.');
         return;
       }
       
-      const design = {
-        style: selectedStyle,
-        color: selectedColor,
-        material: selectedMaterial,
-        materialName: materialNames[selectedMaterial],
-        size: selectedSize,
-        price: totalPrice,
-        image: shoeImages[selectedStyle][selectedColor],
-        name: styleInfo[selectedStyle].name
+      const designName = prompt('Enter a name for your design:');
+      if (!designName) return;
+      
+      const designData = {
+        style: currentStyle,
+        color: currentColor,
+        material: currentMaterial,
+        size: currentSize
       };
       
-      console.log('Saving design:', design);
-      
-      if (isUserLoggedIn()) {
-        saveDesignToProfile(design);
-      } else {
-        if (confirm('You need to be logged in to save designs. Would you like to sign in now?')) {
-          $('#loginModal').modal('show');
-          sessionStorage.setItem('pendingDesign', JSON.stringify(design));
-        }
-      }
-    });
-  }
-  
-  // Function to save design to profile
-  function saveDesignToProfile(design) {
-    const userId = getUserId();
-    
-    fetch('/api/save-design.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        design: design
+      fetch('/api/save-design.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          design_name: designName,
+          design_data: designData
+        })
       })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('Your design has been saved to your profile!');
-      } else {
-        alert('Error saving design: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred while saving your design');
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Use a custom notification instead of alert
+          showNotification('Design saved successfully!');
+          loadSavedDesigns();
+        } else {
+          showNotification('Error saving design: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error saving design:', error);
+        showNotification('Error saving design. Please try again later.');
+      });
     });
   }
   
-  // Load existing design if available
-  if (typeof designData !== 'undefined' && designData) {
-    console.log('Loading existing design:', designData);
-    
-    if (designData.style) {
-      selectedStyle = designData.style;
-      const styleOption = document.querySelector(`.custom-option[data-style="${selectedStyle}"]`);
-      if (styleOption) styleOption.click();
+  // Add to cart
+  if (addToCartBtn) {
+    addToCartBtn.addEventListener('click', function() {
+      if (!currentSize) {
+        showNotification('Please select a size before adding to cart.');
+        return;
+      }
+      
+      const basePrice = basePrices[currentStyle];
+      const materialAdjustment = materialPrices[currentMaterial];
+      const totalPrice = basePrice + materialAdjustment;
+      
+      const productData = {
+        name: previewTitle.textContent,
+        price: totalPrice,
+        style: currentStyle,
+        color: currentColor,
+        material: currentMaterial,
+        size: currentSize,
+        image: shoePreview.src,
+        quantity: 1
+      };
+      
+      fetch('/api/add-to-cart.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showNotification('Added to cart successfully!');
+          // Update cart count if needed
+        } else {
+          showNotification('Error adding to cart: ' + data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+        showNotification('Error adding to cart. Please try again later.');
+      });
+    });
+  }
+  
+  // 3D Preview
+  if (view3dBtn) {
+    view3dBtn.addEventListener('click', function() {
+      if (preview3dModal) {
+        preview3dModal.classList.remove('hidden');
+        initializeShoeViewer();
+      }
+    });
+  }
+  
+  if (close3dBtn) {
+    close3dBtn.addEventListener('click', function() {
+      if (preview3dModal) {
+        preview3dModal.classList.add('hidden');
+      }
+    });
+  }
+  
+  // Initialize 3D viewer
+  function initializeShoeViewer() {
+    if (!window.shoeViewer) {
+      const canvas = document.getElementById('shoe-3d-canvas');
+      if (canvas) {
+        window.shoeViewer = new ShoeViewer(canvas);
+        window.shoeViewer.setStyle(currentStyle);
+        window.shoeViewer.setColor(currentColor);
+        window.shoeViewer.setMaterial(currentMaterial);
+        window.shoeViewer.render();
+      }
+    }
+  }
+  
+  // Custom notification function to replace alerts
+  function showNotification(message) {
+    // Remove any existing notification
+    const existingNotification = document.getElementById('custom-notification');
+    if (existingNotification) {
+      existingNotification.remove();
     }
     
-    if (designData.color) {
-      selectedColor = designData.color;
-      const colorOption = document.querySelector(`.custom-color[data-color="${selectedColor}"]`);
-      if (colorOption) colorOption.click();
-    }
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.id = 'custom-notification';
+    notification.className = 'fixed bottom-4 right-4 bg-black text-white py-3 px-6 rounded-lg shadow-lg z-50 transition-opacity duration-300';
+    notification.textContent = message;
     
-    if (designData.material) {
-      selectedMaterial = designData.material;
-      const materialOption = document.querySelector(`input[name="material"][value="${selectedMaterial}"]`);
-      if (materialOption) materialOption.checked = true;
-    }
+    // Add to document
+    document.body.appendChild(notification);
     
-    if (designData.size) {
-      selectedSize = designData.size;
-      const sizeOption = document.querySelector(`.size-option[data-size="${selectedSize}"]`);
-      if (sizeOption) sizeOption.click();
-    }
-  }    
-    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        notification.remove();
+      }, 300);
+    }, 3000);
+  }
+  
   // Initialize preview
   updatePreview();
-  console.log('Customize.js initialization complete');
+  
+  // Load saved designs
+  loadSavedDesigns();
+  
+  // Scroll to Top Button
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  
+  window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.style.display = 'flex';
+    } else {
+      scrollToTopBtn.style.display = 'none';
+    }
+  });
+  
+  scrollToTopBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
 });

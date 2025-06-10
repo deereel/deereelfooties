@@ -1,63 +1,81 @@
 <!-- Footer -->
-  <footer class="bg-white border-t">
+
+  <footer style="background-color: var(--color-primary) !important; color: var(--color-text-light) !important;" class="border-t">
     <!-- Main Footer -->
     <div class="max-w-7xl mx-auto py-12 px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <div>
-        <h3 class="font-medium mb-4">ABOUT DEEREEL FOOTIES</h3>
+
+        <h3 class="font-medium mb-4" style="color: var(--color-text-light) !important;">ABOUT DEEREEL FOOTIES</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/our-history.php" class="hover:underline">Our History</a>
+
+            <a href="/our-history.php" class="hover:underline" style="color: var(--color-text-light) !important;">Our History</a>
           </li>
           <li>
-            <a href="/shoemaking.php" class="hover:underline">Craftsmanship</a>
+
+            <a href="/shoemaking.php" class="hover:underline" style="color: var(--color-text-light) !important;">Craftsmanship</a>
           </li>
           <li>
-            <a href="/contact.php" class="hover:underline">Contact Us</a>
+
+            <a href="/contact.php" class="hover:underline" style="color: var(--color-text-light) !important;">Contact Us</a>
           </li>
           <li>
-            <a href="/careers.php" class="hover:underline">Careers</a>
+
+            <a href="/careers.php" class="hover:underline" style="color: var(--color-text-light) !important;">Careers</a>
           </li>
         </ul>
       </div>
 
       <div>
-        <h3 class="font-medium mb-4">CUSTOMER SERVICE</h3>
+
+        <h3 class="font-medium mb-4" style="color: var(--color-text-light) !important;">CUSTOMER SERVICE</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/shipping.php" class="hover:underline">Shipping & Delivery</a>
+
+            <a href="/shipping.php" class="hover:underline" style="color: var(--color-text-light) !important;">Shipping & Delivery</a>
           </li>
           <li>
-            <a href="/returns.php" class="hover:underline">Returns & Exchanges</a>
+
+            <a href="/returns.php" class="hover:underline" style="color: var(--color-text-light) !important;">Returns & Exchanges</a>
           </li>
           <li>
-            <a href="/size-guide.php" class="hover:underline">Size Guide</a>
+
+            <a href="/size-guide.php" class="hover:underline" style="color: var(--color-text-light) !important;">Size Guide</a>
           </li>
           <li>
-            <a href="/faq.php" class="hover:underline">FAQ</a>
+
+            <a href="/faq.php" class="hover:underline" style="color: var(--color-text-light) !important;">FAQ</a>
           </li>
           <li>
-            <a href="/care-guide.php" class="hover:underline">Shoe Care Guide</a>
+
+            <a href="/care-guide.php" class="hover:underline" style="color: var(--color-text-light) !important;">Shoe Care Guide</a>
           </li>
         </ul>
       </div>
 
       <div>
-        <h3 class="font-medium mb-4">SHOP</h3>
+
+        <h3 class="font-medium mb-4" style="color: var(--color-text-light) !important;">SHOP</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/men.php" class="hover:underline">Men's Collection</a>
+
+            <a href="/men.php" class="hover:underline" style="color: var(--color-text-light) !important;">Men's Collection</a>
           </li>
           <li>
-            <a href="/women.php" class="hover:underline">Women's Collection</a>
+
+            <a href="/women.php" class="hover:underline" style="color: var(--color-text-light) !important;">Women's Collection</a>
           </li>
           <li>
-            <a href="/customize.php" class="hover:underline">Customize</a>
+
+            <a href="/customize.php" class="hover:underline" style="color: var(--color-text-light) !important;">Customize</a>
           </li>
           <li>
-            <a href="/moo.php" class="hover:underline">MADE ON ORDER</a>
+
+            <a href="/moo.php" class="hover:underline" style="color: var(--color-text-light) !important;">MADE ON ORDER</a>
           </li>
           <li>
-            <a href="/products.php" class="hover:underline">Outlet</a>
+
+            <a href="/products.php" class="hover:underline" style="color: var(--color-text-light) !important;">Outlet</a>
           </li>          
         </ul>
       </div>
