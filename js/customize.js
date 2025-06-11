@@ -175,14 +175,29 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Save design
   if (saveDesignBtn) {
+    // Use a variable to track if a save operation is in progress
+    let isSaving = false;
+    
     saveDesignBtn.addEventListener('click', function() {
+      // Prevent multiple clicks
+      if (isSaving) return;
+      
       if (!currentSize) {
-        alert('Please select a size before saving your design.');
+        showNotification('Please select a size before saving your design.');
         return;
       }
       
+      // Set flag to prevent duplicate prompts
+      isSaving = true;
+      
+      // Create prompt dialog with safeguards
       const designName = prompt('Enter a name for your design:');
-      if (!designName) return;
+      
+      // Reset flag if user cancels
+      if (!designName) {
+        isSaving = false;
+        return;
+      }
       
       const designData = {
         style: currentStyle,
@@ -201,17 +216,23 @@ document.addEventListener('DOMContentLoaded', function() {
           design_data: designData
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
+        isSaving = false;
         if (data.success) {
-          // Use a custom notification instead of alert
           showNotification('Design saved successfully!');
           loadSavedDesigns();
         } else {
-          showNotification('Error saving design: ' + data.message);
+          showNotification('Error saving design: ' + (data.message || 'Please try again'));
         }
       })
       .catch(error => {
+        isSaving = false;
         console.error('Error saving design:', error);
         showNotification('Error saving design. Please try again later.');
       });
@@ -220,48 +241,104 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Add to cart
   if (addToCartBtn) {
+    // Use a variable to track if an add-to-cart operation is in progress
+    let isAddingToCart = false;
+    
     addToCartBtn.addEventListener('click', function() {
+      // Prevent multiple clicks
+      if (isAddingToCart) return;
+      
       if (!currentSize) {
         showNotification('Please select a size before adding to cart.');
         return;
       }
+      
+      // Set flag to prevent duplicate operations
+      isAddingToCart = true;
       
       const basePrice = basePrices[currentStyle];
       const materialAdjustment = materialPrices[currentMaterial];
       const totalPrice = basePrice + materialAdjustment;
       
       const productData = {
+        id: `custom-${currentStyle}-${currentColor}-${currentMaterial}`,
         name: previewTitle.textContent,
         price: totalPrice,
         style: currentStyle,
         color: currentColor,
         material: currentMaterial,
         size: currentSize,
+        width: 'D', // Default width
         image: shoePreview.src,
-        quantity: 1
+        quantity: 1,
+        isCustom: true
       };
       
-      fetch('/api/add-to-cart.php', {
+      // Store in local storage for guests, use API for logged-in users
+      const userId = getUserId();
+      
+      if (!userId) {
+        // Guest user - store in localStorage
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.push(productData);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        isAddingToCart = false;
+        showNotification('Added to cart successfully!');
+        return;
+      }
+      
+      // Logged-in user - use API
+      fetch('/api/sync_cart.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(productData)
+        body: JSON.stringify({
+          user_id: userId,
+          cart_items: [productData]
+        })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
+        isAddingToCart = false;
         if (data.success) {
           showNotification('Added to cart successfully!');
           // Update cart count if needed
         } else {
-          showNotification('Error adding to cart: ' + data.message);
+          showNotification('Error adding to cart: ' + (data.message || 'Please try again'));
         }
       })
       .catch(error => {
+        isAddingToCart = false;
         console.error('Error adding to cart:', error);
         showNotification('Error adding to cart. Please try again later.');
       });
     });
+  }
+  
+  // Helper function to get user ID - returns null if not logged in
+  function getUserId() {
+    // Check for user ID in various places
+    let userId = null;
+    
+    if (window.app?.auth?.getCurrentUser?.()) {
+      userId = window.app.auth.getCurrentUser().user_id;
+    } else {
+      const userIdElement = document.querySelector('[data-user-id]');
+      if (userIdElement && userIdElement.dataset.userId) {
+        userId = userIdElement.dataset.userId;
+      } else {
+        userId = sessionStorage.getItem('user_id') || localStorage.getItem('user_id');
+      }
+    }
+    
+    // Only return if it's a valid numeric ID
+    return userId && !isNaN(parseInt(userId)) ? userId : null;
   }
   
   // 3D Preview

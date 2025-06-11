@@ -143,30 +143,31 @@ function renderProductPage($slug) {
           </div>
 
           <!-- Quantity Selection and Add to Cart Button -->
-          <div class="flex border border-gray-300">
-            <button class="px-4 py-2 quantity-btn" data-action="decrease">-</button>
-            <input type="number" value="1" min="1" class="w-12 text-center focus:outline-none" id="quantity">
-            <button class="px-4 py-2 quantity-btn" data-action="increase">+</button>
-
-            <input type="hidden" id="selected-color" value="">
-            <input type="hidden" id="selected-size" value="">
-            <input type="hidden" id="selected-width" value="">
-            <input type="hidden" id="selected-quantity" value="1">
-            <button class="btn-primary btn-dark mt-3" id="add-to-cart-btn">Add to Cart</button>
+          <div class="mb-4">
+            <div class="d-flex mb-3">
+              <div class="flex border border-gray-300 w-32">
+                <button class="px-4 py-2 quantity-btn" data-action="decrease">-</button>
+                <input type="number" value="1" min="1" class="w-12 text-center focus:outline-none" id="quantity">
+                <button class="px-4 py-2 quantity-btn" data-action="increase">+</button>
+              </div>
+              
+              <div class="flex-grow ms-3">
+                <input type="hidden" id="selected-color" value="">
+                <input type="hidden" id="selected-size" value="">
+                <input type="hidden" id="selected-width" value="">
+                <input type="hidden" id="selected-quantity" value="1">
+                <button class="btn btn-primary w-100 h-100" id="add-to-cart-btn">Add to Cart</button>
+              </div>
+            </div>
           </div>
 
-          <!-- Add to Wishlist Button - Add this right after the Add to Cart button -->
-          <button class="add-to-wishlist border-2 border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition mt-3" 
-                  data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>">
-            <i class="far fa-heart mr-2"></i> ADD TO WISHLIST
-          </button>
-
           <!-- Additional Options -->
-          <div class="flex flex-col sm:flex-row gap-4 mb-8 mt-4">
-            <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
-              ADD TO WISHLIST
+          <div class="d-flex gap-3 mb-8">
+            <button class="add-to-wishlist border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" 
+                    data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>">
+              <i class="far fa-heart mr-2"></i> ADD TO WISHLIST
             </button>
-            <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
+            <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" id="customize-btn">
               CUSTOMIZE THIS SHOE
             </button>
           </div>
@@ -427,6 +428,7 @@ function renderProductPage($slug) {
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  <script src="/js/product.js"></script>
   
   <script>
     // Image change function
