@@ -1,5 +1,5 @@
 <?php
-// API endpoint to get user's saved designs
+// API endpoint to get user's orders
 header('Content-Type: application/json');
 require_once '../auth/db.php';
 
@@ -20,13 +20,20 @@ if ($userId <= 0) {
 }
 
 try {
-    // Query to get user's saved designs
-    $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE user_id = ? ORDER BY created_at DESC");
+    // Query to get user's orders
+    $stmt = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
     $stmt->execute([$userId]);
-    $designs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Return success response with designs
-    echo json_encode(['success' => true, 'designs' => $designs]);
+    // Get order items for each order
+    foreach ($orders as &$order) {
+        $stmt = $pdo->prepare("SELECT * FROM order_items WHERE order_id = ?");
+        $stmt->execute([$order['order_id']]);
+        $order['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    // Return success response with orders
+    echo json_encode(['success' => true, 'orders' => $orders]);
 } catch (PDOException $e) {
     // Return error response
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

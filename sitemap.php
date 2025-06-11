@@ -3,14 +3,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-<<<<<<< HEAD
 include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); 
 require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
 ?>
 <body class="bg-background" data-page="sitemap">
-=======
-<body data-page="sitemap">
->>>>>>> parent of f36b17c (checkout page)
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 

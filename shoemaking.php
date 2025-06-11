@@ -1,11 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<<<<<<< HEAD
 <?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
 <body class="bg-background" data-page="shoemaking">
-=======
-
-<body data-page="shoemaking">
->>>>>>> parent of f36b17c (checkout page)
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
 

@@ -1,39 +1,44 @@
 <?php
-// Create this file at: api/delete_design.php
+// API endpoint to delete a saved design
+header('Content-Type: application/json');
 require_once '../auth/db.php';
 
-// Set headers for JSON response
-header('Content-Type: application/json');
-
-// Only allow POST requests
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
+// Check if user is logged in
+session_start();
+if (!isset($_SESSION['user'])) {
+    echo json_encode(['success' => false, 'message' => 'User not logged in']);
     exit;
 }
 
-// Get data from request
+// Get request data
 $data = json_decode(file_get_contents('php://input'), true);
+$userId = isset($data['user_id']) ? intval($data['user_id']) : 0;
+$designId = isset($data['design_id']) ? intval($data['design_id']) : 0;
 
-// Validate required fields
-if (!isset($data['user_id']) || !isset($data['design_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+// Validate data
+if ($userId <= 0 || $designId <= 0) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request data']);
     exit;
 }
-
-$userId = $data['user_id'];
-$designId = $data['design_id'];
 
 try {
-    // Delete design
+    // Verify the design belongs to the user
+    $stmt = $pdo->prepare("SELECT * FROM saved_designs WHERE design_id = ? AND user_id = ?");
+    $stmt->execute([$designId, $userId]);
+    $design = $stmt->fetch();
+    
+    if (!$design) {
+        echo json_encode(['success' => false, 'message' => 'Design not found or does not belong to user']);
+        exit;
+    }
+    
+    // Delete the design
     $stmt = $pdo->prepare("DELETE FROM saved_designs WHERE design_id = ? AND user_id = ?");
     $stmt->execute([$designId, $userId]);
     
-    if ($stmt->rowCount() > 0) {
-        echo json_encode(['success' => true, 'message' => 'Design deleted successfully']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Design not found or you do not have permission to delete it']);
-    }
+    // Return success response
+    echo json_encode(['success' => true, 'message' => 'Design deleted successfully']);
 } catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Error deleting design: ' . $e->getMessage()]);
+    // Return error response
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
-?>

@@ -4,6 +4,13 @@ require_once '../auth/auth.php';
 
 header('Content-Type: application/json');
 
+// Define isLoggedIn if not already defined
+if (!function_exists('isLoggedIn')) {
+    function isLoggedIn() {
+        return isset($_SESSION['user_id']);
+    }
+}
+
 // Check if user is logged in
 if (!isLoggedIn()) {
     echo json_encode([]);
