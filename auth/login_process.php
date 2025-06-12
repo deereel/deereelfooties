@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     try {
-        $stmt = $pdo->prepare("SELECT id, username, email, password, role FROM users WHERE email = ? AND status = 'active'");
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND status = 'active'");
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -22,7 +22,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Regenerate session ID for security
             session_regenerate_id(true);
             
-            // Set session variables
+            // Store user data in session
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'name' => $user['username'],
+                'email' => $user['email'],
+                'role' => $user['role']
+            ];
+            
+            // Set session variables for backward compatibility
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];

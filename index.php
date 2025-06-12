@@ -1,9 +1,17 @@
 <?php
+// Start session at the very beginning of the application
+session_start();
 require_once 'auth/db.php';
-include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
-include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
 
+<body data-page="index">
   <!-- Hero Slider Section -->
   <section class="relative">
     <div class="swiper hero-swiper">
@@ -349,6 +357,36 @@ include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php');
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
+
+  document.addEventListener('DOMContentLoaded', function() {
       const swiper = new Swiper('.hero-swiper', {
         loop: true,
         autoplay: {

@@ -5,13 +5,7 @@ require_once '../auth/db.php';
 // Set headers for JSON response
 header('Content-Type: application/json');
 
-// Only allow GET requests
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
-    exit;
-}
-
-// Get user ID from request
+// Get user ID from query parameter
 $userId = isset($_GET['user_id']) ? intval($_GET['user_id']) : 0;
 
 if (!$userId) {
@@ -20,17 +14,17 @@ if (!$userId) {
 }
 
 try {
-    // Get cart items
     $stmt = $pdo->prepare("SELECT * FROM cart_items WHERE user_id = ?");
     $stmt->execute([$userId]);
-    $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Format cart items for frontend
+    // Format items for JavaScript
     $formattedItems = [];
-    foreach ($cartItems as $item) {
+    foreach ($items as $item) {
         $formattedItems[] = [
             'id' => $item['product_id'],
             'name' => $item['product_name'],
+            'product_name' => $item['product_name'],
             'price' => (float)$item['price'],
             'color' => $item['color'],
             'size' => $item['size'],
@@ -42,7 +36,7 @@ try {
         ];
     }
     
-    echo json_encode(['success' => true, 'cart_items' => $formattedItems]);
+    echo json_encode(['success' => true, 'items' => $formattedItems]);
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }

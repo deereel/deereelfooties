@@ -15,8 +15,19 @@ export function initAuth() {
       .then(data => {
         if (data.success) {
           localStorage.setItem('DRFUser', JSON.stringify(data.user));
+          
+          // Dispatch login event for cart manager
+          const loginEvent = new Event('userLogin');
+          window.dispatchEvent(loginEvent);
+          
           alert('Login successful!');
-          window.location.href = '/dashboard.php';
+          
+          // Redirect to appropriate cart page if on cart page
+          if (window.location.pathname === '/user-cart.php') {
+            window.location.href = '/logged-in-cart.php';
+          } else {
+            window.location.href = '/dashboard.php';
+          }
         } else {
           alert(data.error);
         }
@@ -61,8 +72,18 @@ export function initAuth() {
     logoutBtn.addEventListener('click', e => {
       e.preventDefault();
       localStorage.removeItem('DRFUser');
-      alert('Logged out!');
-      location.reload();
+      
+      // Dispatch logout event for cart manager
+      const logoutEvent = new Event('userLogout');
+      window.dispatchEvent(logoutEvent);
+      
+      // Redirect to appropriate cart page if on cart page
+      if (window.location.pathname === '/logged-in-cart.php') {
+        window.location.href = '/user-cart.php';
+      } else {
+        alert('Logged out!');
+        location.reload();
+      }
     });
   }
 }

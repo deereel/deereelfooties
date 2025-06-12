@@ -274,30 +274,29 @@ document.addEventListener('DOMContentLoaded', function() {
         isCustom: true
       };
       
-      // Store in local storage for guests, use API for logged-in users
-      const userId = getUserId();
-      
-      if (!userId) {
-        // Guest user - store in localStorage
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        cart.push(productData);
-        localStorage.setItem('cart', JSON.stringify(cart));
+      // Use the shared cart functionality from storage.js
+      try {
+        // Import dynamically
+        import('./storage.js').then(module => {
+          const { getCart, setCart } = module;
+          
+          // Get current cart
+          const cart = getCart();
+          
+          // Add the new item
+          cart.push(productData);
+          
+          // Save cart (this will handle both localStorage and server sync)
+          setCart(cart);
+          
+          isAddingToCart = false;
+          showNotification('Added to cart successfully!');
+        });
+      } catch (error) {
+        console.error('Error importing storage module:', error);
         isAddingToCart = false;
-        showNotification('Added to cart successfully!');
-        return;
+        showNotification('Error adding to cart. Please try again.');
       }
-      
-      // Logged-in user - use API
-      fetch('/api/sync_cart.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          cart_items: [productData]
-        })
-      })
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

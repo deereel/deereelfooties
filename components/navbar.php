@@ -1,3 +1,15 @@
+<?php
+// Get current user from session
+$currentUser = isset($_SESSION['user']) ? $_SESSION['user'] : null;
+// Fallback to old session format if needed
+if (!$currentUser && isset($_SESSION['user_id'])) {
+  $currentUser = [
+    'id' => $_SESSION['user_id'],
+    'name' => $_SESSION['username'] ?? 'User'
+  ];
+}
+?>
+
 <header class="sticky-top shadow-sm" style="background-color: var(--color-primary) !important;">
   <!-- First Row: Logo and Search Icon -->
   <div class="d-flex justify-content-between align-items-center px-4 py-1 mb-1">
@@ -119,40 +131,53 @@
         <a class="nav-link" href="/shoemaking.php" style="color: var(--color-text-light) !important;">Shoemaking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cart.php" style="color: var(--color-text-light) !important;">
+        <?php if ($currentUser): // Logged-in user ?>
+        <a class="nav-link position-relative" href="/logged-in-cart.php" style="color: var(--color-text-light) !important;">
           <i class="fas fa-shopping-cart"></i> Cart
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" style="display: none;"></span>
         </a>
+        <?php else: // Guest user ?>
+        <a class="nav-link position-relative" href="/cart.php" style="color: var(--color-text-light) !important;">
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" style="display: none;"></span>
+        </a>
+        <?php endif; ?>
       </li>
       
       <!-- User Account Dropdown -->
       <li class="nav-item dropdown">
         <!-- Logged out state -->
-        <a class="nav-link dropdown-toggle logged-out" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--color-text-light) !important;">
+        <a class="nav-link dropdown-toggle logged-out <?= $currentUser ? 'd-none' : '' ?>" href="#" id="userAccountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--color-text-light) !important;">
           <i class="fas fa-user"></i> Account
         </a>
         
         <!-- Logged in state -->
-        <a class="nav-link dropdown-toggle logged-in d-none" href="#" id="userAccountDropdownLoggedIn" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--color-text-light) !important;">
-          <i class="fas fa-user"></i> <span class="user-name">User</span>
+        <a class="nav-link dropdown-toggle logged-in <?= $currentUser ? '' : 'd-none' ?>" href="#" id="userAccountDropdownLoggedIn" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--color-text-light) !important;">
+          <i class="fas fa-user"></i> <span class="user-name"><?= $currentUser ? htmlspecialchars($currentUser['name']) : 'User' ?></span>
         </a>
         
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userAccountDropdown">
           <!-- Logged out state -->
-          <li class="logged-out"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
+          <li class="logged-out <?= $currentUser ? 'd-none' : '' ?>"><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In / Sign Up</a></li>
           
           <!-- Logged in state -->
-          <li class="logged-in d-none"><a class="dropdown-item" href="/dashboard.php"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-          <li class="logged-in d-none"><a class="dropdown-item" href="/dashboard.php#orders"><i class="fas fa-box me-2"></i>My Orders</a></li>
-          <li class="logged-in d-none"><a class="dropdown-item" href="/dashboard.php#wishlist"><i class="fas fa-heart me-2"></i>Wishlist</a></li>
-          <li class="logged-in d-none"><a class="dropdown-item" href="/dashboard.php#designs"><i class="fas fa-palette me-2"></i>My Designs</a></li>
-          <li class="logged-in d-none"><a class="dropdown-item" href="/dashboard.php#personal"><i class="fas fa-user-edit me-2"></i>Account Settings</a></li>
-          <li class="logged-in d-none"><hr class="dropdown-divider"></li>
-          <li class="logged-in d-none"><a href="#" class="dropdown-item logout-btn text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#orders"><i class="fas fa-box me-2"></i>My Orders</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#wishlist"><i class="fas fa-heart me-2"></i>Wishlist</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#designs"><i class="fas fa-palette me-2"></i>My Designs</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#personal"><i class="fas fa-user-edit me-2"></i>Account Settings</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><hr class="dropdown-divider"></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a href="#" class="dropdown-item logout-btn text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
         </ul>
       </li>
     </ul>
   </nav>
 </header>
+
+<?php if ($currentUser): ?>
+  <!-- Add user ID as meta tag for JavaScript -->
+  <meta name="user-id" content="<?= htmlspecialchars($currentUser['id'] ?? $currentUser['user_id'] ?? '') ?>">
+<?php endif; ?>
 
 <script>
 // Initialize user authentication state immediately
@@ -163,16 +188,43 @@ document.addEventListener('DOMContentLoaded', function() {
       const user = JSON.parse(storedUser);
       
       // Show username in navbar
-      document.querySelectorAll('.user-name').forEach(el => {
-        el.textContent = user.name;
+      document.querySelectorAll('.user-name').forEach(function(el) {
+        el.textContent = user.name || 'User';
       });
       
       // Show logged-in elements, hide logged-out elements
-      document.querySelectorAll('.logged-in').forEach(el => el.classList.remove('d-none'));
-      document.querySelectorAll('.logged-out').forEach(el => el.classList.add('d-none'));
+      document.querySelectorAll('.logged-in').forEach(function(el) {
+        el.classList.remove('d-none');
+      });
+      document.querySelectorAll('.logged-out').forEach(function(el) {
+        el.classList.add('d-none');
+      });
+      
+      // Update cart count
+      updateGuestCartCount();
       
     } catch (e) {
       console.error('Error parsing user data:', e);
+    }
+  } else {
+    // For guest users, update cart count from localStorage
+    updateGuestCartCount();
+  }
+  
+  // Function to update cart count for guest users
+  function updateGuestCartCount() {
+    const cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
+    const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    
+    // Create or update cart count badge
+    let badge = document.querySelector('.cart-count');
+    if (badge) {
+      if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = 'block';
+      } else {
+        badge.style.display = 'none';
+      }
     }
   }
   
