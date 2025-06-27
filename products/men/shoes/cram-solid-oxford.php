@@ -127,9 +127,9 @@
           <input type="hidden" id="selected-width" value="">
           <input type="hidden" id="selected-quantity" value="1">
 
-          <!-- Add to Cart Button -->
+          <!-- Cart functionality has been removed -->
           <div class="mb-6">
-            <button class="btn btn-dark w-full sm:w-auto" id="add-to-cart-btn">Add to Cart</button>
+            <button class="btn btn-dark w-full sm:w-auto" id="contact-btn" onclick="window.location.href='/contact.php'">Contact Us</button>
           </div>
 
           <!-- Additional Options -->
@@ -357,8 +357,8 @@
           </div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
-          <a href="/cart.php" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
-            VIEW CART
+          <a href="/products.php" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
+            CONTINUE SHOPPING
           </a>
           <button id="continue-shopping" class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
             CONTINUE SHOPPING

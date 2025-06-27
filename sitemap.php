@@ -1,14 +1,19 @@
 <?php
-// Add this at the very top for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sitemap | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
+
 <body class="bg-background" data-page="sitemap">
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main class="py-5">
@@ -24,7 +29,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php');
                 <li class="list-group-item"><a href="/index.php#projects"><i class="bi bi-layers-fill"></i> Projects</a></li>
                 <li class="list-group-item"><a href="/index.php#skills"><i class="bi bi-tools"></i> Skills</a></li>
                 <li class="list-group-item"><a href="/index.php#contact"><i class="bi bi-envelope-fill"></i> Contact</a></li>
-                <li class="list-group-item"><a href="/cart.php"><i class="bi bi-cart-fill"></i> Cart</a></li>
+                <!-- Cart functionality has been removed -->
                 <li class="list-group-item"><a href="checkout.php"><i class="bi bi-credit-card-fill"></i> Checkout</a></li>
                 <li class="list-group-item"><a href="product.php"><i class="bi bi-box-seam"></i> Product Page</a></li>
                 <li class="list-group-item"><a href="sitemap.php"><i class="bi bi-map"></i> Sitemap</a></li>

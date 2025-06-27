@@ -190,3 +190,10 @@ function initScrollToTop() {
     });
   }
 }
+
+function onUserLogin(user) {
+  window.cartHandler.onLogin(user.id);
+}
+function onUserLogout(user) {
+  window.cartHandler.onLogout(user.id);
+}

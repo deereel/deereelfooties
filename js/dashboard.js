@@ -103,7 +103,7 @@ async function deleteAccount(password) {
     if (data.success) {
       // Clear local storage
       localStorage.removeItem('DRFUser');
-      localStorage.removeItem('DRFCart');
+      // Cart functionality has been removed
       localStorage.removeItem('DRFWishlist');
       
       showToast('Account Deleted', 'Your account has been successfully deleted', 'success');

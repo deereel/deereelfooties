@@ -1,10 +1,18 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
-require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php');
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Women's Slippers | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
 
 <body data-page="women-slippers">
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <!-- Main Content -->
   <main>   

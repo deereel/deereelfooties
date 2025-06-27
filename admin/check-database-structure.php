@@ -1,5 +1,5 @@
 <?php
-require_once 'auth/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
 try {
     $pdo = getDBConnection();
@@ -53,29 +53,7 @@ try {
         echo "❌ User addresses table error: " . $e->getMessage() . "<br>";
     }
 
-    // Check user_addresses table structure
-    echo "<h3>cart item Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE cart_items");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ cart items table error: " . $e->getMessage() . "<br>";
-    }
+    // Cart items table has been removed
     
     // Check user_addresses table structure
     echo "<h3>Measurements Table Structure:</h3>";

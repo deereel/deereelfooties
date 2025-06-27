@@ -130,6 +130,10 @@ try {
     // Clear cart
     $stmt = $pdo->prepare("DELETE FROM cart_items WHERE user_id = ?");
     $stmt->execute([$userId]);
+    if ($stmt->rowCount() < 1) {
+    throw new Exception('Cart clear failed or was already empty');
+}
+
     
     // Commit transaction
     $pdo->commit();

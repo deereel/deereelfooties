@@ -1,6 +1,8 @@
 <?php
 // Test the wishlist API
-require_once 'auth/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
+// Start session and check authentication BEFORE any output
+session_start();
 
 echo "<h2>Testing Wishlist API</h2>";
 

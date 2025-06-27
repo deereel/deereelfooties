@@ -1,6 +1,6 @@
 <?php
 // Test the wishlist API
-require_once 'auth/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
 echo "<h2>Testing Wishlist API</h2>";
 

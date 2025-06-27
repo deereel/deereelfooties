@@ -1,6 +1,5 @@
 export class ProductManager {
-  constructor(cartManager) {
-    this.cart = cartManager;
+  constructor() {
     this.selectedOptions = {
       color: '',
       size: '',
@@ -170,7 +169,6 @@ export class ProductManager {
     button.addEventListener('click', (e) => {
       e.preventDefault();
       console.log('Add to cart clicked');
-      console.log('Current selections:', this.selectedOptions);
       
       // Get current selections
       const color = document.getElementById('selected-color')?.value || this.selectedOptions.color;
@@ -178,22 +176,17 @@ export class ProductManager {
       const width = document.getElementById('selected-width')?.value || this.selectedOptions.width;
       const quantity = parseInt(document.getElementById('quantity')?.value) || this.selectedOptions.quantity;
       
-      console.log('Final selections:', { color, size, width, quantity });
-      
       // Validate selections
       if (!color) { 
         alert('Please select a color'); 
-        console.log('Available colors:', Array.from(document.querySelectorAll('.color-option')).map(el => el.dataset.color));
         return; 
       }
       if (!size) { 
         alert('Please select a size'); 
-        console.log('Available sizes:', Array.from(document.querySelectorAll('.size-option')).map(el => el.dataset.size));
         return; 
       }
       if (!width) { 
         alert('Please select a width'); 
-        console.log('Available widths:', Array.from(document.querySelectorAll('.width-option')).map(el => el.dataset.width));
         return; 
       }
 
@@ -209,20 +202,17 @@ export class ProductManager {
       productData.width = width;
       productData.quantity = quantity;
 
-      console.log('Complete product data for cart:', productData);
-
-      // Add to cart after delay
+      // Add to cart
       setTimeout(() => {
-        const success = this.cart.addToCart(productData);
+        const cartHandler = window.cartHandler || new CartHandler();
+        const success = cartHandler.addToCart(productData);
         button.innerHTML = originalText;
         button.disabled = false;
         
         if (success) {
-          console.log('Product added to cart successfully');
-        } else {
-          console.error('Failed to add product to cart');
+          alert('Product added to cart successfully');
         }
-      }, 1000);
+      }, 500);
     });
   }
 

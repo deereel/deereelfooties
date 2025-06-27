@@ -1,5 +1,5 @@
 <?php
-require_once 'auth/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
 try {
     $pdo = getDBConnection();

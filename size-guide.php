@@ -1,8 +1,19 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
-<body class="bg-background" data-page="size-guide">
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Size guide | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
 
+<body class="bg-background" data-page="size-guide">
+  
 
 
   <!-- Main Content -->

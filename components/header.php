@@ -11,6 +11,20 @@
 
   <title>DeeReel Footies | Handcrafted Luxury Shoes for Men and Women</title>
   
+  <?php
+  if (isset($_SESSION['user']['id'])) {
+    $userId = $_SESSION['user']['id'];
+  } elseif (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+  }
+
+  if (isset($userId)):
+  ?>
+    <meta name="user-id" content="<?= htmlspecialchars($userId) ?>">
+  <?php endif; ?>
+
+
+
   <!-- Color scheme first to ensure variables are available -->
   <link href="/css/colors.css" rel="stylesheet">
   

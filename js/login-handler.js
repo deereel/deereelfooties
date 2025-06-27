@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
-  // Handle cart separation between guest and logged-in users
+  // On page load, if user is logged in, clear guest cart from localStorage to avoid mixing
   const isLoggedIn = document.body.hasAttribute('data-user-id');
   if (isLoggedIn) {
-    // If user is logged in, clear any guest cart
-    localStorage.removeItem('DRFCart');
+    // Optionally keep guest cart in localStorage for restoration on logout
+    // localStorage.removeItem('DRFCart');
   }
 });
 
@@ -45,6 +45,8 @@ async function handleLogin() {
   }
   
   try {
+    // Cart functionality has been removed
+    
     // Send login request
     const formData = new FormData();
     formData.append('email', email);
@@ -75,8 +77,7 @@ async function handleLogin() {
         if (bsModal) bsModal.hide();
       }
       
-      // Clear guest cart to prevent mixing with user cart
-      localStorage.removeItem('DRFCart');
+      // Cart functionality has been removed
       
       // Dispatch login event
       document.dispatchEvent(new CustomEvent('userLoggedIn'));
@@ -101,23 +102,29 @@ async function handleLogin() {
   }
 }
 
-// Handle logout
 async function handleLogout() {
   try {
+    // Save cart before logout
+    if (window.cartHandler && window.cartHandler.cartItems.length > 0) {
+      await fetch('/auth/logout.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cart_items: window.cartHandler.cartItems })
+      });
+    } else {
+      await fetch('/auth/logout.php');
+    }
+    
     // Clear user data from storage
     localStorage.removeItem('DRFUser');
     localStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('user_id');
     sessionStorage.removeItem('DRFServerCart');
     
-    // Clear any cart data to ensure clean separation
-    localStorage.removeItem('DRFCart');
-    
     // Remove user data attribute
     document.body.removeAttribute('data-user-id');
-    
-    // Call server logout
-    await fetch('/auth/logout.php');
     
     // Reload page
     window.location.reload();

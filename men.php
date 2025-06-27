@@ -1,10 +1,19 @@
 <?php
-require_once 'auth/db.php';
-include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 ?>
 
-<body data-page="men">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Men Footwears | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
+<body data-page="men">
+  
 
   <!-- Hero Section -->
   <section class="relative">

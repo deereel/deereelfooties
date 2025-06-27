@@ -1,7 +1,8 @@
 <?php
-// Start session at the very beginning of the application
-session_start();
-require_once 'auth/db.php';
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 ?>
 <!DOCTYPE html>
 <html>

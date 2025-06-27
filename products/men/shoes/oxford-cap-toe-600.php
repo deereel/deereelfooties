@@ -124,9 +124,9 @@
           <input type="hidden" id="selected-width" value="">
           <input type="hidden" id="selected-quantity" value="1">
 
-          <!-- Add to Cart Button -->
+          <!-- Cart functionality has been removed -->
           <div class="mb-6">
-            <button class="btn btn-dark w-full sm:w-auto" id="add-to-cart-btn">Add to Cart</button>
+            <button class="btn btn-dark w-full sm:w-auto" id="contact-btn" onclick="window.location.href='/contact.php'">Contact Us</button>
           </div>
 
           <!-- Additional Options -->
@@ -336,33 +336,7 @@
       </div>
     </div>
 
-    <!-- Added to Cart Modal -->
-    <div id="added-to-cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-      <div class="bg-white p-6 max-w-md w-full">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-medium">Added to Cart</h2>
-          <button id="close-cart-modal" class="text-2xl">&times;</button>
-        </div>
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-20 h-20 overflow-hidden border">
-            <img id="modal-product-image" src="" alt="" class="object-cover w-full h-full">
-          </div>
-          <div>
-            <h3 id="modal-product-name" class="font-medium text-base"></h3>
-            <p id="modal-product-variant" class="text-gray-500 text-sm"></p>
-            <p id="modal-product-price" class="text-sm font-medium"></p>
-          </div>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a href="/cart.php" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
-            VIEW CART
-          </a>
-          <button id="continue-shopping" class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
-            CONTINUE SHOPPING
-          </button>
-        </div>
-      </div>
-    </div>    
+    <!-- Cart functionality has been removed -->    
   </main>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>

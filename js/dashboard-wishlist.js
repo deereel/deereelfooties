@@ -96,10 +96,7 @@ class DashboardWishlistManager {
             <h5 class="card-title">${item.name}</h5>
             <p class="card-text text-primary mb-3">$${price}</p>
             <div class="mt-auto">
-              <a href="${productUrl}" class="btn btn-outline-primary btn-sm me-2">View Details</a>
-              <button class="btn btn-primary btn-sm" onclick="dashboardWishlistManager.addToCart(${item.product_id})">
-                Add to Cart
-              </button>
+              <a href="${productUrl}" class="btn btn-outline-primary btn-sm">View Details</a>
             </div>
           </div>
         </div>
@@ -151,56 +148,9 @@ class DashboardWishlistManager {
     }
   }
 
+  // Cart functionality has been removed
   async addToCart(productId) {
-    try {
-      // Get user data
-      const userData = localStorage.getItem('DRFUser');
-      if (!userData) {
-        alert('Please log in to add items to cart');
-        return;
-      }
-
-      const user = JSON.parse(userData);
-      const userId = user.user_id || user.id;
-
-      // Add to cart
-      const response = await fetch('/api/get_cart.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'add',
-          user_id: userId,
-          product_id: productId,
-          quantity: 1
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (data.success) {
-        // Show success message
-        alert('Item added to cart successfully');
-        
-        // Update local cart if it exists
-        const cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
-        const existingItem = cart.find(item => item.product_id === productId);
-        
-        if (existingItem) {
-          existingItem.quantity += 1;
-        } else {
-          cart.push({ product_id: productId, quantity: 1 });
-        }
-        
-        localStorage.setItem('DRFCart', JSON.stringify(cart));
-      } else {
-        alert(`Error: ${data.message}`);
-      }
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart. Please try again.');
-    }
+    alert('Cart functionality has been removed from the system.');
   }
 }
 

@@ -1,15 +1,11 @@
-<<<<<<< HEAD:js/modules/cart-global.js
-// Non-module version of cart.js for global use
-class CartManager {
-=======
+// Cleaned and fixed CartManager class without merge conflict markers
+
 export class CartManager {
->>>>>>> parent of f36b17c (checkout page):js/modules/cart.js
   constructor() {
     this.cartKey = 'DRFCart';
     this.customerKey = 'DRFCustomerInfo';
   }
 
-<<<<<<< HEAD:js/modules/cart-global.js
   // Helper methods for user login status
   isUserLoggedIn() {
     return !!(
@@ -51,18 +47,7 @@ export class CartManager {
     if (cartData) {
       return JSON.parse(cartData);
     } else {
-      // Check if there's a guest cart to migrate
-      const guestCart = localStorage.getItem(this.cartKey);
-      if (guestCart) {
-        const cart = JSON.parse(guestCart);
-        if (cart && cart.length > 0) {
-          // Migrate guest cart to user cart
-          this.saveUserCart(user, cart);
-          // Clear guest cart
-          localStorage.removeItem(this.cartKey);
-          return cart;
-        }
-      }
+      // Do NOT migrate guest cart to user cart to avoid merging
       return [];
     }
   }
@@ -76,18 +61,15 @@ export class CartManager {
       // Save as guest cart
       localStorage.setItem(this.cartKey, JSON.stringify(cart));
     }
-=======
-  loadCart() {
-    return JSON.parse(localStorage.getItem(this.cartKey)) || [];
-  }
-
-  saveCart(cart) {
-    localStorage.setItem(this.cartKey, JSON.stringify(cart));
->>>>>>> parent of f36b17c (checkout page):js/modules/cart.js
     this.updateCartCount();
     
     // Sync with database if user is logged in
     this.syncCartWithDatabase();
+  }
+
+  saveUserCart(user, cart) {
+    const userCartKey = `DRFCart_${user.user_id || user.id || user.email}`;
+    localStorage.setItem(userCartKey, JSON.stringify(cart));
   }
 
   updateCartCount() {
@@ -400,187 +382,4 @@ export class CartManager {
       });
     }
   }
-
-  // Customer info management
-  saveCustomerInfo() {
-    const name = document.getElementById('client-name')?.value.trim();
-    const address = document.getElementById('shipping-address')?.value.trim();
-    const proofFile = document.getElementById('payment-proof')?.files[0];
-
-    if (!name || !address || !proofFile) {
-      alert('Please fill all fields and upload proof of payment.');
-      return false;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const customerInfo = {
-        name,
-        address,
-        proof: reader.result,
-        timestamp: new Date().toISOString()
-      };
-      localStorage.setItem(this.customerKey, JSON.stringify(customerInfo));
-      console.log('Customer info saved:', customerInfo);
-    };
-
-    reader.readAsDataURL(proofFile);
-    return true;
-  }
-
-  loadCustomerInfo() {
-    const saved = localStorage.getItem(this.customerKey);
-    return saved ? JSON.parse(saved) : null;
-  }
-
-  populateCustomerForm() {
-    const customerInfo = this.loadCustomerInfo();
-    if (customerInfo) {
-      const nameInput = document.getElementById('client-name');
-      const addressInput = document.getElementById('shipping-address');
-      
-      if (nameInput) nameInput.value = customerInfo.name || '';
-      if (addressInput) addressInput.value = customerInfo.address || '';
-    }
-  }
-
-  // Checkout functionality
-  initCheckoutButton() {
-    const checkoutBtn = document.getElementById('checkout-btn');
-    if (checkoutBtn) {
-      checkoutBtn.addEventListener('click', () => {
-        const cart = this.loadCart();
-        if (!cart.length) {
-          alert('Your cart is empty');
-          return;
-        }
-
-        if (this.saveCustomerInfo()) {
-          alert('Order information saved! You can now proceed with payment.');
-          // Here you could redirect to a confirmation page or payment processor
-        }
-      });
-    }
-  }
-
-  // Mobile menu functionality
-  initMobileMenu() {
-    const toggle = document.getElementById('mobileMenuToggle');
-    const close = document.getElementById('closeMobileMenu');
-    const overlay = document.querySelector('.mobile-nav-overlay');
-    
-    if (!toggle || !close || !overlay) return;
-    
-    toggle.addEventListener('click', () => {
-      overlay.classList.remove('hidden');
-      overlay.classList.add('visible');
-    });
-    
-    close.addEventListener('click', () => {
-      overlay.classList.remove('visible');
-      overlay.classList.add('hidden');
-    });
-    
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        overlay.classList.remove('visible');
-        overlay.classList.add('hidden');
-      }
-    });
-  }
-
-  // Initialize cart page
-  initCartPage() {
-    console.log('Initializing cart page functionality');
-    this.renderCartPage();
-    this.initCartModalHandlers();
-    this.initShippingAddressListener();
-    
-    // Set up periodic check for address changes
-    setInterval(() => {
-      const cart = this.loadCart();
-      if (cart.length > 0) {
-        const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-        this.updateShippingProgress(subtotal);
-      }
-    }, 2000); // Check every 2 seconds
-  }
-<<<<<<< HEAD:js/modules/cart-global.js
-  
-  // Database sync functions
-  syncCartWithDatabase() {
-    // Only sync if user is logged in
-    if (!this.isUserLoggedIn()) return;
-    
-    const userId = this.getUserId();
-    if (!userId) return;
-    
-    const cart = this.loadCart();
-    
-    // Send cart to server
-    fetch('/api/sync_cart.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        cart_items: cart
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Cart sync result:', data);
-    })
-    .catch(error => {
-      console.error('Error syncing cart:', error);
-    });
-  }
-  
-  loadCartFromDatabase() {
-    const userId = this.getUserId();
-    if (!userId) return;
-    
-    fetch(`/api/get_cart.php?user_id=${userId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.success && data.cart_items) {
-          // Save cart items to localStorage
-          this.saveUserCart(this.getCurrentUser(), data.cart_items);
-          // Update cart count
-          this.updateCartCount();
-        }
-      })
-      .catch(error => {
-        console.error('Error loading cart from database:', error);
-      });
-  }
-  
-  clearCart() {
-    if (this.isUserLoggedIn()) {
-      const user = this.getCurrentUser();
-      const userCartKey = `DRFCart_${user.user_id || user.id || user.email}`;
-      localStorage.removeItem(userCartKey);
-      
-      // Also clear from database
-      const userId = this.getUserId();
-      if (userId) {
-        fetch('/api/sync_cart.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user_id: userId,
-            cart_items: []
-          })
-        });
-      }
-    } else {
-      localStorage.removeItem(this.cartKey);
-    }
-    this.updateCartCount();
-  }
-=======
->>>>>>> parent of f36b17c (checkout page):js/modules/cart.js
 }

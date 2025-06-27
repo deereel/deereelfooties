@@ -397,38 +397,26 @@ function renderProductPage($slug) {
       </div>
     </div>
 
-    <!-- Added to Cart Modal -->
-    <div id="added-to-cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
-      <div class="bg-white p-8 max-w-md w-full">
-        <div class="flex justify-between items-center mb-6">
-          <h2 class="text-xl font-medium">Added to Cart</h2>
-          <button id="close-cart-modal" class="text-2xl">&times;</button>
-        </div>
-        <div class="flex items-center mb-6">
-          <div class="w-20 h-20 relative overflow-hidden mr-4">
-            <img id="cart-product-image" src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" class="object-cover w-full h-full">
-          </div>
-          <div>
-            <h3 class="font-medium" id="cart-product-name"><?= $product['name'] ?></h3>
-            <p class="text-gray-500" id="cart-product-details"></p>
-            <p id="cart-product-price">₦<?= number_format($product['price']) ?></p>
-          </div>
-        </div>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/cart.php" class="bg-black text-white px-4 py-2 text-center flex-1 hover:bg-gray-800 transition">
-            VIEW CART
-          </a>
-          <button id="continue-shopping" class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition">
-            CONTINUE SHOPPING
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- Include Added to Cart Modal -->
+    <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/added-to-cart-modal.php'); ?>
   </main>
 
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
-  <script src="/js/product.js"></script>
+<script src="/js/product-add-to-cart.js"></script>
+  <script src="/js/product-add-to-cart.js"></script>
+  
+  <!-- Add meta tag for user ID if logged in -->
+  <?php if (isset($_SESSION['user']) || isset($_SESSION['user_id'])): ?>
+  <?php 
+    $userId = isset($_SESSION['user']['id']) ? $_SESSION['user']['id'] : 
+             (isset($_SESSION['user']['user_id']) ? $_SESSION['user']['user_id'] : 
+             (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null));
+  ?>
+  <?php if ($userId): ?>
+  <meta name="user-id" content="<?= htmlspecialchars($userId) ?>">
+  <?php endif; ?>
+  <?php endif; ?>
   
   <script>
     // Image change function
@@ -555,52 +543,14 @@ function renderProductPage($slug) {
           });
         }
         
-        // Added to cart modal
-        const addToCartBtn = document.getElementById('add-to-cart-btn');
-        const addedToCartModal = document.getElementById('added-to-cart-modal');
-        const closeCartModal = document.getElementById('close-cart-modal');
-        const continueShoppingBtn = document.getElementById('continue-shopping');
-        
-        if (addToCartBtn && addedToCartModal) {
-          addToCartBtn.addEventListener('click', function() {
-            const color = document.getElementById('selected-color').value;
-            const size = document.getElementById('selected-size').value;
-            const width = document.getElementById('selected-width').value;
-            
-            if (!color || !size || !width) {
-              alert('Please select color, size and width');
-              return;
-            }
-            
-            // Update cart modal details
-            document.getElementById('cart-product-details').textContent = 
-              `Size: ${size} | Color: ${color} | Width: ${width}`;
-              
-            // Show modal
-            addedToCartModal.classList.remove('hidden');
-          });
-        }
-        
-        if (closeCartModal && addedToCartModal) {
-          closeCartModal.addEventListener('click', function() {
-            addedToCartModal.classList.add('hidden');
-          });
-        }
-        
-        if (continueShoppingBtn && addedToCartModal) {
-          continueShoppingBtn.addEventListener('click', function() {
-            addedToCartModal.classList.add('hidden');
-          });
-        }
+        // Cart functionality is now handled by product-add-to-cart.js
         
         // Close modals when clicking outside
         window.addEventListener('click', function(e) {
           if (e.target === sizeGuideModal) {
             sizeGuideModal.classList.add('hidden');
           }
-          if (e.target === addedToCartModal) {
-            addedToCartModal.classList.add('hidden');
-          }
+          // Modal closing is now handled by the cart handler
         });
       });
     </script>

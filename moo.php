@@ -1,7 +1,20 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
-<body class="bg-background" data-page="moo">
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Made on Order | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
+
+<body class="bg-background" data-page="moo">
+  
 
 
   <!-- Main Content -->

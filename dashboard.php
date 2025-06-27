@@ -1,26 +1,42 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 // Start session and check authentication BEFORE any output
-session_start();
+// session_start();
 
 // Check if user is logged in BEFORE including any files that output content
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
     header('Location: index.php');
     exit;
 }
 
 // Now it's safe to include files that output content
-require_once 'auth/db.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
 
-$user = $_SESSION['user'];
+// Get user data from session with fallback
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+} elseif (isset($_SESSION['user_id'])) {
+    $user = [
+        'id' => $_SESSION['user_id'],
+        'name' => $_SESSION['username'] ?? 'User',
+        'email' => $_SESSION['user_email'] ?? ''
+    ];
+}
 $page = 'dashboard';
 ?>
-<head>    
-    <title>Dashboard - DeeReel Footies</title>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 </head>
 
 <body data-page="dashboard">
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 
   <div class="container py-5">
       <div class="row">

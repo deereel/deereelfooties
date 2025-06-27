@@ -19,7 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Update hidden input
-        document.getElementById('selected-quantity').value = quantityInput.value;
+        const selectedQuantityInput = document.getElementById('selected-quantity');
+        if (selectedQuantityInput) {
+          selectedQuantityInput.value = quantityInput.value;
+        }
       });
     });
   }
@@ -108,92 +111,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Add to cart button
+  // Cart functionality has been removed
   const addToCartBtn = document.getElementById('add-to-cart-btn');
   if (addToCartBtn) {
     addToCartBtn.addEventListener('click', function() {
-      const color = document.getElementById('selected-color').value;
-      const size = document.getElementById('selected-size').value;
-      const width = document.getElementById('selected-width').value;
-      const quantity = document.getElementById('quantity').value;
-      
-      if (!color) {
-        alert('Please select a color');
-        return;
-      }
-      
-      if (!size) {
-        alert('Please select a size');
-        return;
-      }
-      
-      if (!width) {
-        alert('Please select a width');
-        return;
-      }
-      
-      // Get product details
-      const productId = document.querySelector('.add-to-wishlist').getAttribute('data-product-id');
-      const productName = document.querySelector('h3.fw-bold').textContent;
-      const productPrice = document.querySelector('p.text-2xl').textContent.replace('₦', '').replace(/,/g, '');
-      const productImage = document.getElementById('mainImage').src;
-      
-      // Create cart item
-      const cartItem = {
-        product_id: productId,
-        product_name: productName,
-        price: parseFloat(productPrice),
-        color: color,
-        size: size,
-        width: width,
-        quantity: parseInt(quantity),
-        image: productImage
-      };
-      
-      // Add to cart
-      addToCart(cartItem);
-      
-      // Show added to cart modal
-      const addedToCartModal = document.getElementById('added-to-cart-modal');
-      if (addedToCartModal) {
-        document.getElementById('cart-product-details').textContent = 
-          `Size: ${size} | Color: ${color} | Width: ${width}`;
-        addedToCartModal.classList.remove('hidden');
-      }
+      alert('Cart functionality has been removed. Please contact us to place an order.');
     });
   }
 });
 
-// Add to cart function
-function addToCart(item) {
-  // Get current cart
-  let cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
-  
-  // Check if item already exists in cart
-  const existingItemIndex = cart.findIndex(cartItem => 
-    cartItem.product_id === item.product_id && 
-    cartItem.color === item.color && 
-    cartItem.size === item.size &&
-    cartItem.width === item.width
-  );
-  
-  if (existingItemIndex !== -1) {
-    // Update quantity if item exists
-    cart[existingItemIndex].quantity += item.quantity;
-  } else {
-    // Add new item
-    cart.push(item);
-  }
-  
-  // Save cart
-  localStorage.setItem('DRFCart', JSON.stringify(cart));
-  
-  // Update cart count in navbar
-  updateCartCount(cart);
-  
-  // Sync with database if user is logged in
-  syncCartWithDatabase(cart);
-}
+// Cart functionality has been removed
 
 // Add to wishlist function
 function addToWishlist(productId) {
@@ -213,50 +140,14 @@ function addToWishlist(productId) {
   syncWishlistWithDatabase(wishlist);
 }
 
-// Update cart count in navbar
-function updateCartCount(cart) {
-  const cartCount = cart.reduce((total, item) => total + parseInt(item.quantity), 0);
-  const cartBadge = document.querySelector('.fa-shopping-bag + span');
-  
-  if (cartBadge) {
-    cartBadge.textContent = cartCount;
-    cartBadge.style.display = cartCount > 0 ? 'inline-block' : 'none';
-  }
-}
-
-// Sync cart with database
-async function syncCartWithDatabase(cart) {
-  const userData = localStorage.getItem('DRFUser');
-  if (!userData) return; // Not logged in
-  
-  try {
-    const user = JSON.parse(userData);
-    const userId = user.user_id || user.id;
-    
-    await fetch('/api/sync_cart.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        cart: cart
-      })
-    });
-  } catch (error) {
-    console.error('Error syncing cart with database:', error);
-  }
-}
-
 // Sync wishlist with database
 async function syncWishlistWithDatabase(wishlist) {
-  const userData = localStorage.getItem('DRFUser');
-  if (!userData) return; // Not logged in
+  const userIdMeta = document.querySelector('meta[name="user-id"]');
+  if (!userIdMeta) return; // Not logged in
+  
+  const userId = userIdMeta.getAttribute('content');
   
   try {
-    const user = JSON.parse(userData);
-    const userId = user.user_id || user.id;
-    
     await fetch('/api/wishlist.php', {
       method: 'POST',
       headers: {

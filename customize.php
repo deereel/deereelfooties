@@ -1,4 +1,7 @@
 <?php 
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); 
 
@@ -17,8 +20,15 @@ if ($designId > 0) {
 }
 ?>
 
-<body data-page="customize">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customize Your Shoe | DeeReel Footies</title>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+</head>
+
+<body data-page="customize">
 
   <!-- Hero Section -->
   <section class="hero-section" style="background-image: url('/images/cram solid oxford.webp');">
@@ -276,6 +286,9 @@ if ($designId > 0) {
     </div>
   </section>
 
+  <!-- Added to Cart Modal -->
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/added-to-cart-modal.php'); ?>
+
   <script>
     // Pass PHP data to JavaScript
     var designData = <?php echo $designData ? json_encode($designData) : 'null'; ?>;
@@ -299,5 +312,6 @@ if ($designId > 0) {
   <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
   <script src="/js/shoe-viewer.js"></script>
   <script src="/js/customize.js"></script>
+  <script src="/js/customize-add-to-cart.js"></script>
 </body>
 </html>

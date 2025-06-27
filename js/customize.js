@@ -239,84 +239,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Add to cart
+  // Cart functionality has been removed
   if (addToCartBtn) {
-    // Use a variable to track if an add-to-cart operation is in progress
-    let isAddingToCart = false;
-    
     addToCartBtn.addEventListener('click', function() {
-      // Prevent multiple clicks
-      if (isAddingToCart) return;
-      
-      if (!currentSize) {
-        showNotification('Please select a size before adding to cart.');
-        return;
-      }
-      
-      // Set flag to prevent duplicate operations
-      isAddingToCart = true;
-      
-      const basePrice = basePrices[currentStyle];
-      const materialAdjustment = materialPrices[currentMaterial];
-      const totalPrice = basePrice + materialAdjustment;
-      
-      const productData = {
-        id: `custom-${currentStyle}-${currentColor}-${currentMaterial}`,
-        name: previewTitle.textContent,
-        price: totalPrice,
-        style: currentStyle,
-        color: currentColor,
-        material: currentMaterial,
-        size: currentSize,
-        width: 'D', // Default width
-        image: shoePreview.src,
-        quantity: 1,
-        isCustom: true
-      };
-      
-      // Use the shared cart functionality from storage.js
-      try {
-        // Import dynamically
-        import('./storage.js').then(module => {
-          const { getCart, setCart } = module;
-          
-          // Get current cart
-          const cart = getCart();
-          
-          // Add the new item
-          cart.push(productData);
-          
-          // Save cart (this will handle both localStorage and server sync)
-          setCart(cart);
-          
-          isAddingToCart = false;
-          showNotification('Added to cart successfully!');
-        });
-      } catch (error) {
-        console.error('Error importing storage module:', error);
-        isAddingToCart = false;
-        showNotification('Error adding to cart. Please try again.');
-      }
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        isAddingToCart = false;
-        if (data.success) {
-          showNotification('Added to cart successfully!');
-          // Update cart count if needed
-        } else {
-          showNotification('Error adding to cart: ' + (data.message || 'Please try again'));
-        }
-      })
-      .catch(error => {
-        isAddingToCart = false;
-        console.error('Error adding to cart:', error);
-        showNotification('Error adding to cart. Please try again later.');
-      });
+      showNotification('Cart functionality has been removed. Please contact us to place an order.');
     });
   }
   

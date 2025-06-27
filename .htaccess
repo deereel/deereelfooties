@@ -1,0 +1,6 @@
+# Redirect old cart URLs to the new consolidated cart.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^user-cart\.php$ /cart.php [R=301,L]
+    RewriteRule ^logged-in-cart\.php$ /cart.php [R=301,L]
+</IfModule>

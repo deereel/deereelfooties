@@ -125,23 +125,18 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
       <a href="/size-guide.php" class="nav-link" style="color: var(--color-text-light) !important;">SIZE GUIDE</a>
     </div>
 
-    <!-- Right-side Shoemaking and Cart -->
+    <!-- Right-side Shoemaking -->
     <ul class="navbar-nav flex-row gap-3 ms-auto">
       <li class="nav-item">
         <a class="nav-link" href="/shoemaking.php" style="color: var(--color-text-light) !important;">Shoemaking</a>
       </li>
+      
+      <!-- Cart Icon -->
       <li class="nav-item">
-        <?php if ($currentUser): // Logged-in user ?>
-        <a class="nav-link position-relative" href="/logged-in-cart.php" style="color: var(--color-text-light) !important;">
-          <i class="fas fa-shopping-cart"></i> Cart
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" style="display: none;"></span>
-        </a>
-        <?php else: // Guest user ?>
         <a class="nav-link position-relative" href="/cart.php" style="color: var(--color-text-light) !important;">
-          <i class="fas fa-shopping-cart"></i> Cart
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count" style="display: none;"></span>
+          <i class="fas fa-shopping-cart"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count d-none">0</span>
         </a>
-        <?php endif; ?>
       </li>
       
       <!-- User Account Dropdown -->
@@ -200,32 +195,11 @@ document.addEventListener('DOMContentLoaded', function() {
         el.classList.add('d-none');
       });
       
-      // Update cart count
-      updateGuestCartCount();
-      
     } catch (e) {
       console.error('Error parsing user data:', e);
     }
   } else {
-    // For guest users, update cart count from localStorage
-    updateGuestCartCount();
-  }
-  
-  // Function to update cart count for guest users
-  function updateGuestCartCount() {
-    const cart = JSON.parse(localStorage.getItem('DRFCart') || '[]');
-    const count = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-    
-    // Create or update cart count badge
-    let badge = document.querySelector('.cart-count');
-    if (badge) {
-      if (count > 0) {
-        badge.textContent = count;
-        badge.style.display = 'block';
-      } else {
-        badge.style.display = 'none';
-      }
-    }
+    // Guest user, no special handling needed
   }
   
   // Handle logout button
@@ -233,6 +207,11 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       if (confirm('Are you sure you want to logout?')) {
+        // Save cart before logout if cart handler exists
+        if (window.cartHandler) {
+          window.cartHandler.handleLogout();
+        }
+        
         localStorage.removeItem('DRFUser');
         fetch('/auth/logout.php').finally(() => {
           window.location.href = '/index.php';
