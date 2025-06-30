@@ -178,7 +178,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       </div>
       
       <div class="text-center mt-12">
-        <a href="/products.php?gender=women" class="btn-primary px-8 py-3">View All Women's Products</a>
+        <a href="/products.php" class="btn-primary px-8 py-3">View All Products</a>
       </div>
     </div>
   </section>

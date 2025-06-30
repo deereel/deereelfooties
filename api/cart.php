@@ -2,13 +2,13 @@
 header('Content-Type: application/json');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
-// Define getDBConnection if not already defined in db.php
+// Use the auth database connection (drf_database)
 if (!function_exists('getDBConnection')) {
     function getDBConnection() {
         $host = 'localhost';
-        $db   = 'your_database_name';
-        $user = 'your_database_user';
-        $pass = 'your_database_password';
+        $db   = 'drf_database';
+        $user = 'root';
+        $pass = '';
         $charset = 'utf8mb4';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -36,6 +36,8 @@ try {
             $userId = $_GET['user_id'] ?? null;
             $action = $_GET['action'] ?? 'get';
             
+            error_log("Cart GET - User ID: " . $userId);
+            
             if (!$userId) {
                 echo json_encode(['success' => false, 'message' => 'User ID required']);
                 exit;
@@ -44,6 +46,8 @@ try {
             $stmt = $pdo->prepare("SELECT * FROM cart_items WHERE user_id = ? ORDER BY added_at DESC");
             $stmt->execute([$userId]);
             $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            error_log("Cart GET - Found " . count($items) . " items for user " . $userId);
             
             echo json_encode(['success' => true, 'items' => $items]);
             break;
@@ -86,17 +90,30 @@ try {
                     $userId = $input['user_id'];
                     $guestCart = $input['guest_cart'];
                     
+                    error_log("Cart merge - User ID: " . $userId);
+                    error_log("Cart merge - Guest cart: " . json_encode($guestCart));
+                    
+                    if (empty($guestCart)) {
+                        echo json_encode(['success' => true, 'message' => 'No items to merge']);
+                        break;
+                    }
+                    
                     foreach ($guestCart as $item) {
+                        error_log("Processing cart item: " . json_encode($item));
+                        
                         // Check if item already exists
                         $stmt = $pdo->prepare("SELECT cart_item_id, quantity FROM cart_items WHERE user_id = ? AND product_id = ? AND color = ? AND size = ? AND width = ?");
                         $stmt->execute([$userId, $item['product_id'], $item['color'], $item['size'], $item['width']]);
                         $existing = $stmt->fetch();
+                        
+                        error_log("Existing item found: " . ($existing ? 'Yes' : 'No'));
                         
                         if ($existing) {
                             // Update quantity
                             $newQuantity = $existing['quantity'] + $item['quantity'];
                             $stmt = $pdo->prepare("UPDATE cart_items SET quantity = ? WHERE cart_item_id = ?");
                             $stmt->execute([$newQuantity, $existing['cart_item_id']]);
+                            error_log("Updated existing item quantity to: " . $newQuantity);
                         } else {
                             // Insert new item
                             $stmt = $pdo->prepare("INSERT INTO cart_items (user_id, product_id, product_name, price, image, color, size, width, quantity, added_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
@@ -111,41 +128,11 @@ try {
                                 $item['width'], 
                                 $item['quantity']
                             ]);
+                            error_log("Inserted new cart item with ID: " . $pdo->lastInsertId());
                         }
                     }
                     
                     echo json_encode(['success' => true, 'message' => 'Guest cart merged successfully']);
-                    break;
-                    
-                case 'restore':
-                    $userId = $input['user_id'];
-                    $cartData = $input['cart_data'];
-                    
-                    // Clear existing cart first
-                    $stmt = $pdo->prepare("DELETE FROM cart_items WHERE user_id = ?");
-                    $stmt->execute([$userId]);
-                    
-                    // Restore saved items
-                    foreach ($cartData as $item) {
-                        $stmt = $pdo->prepare("INSERT INTO cart_items (user_id, product_id, product_name, price, image, color, size, width, quantity, added_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-                        $stmt->execute([
-                            $userId,
-                            $item['product_id'],
-                            $item['product_name'],
-                            $item['price'],
-                            $item['image'],
-                            $item['color'],
-                            $item['size'],
-                            $item['width'],
-                            $item['quantity']
-                        ]);
-                    }
-                    
-                    // Clear saved cart after restoration
-                    $stmt = $pdo->prepare("DELETE FROM saved_carts WHERE user_id = ?");
-                    $stmt->execute([$userId]);
-                    
-                    echo json_encode(['success' => true, 'message' => 'Cart restored successfully']);
                     break;
                     
                 case 'update':

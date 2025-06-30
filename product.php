@@ -88,11 +88,15 @@ try {
         }
         
         // Get product widths
-        $widths = [];
-        if (!empty($dbProduct['widths'])) {
-            $widths = explode(',', $dbProduct['widths']);
-        }
+        // Remove dynamic widths fetching to hardcode widths later
+        //$widths = [];
+        //if (!empty($dbProduct['widths'])) {
+        //    $widths = explode(',', $dbProduct['widths']);
+        //}
         
+        // Fetch details & care from database if available
+        $detailsCare = $dbProduct['details_care'] ?? '';
+
         // Get product type and gender for breadcrumb
         $productType = $dbProduct['type'] ?? $dbProduct['category'] ?? 'shoes';
         $productGender = $dbProduct['gender'] ?? 'men';
@@ -162,7 +166,12 @@ try {
             <?php if (!empty($productFeatures)): ?>
             <ul class="list-disc pl-5 mb-4 text-gray-600">
               <?php 
-              $features = explode("\n", $productFeatures);
+              $decodedFeatures = json_decode($productFeatures, true);
+              if (json_last_error() === JSON_ERROR_NONE && is_array($decodedFeatures)) {
+                $features = $decodedFeatures;
+              } else {
+                $features = preg_split('/\r\n|\r|\n/', $productFeatures);
+              }
               foreach($features as $feature): 
                 if (trim($feature) !== ''):
               ?>
@@ -229,24 +238,14 @@ try {
             <?php endif; ?>
 
             <!-- Width Selection -->
-            <?php if (!empty($widths)): ?>
             <div class="mb-8">
               <h3 class="font-medium mb-2">Width</h3>
               <div class="grid grid-cols-3 gap-2" id="width-options">
-                <?php foreach($widths as $width): 
-                  $widthLabel = $width;
-                  if ($width == 'D') $widthLabel = 'D (Standard)';
-                  if ($width == 'E') $widthLabel = 'E (Wide)';
-                  if ($width == 'EE') $widthLabel = 'EE (Extra Wide)';
-                ?>
-                <button class="border border-gray-300 py-2 hover:border-black width-option" 
-                        data-width="<?= htmlspecialchars($width) ?>">
-                  <?= htmlspecialchars($widthLabel) ?>
-                </button>
-                <?php endforeach; ?>
+                <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="D">D (Standard)</button>
+                <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="E">E (Wide)</button>
+                <button class="border border-gray-300 py-2 hover:border-black width-option" data-width="EE">EE (Extra Wide)</button>
               </div>
             </div>
-            <?php endif; ?>
             
             <!-- Quantity Selector -->
             <div class="flex items-center gap-2 border border-gray-300 px-2 py-1 mb-4 w-max">
@@ -276,21 +275,49 @@ try {
               </button>
             </div>
 
-            <!-- Product Details Accordion -->
-            <div class="border-t pt-6 space-y-4">
-              <details class="group">
-                <summary class="flex justify-between items-center cursor-pointer">
-                  <span class="font-medium">Description</span>
-                  <span class="transform group-open:rotate-180 transition-transform">
-                    <i class="fas fa-chevron-down"></i>
-                  </span>
-                </summary>
-                <div class="pt-4 pb-2 text-gray-600">
-                  <?= $productDescription ?>
-                </div>
-              </details>
-            </div>
           </div>
+        </div>
+
+        <!-- Product Details Accordion -->
+        <div class="border-t pt-6 space-y-4">
+          <details class="group">
+            <summary class="flex justify-between items-center cursor-pointer">
+              <span class="font-medium">Description</span>
+              <span class="transform group-open:rotate-180 transition-transform">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </summary>
+            <div class="pt-4 pb-2 text-gray-600">
+              <?= $productDescription ?>
+            </div>
+          </details>
+
+          <details class="group border-t pt-4">
+            <summary class="flex justify-between items-center cursor-pointer">
+              <span class="font-medium">Details &amp; Care</span>
+              <span class="transform group-open:rotate-180 transition-transform">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </summary>
+            <div class="pt-4 pb-2 text-gray-600">
+              <?= nl2br(htmlspecialchars($detailsCare)) ?>
+            </div>
+          </details>
+
+          <details class="group border-t pt-4">
+            <summary class="flex justify-between items-center cursor-pointer">
+              <span class="font-medium">Shipping &amp; Returns</span>
+              <span class="transform group-open:rotate-180 transition-transform">
+                <i class="fas fa-chevron-down"></i>
+              </span>
+            </summary>
+            <div class="pt-4 pb-2 text-gray-600">
+              <p>Free shipping within Nigeria on all orders over ₦250k.</p>
+              <p class="mt-2">Standard shipping: 5-7 business days (Nigeria), 7-10 business days (International)</p>
+              <p class="mt-2">Express shipping: 2-4 business days (Nigeria), 5-7 business days (International)</p>
+              <p class="mt-2">Returns accepted within 30 days of delivery for unworn shoes in original packaging.</p>
+            </div>
+          </details>
         </div>
       </div>
     <?php else: ?>

@@ -115,20 +115,38 @@
 
               // Update cart handler with user ID for cart migration
               if (window.cartHandler) {
-                window.cartHandler.handleLogin(data.user.id || data.user.user_id);
-              }
+                // Ensure cart handler recognizes login status
+                window.cartHandler.checkLoginStatus();
+                
+                // Handle cart merge and then redirect
+                window.cartHandler.handleLogin(data.user.id || data.user.user_id).then(() => {
+                  console.log('Cart merge completed, now redirecting...');
+                  
+                  // Close modal and redirect after cart merge
+                  const loginModal = document.getElementById('loginModal');
+                  if (loginModal && typeof bootstrap !== 'undefined') {
+                    bootstrap.Modal.getInstance(loginModal).hide();
+                  }
 
-              // Close modal and redirect
-              const loginModal = document.getElementById('loginModal');
-              if (loginModal && typeof bootstrap !== 'undefined') {
-                bootstrap.Modal.getInstance(loginModal).hide();
-              }
-
-              // Redirect to dashboard or reload page
-              if (window.location.pathname.includes('cart')) {
-                window.location.reload(); // Reload cart page to show merged items
+                  // Redirect to dashboard or reload page
+                  if (window.location.pathname.includes('cart')) {
+                    window.location.reload(); // Reload cart page to show merged items
+                  } else {
+                    window.location.href = '/dashboard/';
+                  }
+                });
               } else {
-                window.location.href = '/dashboard/';
+                // No cart handler, proceed with normal redirect
+                const loginModal = document.getElementById('loginModal');
+                if (loginModal && typeof bootstrap !== 'undefined') {
+                  bootstrap.Modal.getInstance(loginModal).hide();
+                }
+
+                if (window.location.pathname.includes('cart')) {
+                  window.location.reload();
+                } else {
+                  window.location.href = '/dashboard/';
+                }
               }
             } else {
               alert('Login failed: ' + data.message);

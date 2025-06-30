@@ -15,12 +15,13 @@ class CartHandler {
 
   checkLoginStatus() {
     const userData = localStorage.getItem(this.userKey);
+    console.log('Checking login status. User data:', userData);
     if (userData) {
       try {
         const user = JSON.parse(userData);
         this.isLoggedIn = true;
         this.userId = user.user_id || user.id;
-        console.log('User logged in:', this.userId);
+        console.log('User logged in:', this.userId, 'Full user data:', user);
       } catch (e) {
         console.error('Error parsing user data:', e);
         this.isLoggedIn = false;
@@ -29,6 +30,7 @@ class CartHandler {
     } else {
       this.isLoggedIn = false;
       this.userId = null;
+      console.log('No user data found - user not logged in');
     }
   }
 
@@ -47,19 +49,31 @@ class CartHandler {
   addToGuestCart(item) {
     let cart = this.getGuestCart();
     
+    // Normalize item data to ensure consistent field names
+    const normalizedItem = {
+      product_id: item.product_id || item.id,
+      product_name: item.product_name || item.name,
+      price: item.price,
+      image: item.image,
+      color: item.color,
+      size: item.size,
+      width: item.width || '',
+      quantity: item.quantity
+    };
+    
     // Check if item already exists
     const existingIndex = cart.findIndex(cartItem => 
-      cartItem.product_id === item.product_id &&
-      cartItem.color === item.color &&
-      cartItem.size === item.size &&
-      cartItem.width === item.width
+      cartItem.product_id === normalizedItem.product_id &&
+      cartItem.color === normalizedItem.color &&
+      cartItem.size === normalizedItem.size &&
+      cartItem.width === normalizedItem.width
     );
 
     if (existingIndex > -1) {
-      cart[existingIndex].quantity += item.quantity;
+      cart[existingIndex].quantity += normalizedItem.quantity;
     } else {
       cart.push({
-        ...item,
+        ...normalizedItem,
         cart_item_id: Date.now() + Math.random(), // Temporary ID for guest cart
         added_at: new Date().toISOString()
       });
@@ -107,15 +121,23 @@ class CartHandler {
   }
 
   async getUserCart() {
-    if (!this.isLoggedIn) return [];
+    if (!this.isLoggedIn) {
+      console.log('User not logged in, returning empty cart');
+      return [];
+    }
 
     try {
+      console.log('Fetching user cart for user ID:', this.userId);
       const response = await fetch(`/api/cart.php?action=get&user_id=${this.userId}`);
       const data = await response.json();
       
+      console.log('User cart response:', data);
+      
       if (data.success) {
+        console.log('User cart items:', data.items);
         return data.items || [];
       }
+      console.log('Failed to fetch user cart:', data.message);
       return [];
     } catch (error) {
       console.error('Error fetching user cart:', error);
@@ -149,23 +171,50 @@ class CartHandler {
 
     // Get guest cart before clearing
     const guestCart = this.getGuestCart();
+    console.log('Guest cart before login:', guestCart);
     
     if (guestCart.length > 0) {
       console.log('Merging guest cart with user cart:', guestCart);
       await this.mergeGuestCartWithUserCart(guestCart);
+      console.log('Guest cart merge completed');
       
       // Clear guest cart after successful merge
       localStorage.removeItem(this.cartKey);
+      console.log('Guest cart cleared from localStorage');
+    } else {
+      console.log('No guest cart items to merge');
     }
-
-    // Load any previously saved cart
-    await this.loadSavedCart();
     
     this.updateCartCount();
+    
+    // Trigger cart refresh on cart page
+    if (window.location.pathname.includes('/cart.php')) {
+      if (typeof loadCartItems === 'function') {
+        await loadCartItems();
+      }
+    }
   }
 
   async mergeGuestCartWithUserCart(guestCart) {
     try {
+      // Normalize guest cart data to match database schema
+      const normalizedCart = guestCart.map(item => ({
+        product_id: item.product_id || item.id,
+        product_name: item.product_name || item.name,
+        price: item.price,
+        image: item.image,
+        color: item.color,
+        size: item.size,
+        width: item.width || '',
+        quantity: item.quantity
+      }));
+      
+      console.log('Sending merge request with normalized data:', {
+        action: 'merge',
+        user_id: this.userId,
+        guest_cart: normalizedCart
+      });
+      
       const response = await fetch('/api/cart.php', {
         method: 'POST',
         headers: {
@@ -174,11 +223,13 @@ class CartHandler {
         body: JSON.stringify({
           action: 'merge',
           user_id: this.userId,
-          guest_cart: guestCart
+          guest_cart: normalizedCart
         })
       });
 
       const data = await response.json();
+      console.log('Merge response:', data);
+      
       if (!data.success) {
         throw new Error(data.message || 'Failed to merge cart');
       }
@@ -189,75 +240,25 @@ class CartHandler {
     }
   }
 
-  async loadSavedCart() {
-    try {
-      const response = await fetch(`/api/load-saved-cart.php?user_id=${this.userId}`);
-      const data = await response.json();
-      
-      if (data.success && data.cart_data) {
-        // Restore saved cart items to active cart
-        const response2 = await fetch('/api/cart.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            action: 'restore',
-            user_id: this.userId,
-            cart_data: data.cart_data
-          })
-        });
 
-        const result = await response2.json();
-        if (result.success) {
-          console.log('Saved cart loaded successfully');
-        }
-      }
-    } catch (error) {
-      console.error('Error loading saved cart:', error);
-    }
-  }
 
   async handleLogout() {
     console.log('Handling logout');
     
-    if (this.isLoggedIn) {
-      // Save current cart before logout
-      await this.saveCartForLater();
-      
-      // Clear user cart from database
-      await this.clearUserCart();
-    }
-
+    // Simply update login status - keep cart items in database
     this.isLoggedIn = false;
     this.userId = null;
     this.updateCartCount();
-  }
-
-  async saveCartForLater() {
-    try {
-      const userCart = await this.getUserCart();
-      if (userCart.length > 0) {
-        const response = await fetch('/api/save-cart.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            user_id: this.userId,
-            cart_data: userCart
-          })
-        });
-
-        const data = await response.json();
-        if (data.success) {
-          console.log('Cart saved for later');
-        }
+    
+    // Trigger cart refresh on cart page
+    if (window.location.pathname.includes('/cart.php')) {
+      if (typeof loadCartItems === 'function') {
+        await loadCartItems();
       }
-    } catch (error) {
-      console.error('Error saving cart:', error);
     }
   }
+
+
 
   async clearUserCart() {
     try {

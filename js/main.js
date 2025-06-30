@@ -192,8 +192,12 @@ function initScrollToTop() {
 }
 
 function onUserLogin(user) {
-  window.cartHandler.onLogin(user.id);
+  if (window.cartHandler && window.cartHandler.handleLogin) {
+    window.cartHandler.handleLogin(user.id);
+  }
 }
 function onUserLogout(user) {
-  window.cartHandler.onLogout(user.id);
+  if (window.cartHandler && window.cartHandler.handleLogout) {
+    window.cartHandler.handleLogout();
+  }
 }
