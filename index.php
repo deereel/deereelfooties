@@ -54,8 +54,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     </div>
   </section>
 
-
-
   <!-- Featured Categories -->
   <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
@@ -94,20 +92,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     </div>
   </section>
 
-
-
-
   <!-- New Arrivals Section -->
   <section class="py-20 bg-background">
     <div class="container mx-auto px-4">
       <div class="flex flex-wrap items-center justify-between mb-12">
         <h2 class="text-3xl font-light">New Arrivals</h2>
-        <a href="/products.php" class="text-primary hover:underline flex items-center">
+        <a href="/products.php?new=1" class="text-primary hover:underline flex items-center">
           View All <i class="fas fa-arrow-right ml-2"></i>
         </a>
       </div>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
         <?php
         try {
           // Get new collection products
@@ -161,7 +156,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     </div>
   </section>
 
-  <!-- Featured Collection with Large Image -->
+  <!-- Our story with Large Image -->
   <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -208,11 +203,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         </a>
       </div>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <?php
         try {
           // Get featured products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE is_featured = 1 ORDER BY created_at DESC LIMIT 4");
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE is_featured = 1 ORDER BY created_at DESC LIMIT 5");
           $stmt->execute();
           $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
           
@@ -238,7 +233,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             endforeach;
           } else {
             // Show placeholder if no featured products
-            for ($i = 0; $i < 4; $i++):
+            for ($i = 0; $i < 5; $i++):
         ?>
           <div class="group">
             <a href="/products.php" class="block">
@@ -358,36 +353,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const swiper = new Swiper('.hero-swiper', {
-        loop: true,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-    });
-  </script>
-
-  document.addEventListener('DOMContentLoaded', function() {
-      const swiper = new Swiper('.hero-swiper', {
-        loop: true,
-        autoplay: {
-          delay: 5000,
-          disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      });
-    });
-  </script>
-
-  document.addEventListener('DOMContentLoaded', function() {
       const swiper = new Swiper('.hero-swiper', {
         loop: true,
         autoplay: {

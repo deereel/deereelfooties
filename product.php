@@ -344,24 +344,92 @@ try {
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>EU Size</th>
-                <th>UK Size</th>
-                <th>US Size</th>
-                <th>Foot Length (cm)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td>40</td><td>6</td><td>7</td><td>25.0</td></tr>
-              <tr><td>41</td><td>7</td><td>8</td><td>25.7</td></tr>
-              <tr><td>42</td><td>8</td><td>9</td><td>26.3</td></tr>
-              <tr><td>43</td><td>9</td><td>10</td><td>27.0</td></tr>
-              <tr><td>44</td><td>10</td><td>11</td><td>27.7</td></tr>
-              <tr><td>45</td><td>11</td><td>12</td><td>28.3</td></tr>
-            </tbody>
-          </table>
+          <?php if ($productGender === 'men'): ?>
+          <h3 class="text-xl font-medium mb-4">MEN'S SIZES</h3>
+          <div class="overflow-x-auto mb-6">
+            <table class="table table-bordered w-full">
+              <thead>
+                <tr>
+                  <th>UK</th>
+                  <th>US</th>
+                  <th>EU</th>
+                  <th>JP</th>
+                  <th>Foot Length (cm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>5</td><td>6</td><td>39</td><td>24</td><td>24.0</td></tr>
+                <tr><td>6</td><td>7</td><td>40</td><td>25</td><td>25.0</td></tr>
+                <tr><td>7</td><td>8</td><td>41</td><td>26</td><td>26.0</td></tr>
+                <tr><td>8</td><td>9</td><td>42</td><td>27</td><td>27.0</td></tr>
+                <tr><td>9</td><td>10</td><td>43</td><td>28</td><td>28.0</td></tr>
+                <tr><td>10</td><td>11</td><td>44</td><td>29</td><td>29.0</td></tr>
+                <tr><td>11</td><td>12</td><td>45</td><td>30</td><td>30.0</td></tr>
+                <tr><td>12</td><td>13</td><td>46</td><td>31</td><td>31.0</td></tr>
+                <tr><td>13</td><td>14</td><td>47</td><td>32</td><td>32.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 class="text-xl font-medium mb-4">MEN'S WIDTH</h3>
+          <div class="overflow-x-auto">
+            <table class="table table-bordered w-full">
+              <thead>
+                <tr>
+                  <th>Width</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>C</td><td>Narrow</td></tr>
+                <tr><td>D</td><td>Standard</td></tr>
+                <tr><td>E</td><td>Wide</td></tr>
+                <tr><td>EE</td><td>Extra Wide</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <?php else: ?>
+          <h3 class="text-xl font-medium mb-4">WOMEN'S SIZES</h3>
+          <div class="overflow-x-auto mb-6">
+            <table class="table table-bordered w-full">
+              <thead>
+                <tr>
+                  <th>UK</th>
+                  <th>US</th>
+                  <th>EU</th>
+                  <th>JP</th>
+                  <th>Foot Length (cm)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>2</td><td>4</td><td>34</td><td>20.5</td><td>21.0</td></tr>
+                <tr><td>3</td><td>5</td><td>35</td><td>21.5</td><td>22.0</td></tr>
+                <tr><td>4</td><td>6</td><td>36</td><td>22.5</td><td>23.0</td></tr>
+                <tr><td>5</td><td>7</td><td>37</td><td>23.5</td><td>24.0</td></tr>
+                <tr><td>6</td><td>8</td><td>38</td><td>24.5</td><td>25.0</td></tr>
+                <tr><td>7</td><td>9</td><td>39</td><td>25.5</td><td>26.0</td></tr>
+                <tr><td>8</td><td>10</td><td>40</td><td>26.5</td><td>27.0</td></tr>
+                <tr><td>9</td><td>11</td><td>41</td><td>27.5</td><td>28.0</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <h3 class="text-xl font-medium mb-4">WOMEN'S WIDTH</h3>
+          <div class="overflow-x-auto">
+            <table class="table table-bordered w-full">
+              <thead>
+                <tr>
+                  <th>Width</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>A</td><td>Narrow</td></tr>
+                <tr><td>B</td><td>Standard</td></tr>
+                <tr><td>C</td><td>Wide</td></tr>
+                <tr><td>D</td><td>Extra Wide</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <?php endif; ?>
         </div>
       </div>
     </div>

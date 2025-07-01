@@ -286,8 +286,8 @@ if ($designId > 0) {
     </div>
   </section>
 
-  <!-- Added to Cart Modal -->
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/added-to-cart-modal.php'); ?>
+  <!-- Added to Cart Modal 
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/added-to-cart-modal.php'); ?>-->
 
   <script>
     // Pass PHP data to JavaScript

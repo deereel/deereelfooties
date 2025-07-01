@@ -121,11 +121,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-light mb-12 text-center">Featured Products</h2>      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php
         try {
           // Get featured men's products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_featured = 1 ORDER BY created_at DESC LIMIT 4");
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_featured = 1 ORDER BY created_at DESC LIMIT 15");
           $stmt->execute();
           $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
           
@@ -179,7 +179,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       </div>
       
       <div class="text-center mt-12">
-        <a href="/products.php" class="btn-primary px-8 py-3">View All Products</a>
+        <a href="/products.php?gender=men" class="btn-primary px-8 py-3">View All Men's Products</a>
       </div>
     </div>
   </section>
@@ -188,11 +188,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <section class="py-16 bg-white">
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-light mb-12 text-center">New Arrivals</h2>      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php
         try {
           // Get new collection men's products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_new_collection = 1 ORDER BY created_at DESC LIMIT 4");
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'men' AND is_new_collection = 1 ORDER BY created_at DESC LIMIT 10");
           $stmt->execute();
           $newProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
           
