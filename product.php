@@ -262,7 +262,7 @@ try {
 
             <!-- Add to Cart Button -->
             <div class="mb-6">
-              <button class="btn btn-dark w-full" id="add-to-cart-btn">Add to Cart</button>
+              <button class="btn btn-dark w-full" id="add-to-cart-btn" data-product-id="<?= htmlspecialchars($productId) ?>">Add to Cart</button>
             </div>
 
             <!-- Additional Options -->

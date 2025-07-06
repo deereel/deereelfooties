@@ -42,6 +42,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           Clear Filters
         </button>
 
+        <div id="active-filters-display" class="mb-4 text-sm text-gray-700">
+          <!-- Active filters will be displayed here -->
+        </div>
+
         <!-- FILTER BY TYPE -->
         <div>
           <h3 class="font-medium mb-3">FILTER BY TYPE</h3>
@@ -228,7 +232,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         // Get selected filters
         const selectedType = Array.from(typeFilters).find(f => f.classList.contains('active'))?.dataset.type || 'all';
         const selectedPrices = Array.from(priceFilters).filter(cb => cb.checked).map(cb => cb.nextElementSibling.textContent.trim());
-        const selectedSizes = Array.from(sizeFilters).filter(el => el.classList.contains('active')).map(el => el.dataset.size);
+        const selectedSizes = Array.from(sizeFilters).filter(el => el.classList.contains('active')).map(el => el.dataset.size.toLowerCase());
         const selectedColors = Array.from(colorFilters).filter(el => el.classList.contains('active')).map(el => el.dataset.color.toLowerCase());
 
         slides.forEach(slide => {
@@ -264,7 +268,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             // Filter by size (case-insensitive)
             if (show && selectedSizes.length > 0) {
               const sizes = card.dataset.size.split(',').map(s => s.trim().toLowerCase());
-              if (!selectedSizes.some(s => sizes.includes(s.toLowerCase()))) {
+              // Check if any selected size is included in product sizes
+              if (!selectedSizes.some(s => sizes.includes(s))) {
                 show = false;
               }
             }
@@ -272,7 +277,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             // Filter by color (case-insensitive)
             if (show && selectedColors.length > 0) {
               const colors = card.dataset.color.split(',').map(c => c.trim().toLowerCase());
-              if (!selectedColors.some(c => colors.includes(c.toLowerCase()))) {
+              if (!selectedColors.some(c => colors.includes(c))) {
                 show = false;
               }
             }
@@ -287,6 +292,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           // Hide slide if no visible cards
           slide.style.display = visibleCount > 0 ? '' : 'none';
         });
+        updateActiveFiltersDisplay();
+        updateURLWithFilters();
       }
 
       // Event listeners for filters
@@ -316,6 +323,77 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         });
       });
 
+      function updateURLWithFilters() {
+        const params = new URLSearchParams();
+
+        // Add gender/type filter
+        const activeType = Array.from(typeFilters).find(f => f.classList.contains('active'));
+        if (activeType && activeType.dataset.type !== 'all') {
+          params.set('gender', activeType.dataset.type);
+        }
+
+        // Add price filters
+        const activePrices = Array.from(priceFilters).filter(cb => cb.checked).map(cb => cb.nextElementSibling.textContent.trim());
+        if (activePrices.length > 0) {
+          params.set('price', activePrices.join(','));
+        }
+
+        // Add size filters
+        const activeSizes = Array.from(sizeFilters).filter(el => el.classList.contains('active')).map(el => el.dataset.size);
+        if (activeSizes.length > 0) {
+          params.set('size', activeSizes.join(','));
+        }
+
+        // Add color filters
+        const activeColors = Array.from(colorFilters).filter(el => el.classList.contains('active')).map(el => el.dataset.color.toLowerCase());
+        if (activeColors.length > 0) {
+          params.set('color', activeColors.join(','));
+        }
+
+        const newUrl = window.location.pathname + '?' + params.toString();
+        window.history.replaceState({}, '', newUrl);
+      }
+
+      function updateActiveFiltersDisplay() {
+        const activeFilters = [];
+
+        // Active type filter
+        const activeType = Array.from(typeFilters).find(f => f.classList.contains('active'));
+        if (activeType && activeType.dataset.type !== 'all') {
+          activeFilters.push(activeType.textContent.trim());
+        }
+
+        // Active price filters
+        priceFilters.forEach(cb => {
+          if (cb.checked) {
+            activeFilters.push(cb.nextElementSibling.textContent.trim());
+          }
+        });
+
+        // Active size filters
+        sizeFilters.forEach(el => {
+          if (el.classList.contains('active')) {
+            activeFilters.push(el.textContent.trim());
+          }
+        });
+
+        // Active color filters
+        colorFilters.forEach(el => {
+          if (el.classList.contains('active')) {
+            activeFilters.push(el.dataset.color);
+          }
+        });
+
+        const activeFiltersDisplay = document.getElementById('active-filters-display');
+        if (activeFilters.length > 0) {
+          activeFiltersDisplay.textContent = 'Active Filters: ' + activeFilters.join(', ');
+          activeFiltersDisplay.style.display = 'block';
+        } else {
+          activeFiltersDisplay.textContent = '';
+          activeFiltersDisplay.style.display = 'none';
+        }
+      }
+
       // Clear Filters button
       const clearFiltersBtn = document.getElementById('clear-filters-btn');
       clearFiltersBtn.addEventListener('click', function() {
@@ -336,6 +414,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
         // Apply filters after clearing
         filterProducts();
+        updateActiveFiltersDisplay();
       });
 
       // Apply filters from URL query parameters on page load
@@ -403,6 +482,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
         // Apply filters after setting from URL
         filterProducts();
+        updateActiveFiltersDisplay();
       }
 
       applyFiltersFromURL();

@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'success' => true,
                 'user' => [
                     'id' => $user['user_id'] ?? $user['id'],
+                    'user_id' => $user['user_id'] ?? $user['id'],
                     'name' => $user['username'] ?? $user['name'],
                     'email' => $user['email']
                 ]

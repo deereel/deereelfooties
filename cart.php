@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
           totalItems += normalizedItem.quantity;
             
           html += `
-              <div class="cart-item border-bottom py-3" data-item-id="${normalizedItem.id}" data-color="${normalizedItem.color}" data-size="${normalizedItem.size}" data-width="${normalizedItem.width}">
+              <div class="cart-item border-bottom py-3" data-item-id="${item.cart_item_id || normalizedItem.id}" data-product-id="${normalizedItem.id}" data-color="${normalizedItem.color}" data-size="${normalizedItem.size}" data-width="${normalizedItem.width}">
                   <div class="row align-items-center">
                       <div class="col-md-2">
                           <img src="${normalizedItem.image}" alt="${normalizedItem.name}" class="img-fluid rounded" style="max-height: 80px; object-fit: cover;">
@@ -466,13 +466,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
   async function updateCartItemQuantity(cartItem, newQuantity) {
       const itemId = cartItem.dataset.itemId;
+      const productId = cartItem.dataset.productId;
       const isLoggedIn = window.cartHandler.isLoggedIn;
       
-      console.log('Updating cart item:', {itemId, newQuantity, isLoggedIn});
+      console.log('Updating cart item:', {itemId, productId, newQuantity, isLoggedIn});
         
       try {
           if (isLoggedIn) {
-              // Update in database
+              // Update in database using cart_item_id
               const response = await fetch('/api/cart.php', {
                   method: 'POST',
                   headers: {
@@ -491,16 +492,16 @@ document.addEventListener('DOMContentLoaded', function() {
                   throw new Error(data.message);
               }
           } else {
-          // Update in localStorage
+          // Update in localStorage using product details
           let guestCart = window.cartHandler.getGuestCart();
           const color = cartItem.dataset.color;
           const size = cartItem.dataset.size;
           const width = cartItem.dataset.width;
           
-          console.log('Guest cart update:', {guestCart, itemId, color, size, width});
+          console.log('Guest cart update:', {guestCart, productId, color, size, width});
             
           const itemIndex = guestCart.findIndex(item => 
-          (item.product_id === itemId || item.id === itemId) && 
+          (item.product_id === productId || item.id === productId) && 
           item.color === color && 
           item.size === size && 
           (item.width === width || (item.width === '' && width === ''))
@@ -540,11 +541,12 @@ document.addEventListener('DOMContentLoaded', function() {
       }
         
       const itemId = cartItem.dataset.itemId;
+      const productId = cartItem.dataset.productId;
       const isLoggedIn = window.cartHandler.isLoggedIn;
         
       try {
           if (isLoggedIn) {
-              // Remove from database
+              // Remove from database using cart_item_id
               const response = await fetch('/api/cart.php', {
                   method: 'DELETE',
                   headers: {
@@ -562,16 +564,16 @@ document.addEventListener('DOMContentLoaded', function() {
                   throw new Error(data.message);
               }
           } else {
-              // Remove from localStorage
+              // Remove from localStorage using product details
               let guestCart = window.cartHandler.getGuestCart();
               const color = cartItem.dataset.color;
               const size = cartItem.dataset.size;
               const width = cartItem.dataset.width;
                 
-              console.log('Guest cart remove:', {guestCart, itemId, color, size, width});
+              console.log('Guest cart remove:', {guestCart, productId, color, size, width});
               
               guestCart = guestCart.filter(item => 
-              !((item.product_id === itemId || item.id === itemId) && 
+              !((item.product_id === productId || item.id === productId) && 
               item.color === color && 
               item.size === size && 
               (item.width === width || (item.width === '' && width === '')))

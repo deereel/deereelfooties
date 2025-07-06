@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const productPriceText = document.querySelector('p.text-2xl')?.textContent || '';
     const productPrice = parseFloat(productPriceText.replace(/[^\d\.]/g, '')) || 0;
     const productImage = document.getElementById('mainImage')?.src || '';
-    const productId = window.location.pathname;
+    const productId = document.getElementById('add-to-cart-btn').dataset.productId || window.location.pathname;
 
     const cartItem = {
       product_id: productId,
@@ -40,11 +40,21 @@ document.addEventListener('DOMContentLoaded', function() {
       window.cartHandler = new CartHandler();
     }
 
-    await window.cartHandler.addToCart(cartItem);
-    if (window.cartHandler.showAddedToCartModal) {
-      window.cartHandler.showAddedToCartModal(cartItem);
-    } else {
-      alert('Added to cart!');
+    // Ensure cart handler has latest login status
+    window.cartHandler.checkLoginStatus();
+
+    console.log('Adding to cart item:', cartItem);
+    console.log('User logged in:', window.cartHandler.isLoggedIn);
+    try {
+      await window.cartHandler.addToCart(cartItem);
+      if (window.cartHandler.showAddedToCartModal) {
+        window.cartHandler.showAddedToCartModal(cartItem);
+      } else {
+        alert('Added to cart!');
+      }
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      alert('Failed to add product to cart. Please try again.');
     }
   });
 });

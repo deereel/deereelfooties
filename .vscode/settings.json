@@ -1,3 +1,4 @@
 {
-    "twinny.username": "user"
+    "twinny.username": "user",
+    "bitoAI.codeCompletion.enableAutoCompletion": false
 }

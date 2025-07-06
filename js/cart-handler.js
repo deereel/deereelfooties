@@ -20,7 +20,7 @@ class CartHandler {
       try {
         const user = JSON.parse(userData);
         this.isLoggedIn = true;
-        this.userId = user.user_id || user.id;
+        this.userId = user.id || user.user_id;
         console.log('User logged in:', this.userId, 'Full user data:', user);
       } catch (e) {
         console.error('Error parsing user data:', e);
@@ -36,6 +36,9 @@ class CartHandler {
 
   async addToCart(item) {
     console.log('Adding to cart:', item);
+    
+    // Re-check login status before adding
+    this.checkLoginStatus();
     
     if (this.isLoggedIn) {
       await this.addToUserCart(item);
@@ -190,7 +193,7 @@ class CartHandler {
     // Trigger cart refresh on cart page
     if (window.location.pathname.includes('/cart.php')) {
       if (typeof loadCartItems === 'function') {
-        await loadCartItems();
+        setTimeout(() => loadCartItems(), 100);
       }
     }
   }
@@ -318,3 +321,29 @@ class CartHandler {
 
 // Initialize cart handler globally
 window.cartHandler = new CartHandler();
+
+// Listen for login events
+document.addEventListener('userLoggedIn', function() {
+  console.log('User logged in event received');
+  if (window.cartHandler) {
+    const userData = localStorage.getItem('DRFUser');
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        const userId = user.id || user.user_id;
+        console.log('Handling login for user:', userId);
+        window.cartHandler.handleLogin(userId);
+      } catch (e) {
+        console.error('Error parsing user data on login:', e);
+      }
+    }
+  }
+});
+
+// Listen for logout events
+document.addEventListener('userLoggedOut', function() {
+  console.log('User logged out event received');
+  if (window.cartHandler) {
+    window.cartHandler.handleLogout();
+  }
+});

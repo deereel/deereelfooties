@@ -77,7 +77,10 @@ async function handleLogin() {
         if (bsModal) bsModal.hide();
       }
       
-      // Cart functionality has been removed
+      // Handle cart synchronization
+      if (window.cartHandler) {
+        await window.cartHandler.handleLogin(data.user.user_id || data.user.id);
+      }
       
       // Dispatch login event
       document.dispatchEvent(new CustomEvent('userLoggedIn'));
@@ -104,18 +107,12 @@ async function handleLogin() {
 
 async function handleLogout() {
   try {
-    // Save cart before logout
-    if (window.cartHandler && window.cartHandler.cartItems.length > 0) {
-      await fetch('/auth/logout.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cart_items: window.cartHandler.cartItems })
-      });
-    } else {
-      await fetch('/auth/logout.php');
+    // Handle cart logout
+    if (window.cartHandler) {
+      await window.cartHandler.handleLogout();
     }
+    
+    await fetch('/auth/logout.php');
     
     // Clear user data from storage
     localStorage.removeItem('DRFUser');
@@ -125,6 +122,9 @@ async function handleLogout() {
     
     // Remove user data attribute
     document.body.removeAttribute('data-user-id');
+    
+    // Dispatch logout event
+    document.dispatchEvent(new CustomEvent('userLoggedOut'));
     
     // Reload page
     window.location.reload();

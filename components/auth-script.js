@@ -17,14 +17,22 @@ document.addEventListener('DOMContentLoaded', function() {
         body: JSON.stringify({ email, password })
       })
       .then(response => response.json())
-      .then(data => {
+      .then(async data => {
         if (data.success) {
           // Store user data in localStorage
           localStorage.setItem('DRFUser', JSON.stringify(data.user));
           
+          // Handle cart synchronization
+          if (window.cartHandler) {
+            await window.cartHandler.handleLogin(data.user.id || data.user.user_id);
+          }
+          
           // Close modal
           const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
           if (loginModal) loginModal.hide();
+          
+          // Dispatch login event
+          document.dispatchEvent(new CustomEvent('userLoggedIn'));
           
           // Reload page
           window.location.reload();
@@ -76,14 +84,22 @@ document.addEventListener('DOMContentLoaded', function() {
         body: JSON.stringify({ name, email, password })
       })
       .then(response => response.json())
-      .then(data => {
+      .then(async data => {
         if (data.success) {
           // Store user data in localStorage
           localStorage.setItem('DRFUser', JSON.stringify(data.user));
           
+          // Handle cart synchronization
+          if (window.cartHandler) {
+            await window.cartHandler.handleLogin(data.user.id || data.user.user_id);
+          }
+          
           // Close modal
           const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
           if (loginModal) loginModal.hide();
+          
+          // Dispatch login event
+          document.dispatchEvent(new CustomEvent('userLoggedIn'));
           
           // Reload page
           window.location.reload();

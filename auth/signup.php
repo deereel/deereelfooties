@@ -74,6 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'success' => true,
             'user' => [
                 'id' => $userId,
+                'user_id' => $userId,
                 'name' => $name,
                 'email' => $email
             ]
