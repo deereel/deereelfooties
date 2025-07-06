@@ -107,24 +107,25 @@ async function handleLogin() {
 
 async function handleLogout() {
   try {
-    // Handle cart logout
-    if (window.cartHandler) {
-      await window.cartHandler.handleLogout();
-    }
-    
-    await fetch('/auth/logout.php');
-    
-    // Clear user data from storage
+    // Clear user data from storage first
     localStorage.removeItem('DRFUser');
     localStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('user_id');
     sessionStorage.removeItem('DRFServerCart');
+    
+    // Handle cart logout
+    if (window.cartHandler) {
+      window.cartHandler.handleLogout();
+    }
     
     // Remove user data attribute
     document.body.removeAttribute('data-user-id');
     
     // Dispatch logout event
     document.dispatchEvent(new CustomEvent('userLoggedOut'));
+    
+    // Call logout endpoint
+    await fetch('/auth/logout.php');
     
     // Reload page
     window.location.reload();

@@ -6,16 +6,26 @@ error_reporting(E_ALL);
 session_start();
 require_once 'db.php';
 
+// Close session immediately to release lock
+session_write_close();
+
 // Handle signup request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     $response = ['success' => false];
     
     try {
-        // Get form data
-        $name = trim($_POST['name'] ?? '');
-        $email = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
+        // Get input data (handle both form data and JSON)
+        $input = json_decode(file_get_contents('php://input'), true);
+        if ($input) {
+            $name = trim($input['name'] ?? '');
+            $email = trim($input['email'] ?? '');
+            $password = $input['password'] ?? '';
+        } else {
+            $name = trim($_POST['name'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+        }
         
         if (empty($name) || empty($email) || empty($password)) {
             $response['error'] = 'Please fill in all fields';
@@ -62,12 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $userId = $pdo->lastInsertId();
         
-        // Set session data
+        // Restart session to set data, then close immediately
+        session_start();
         $_SESSION['user'] = [
             'id' => $userId,
             'name' => $name,
             'email' => $email
         ];
+        session_write_close();
         
         // Return user data for client-side storage
         $response = [

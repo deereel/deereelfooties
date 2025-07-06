@@ -9,44 +9,90 @@ class CartHandler {
 
   init() {
     console.log('Initializing CartHandler');
-    this.checkLoginStatus();
-    this.updateCartCount();
+    // Small delay to ensure DOM is fully loaded
+    setTimeout(() => {
+      this.checkLoginStatus();
+      this.updateCartCount();
+    }, 100);
   }
 
   checkLoginStatus() {
+    // Method 1: Check localStorage
     const userData = localStorage.getItem(this.userKey);
     console.log('Checking login status. User data:', userData);
+    
     if (userData) {
       try {
         const user = JSON.parse(userData);
         this.isLoggedIn = true;
         this.userId = user.id || user.user_id;
-        console.log('User logged in:', this.userId, 'Full user data:', user);
+        console.log('User logged in via localStorage:', this.userId);
+        return;
       } catch (e) {
         console.error('Error parsing user data:', e);
-        this.isLoggedIn = false;
-        this.userId = null;
       }
-    } else {
-      this.isLoggedIn = false;
-      this.userId = null;
-      console.log('No user data found - user not logged in');
     }
+    
+    // Method 2: Check DOM meta tag
+    const userIdMeta = document.querySelector('meta[name="user-id"]');
+    if (userIdMeta && userIdMeta.content) {
+      this.isLoggedIn = true;
+      this.userId = userIdMeta.content;
+      console.log('User logged in via meta tag:', this.userId);
+      return;
+    }
+    
+    // Method 3: Check body data attribute
+    const bodyUserId = document.body.getAttribute('data-user-id');
+    if (bodyUserId) {
+      this.isLoggedIn = true;
+      this.userId = bodyUserId;
+      console.log('User logged in via body attribute:', this.userId);
+      return;
+    }
+    
+    // Method 4: Check sessionStorage
+    const sessionUserId = sessionStorage.getItem('user_id');
+    if (sessionUserId) {
+      this.isLoggedIn = true;
+      this.userId = sessionUserId;
+      console.log('User logged in via sessionStorage:', this.userId);
+      return;
+    }
+    
+    // No login detected
+    this.isLoggedIn = false;
+    this.userId = null;
+    console.log('No user login detected');
+  }
+
+  forceRefreshLoginStatus() {
+    console.log('Force refreshing login status');
+    this.checkLoginStatus();
+    return this.isLoggedIn;
   }
 
   async addToCart(item) {
     console.log('Adding to cart:', item);
     
-    // Re-check login status before adding
+    // Force re-check login status before adding
     this.checkLoginStatus();
+    console.log('Login status after check:', this.isLoggedIn, 'User ID:', this.userId);
     
-    if (this.isLoggedIn) {
-      await this.addToUserCart(item);
+    let success = false;
+    if (this.isLoggedIn && this.userId) {
+      console.log('Adding to user cart for user:', this.userId);
+      success = await this.addToUserCart(item);
     } else {
+      console.log('Adding to guest cart');
       this.addToGuestCart(item);
+      success = true;
     }
     
-    this.updateCartCount();
+    // Update cart count after adding
+    await this.updateCartCount();
+    console.log('Cart addition completed, success:', success);
+    return success;
   }
 
   addToGuestCart(item) {
@@ -88,6 +134,12 @@ class CartHandler {
 
   async addToUserCart(item) {
     try {
+      console.log('Sending add to user cart request:', {
+        action: 'add',
+        user_id: this.userId,
+        ...item
+      });
+      
       const response = await fetch('/api/cart.php', {
         method: 'POST',
         headers: {
@@ -101,15 +153,20 @@ class CartHandler {
       });
 
       const data = await response.json();
+      console.log('Add to user cart response:', data);
+      
       if (!data.success) {
         throw new Error(data.message || 'Failed to add to cart');
       }
       
-      console.log('Added to user cart:', data);
+      console.log('Successfully added to user cart');
+      return true;
     } catch (error) {
       console.error('Error adding to user cart:', error);
       // Fallback to guest cart
+      console.log('Falling back to guest cart');
       this.addToGuestCart(item);
+      return false;
     }
   }
 
@@ -248,17 +305,12 @@ class CartHandler {
   async handleLogout() {
     console.log('Handling logout');
     
-    // Simply update login status - keep cart items in database
+    // Clear login status
     this.isLoggedIn = false;
     this.userId = null;
-    this.updateCartCount();
     
-    // Trigger cart refresh on cart page
-    if (window.location.pathname.includes('/cart.php')) {
-      if (typeof loadCartItems === 'function') {
-        await loadCartItems();
-      }
-    }
+    // Update cart count immediately
+    await this.updateCartCount();
   }
 
 
@@ -319,13 +371,24 @@ class CartHandler {
   }
 }
 
-// Initialize cart handler globally
-window.cartHandler = new CartHandler();
+// Initialize cart handler after DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    window.cartHandler = new CartHandler();
+  });
+} else {
+  // DOM is already ready
+  window.cartHandler = new CartHandler();
+}
 
 // Listen for login events
 document.addEventListener('userLoggedIn', function() {
   console.log('User logged in event received');
+  
+  // Re-initialize cart handler to pick up new login status
   if (window.cartHandler) {
+    window.cartHandler.checkLoginStatus();
+    
     const userData = localStorage.getItem('DRFUser');
     if (userData) {
       try {
@@ -337,6 +400,9 @@ document.addEventListener('userLoggedIn', function() {
         console.error('Error parsing user data on login:', e);
       }
     }
+  } else {
+    // Re-create cart handler if it doesn't exist
+    window.cartHandler = new CartHandler();
   }
 });
 
@@ -345,5 +411,8 @@ document.addEventListener('userLoggedOut', function() {
   console.log('User logged out event received');
   if (window.cartHandler) {
     window.cartHandler.handleLogout();
+  } else {
+    // Re-create cart handler if it doesn't exist
+    window.cartHandler = new CartHandler();
   }
 });

@@ -6,15 +6,24 @@ error_reporting(E_ALL);
 session_start();
 require_once 'db.php';
 
+// Close session immediately to release lock
+session_write_close();
+
 // Handle login request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
     $response = ['success' => false];
     
     try {
-        // Get form data
-        $email = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
+        // Get input data (handle both form data and JSON)
+        $input = json_decode(file_get_contents('php://input'), true);
+        if ($input) {
+            $email = trim($input['email'] ?? '');
+            $password = $input['password'] ?? '';
+        } else {
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
+        }
         
         if (empty($email) || empty($password)) {
             $response['error'] = 'Please fill in all fields';
@@ -33,12 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user && password_verify($password, $user['password'])) {
             // Login successful
             
-            // Set session data - use user_id instead of id
+            // Restart session to set data, then close immediately
+            session_start();
             $_SESSION['user'] = [
                 'id' => $user['user_id'] ?? $user['id'],
                 'name' => $user['username'] ?? $user['name'],
                 'email' => $user['email']
             ];
+            session_write_close();
             
             // Return user data for client-side storage
             $response = [

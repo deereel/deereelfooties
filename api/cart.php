@@ -2,6 +2,12 @@
 header('Content-Type: application/json');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
+// Start session if needed and close immediately to release lock
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+session_write_close();
+
 // Use the auth database connection (drf_database)
 if (!function_exists('getDBConnection')) {
     function getDBConnection() {

@@ -40,13 +40,16 @@ document.addEventListener('DOMContentLoaded', function() {
       window.cartHandler = new CartHandler();
     }
 
-    // Ensure cart handler has latest login status
-    window.cartHandler.checkLoginStatus();
+    // Force refresh login status
+    const isLoggedIn = window.cartHandler.forceRefreshLoginStatus();
 
     console.log('Adding to cart item:', cartItem);
-    console.log('User logged in:', window.cartHandler.isLoggedIn);
+    console.log('User logged in:', isLoggedIn, 'User ID:', window.cartHandler.userId);
+    console.log('localStorage DRFUser:', localStorage.getItem('DRFUser'));
     try {
-      await window.cartHandler.addToCart(cartItem);
+      const success = await window.cartHandler.addToCart(cartItem);
+      console.log('Add to cart completed, success:', success);
+      
       if (window.cartHandler.showAddedToCartModal) {
         window.cartHandler.showAddedToCartModal(cartItem);
       } else {

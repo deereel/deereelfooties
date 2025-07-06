@@ -174,6 +174,33 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
   <meta name="user-id" content="<?= htmlspecialchars($currentUser['id'] ?? $currentUser['user_id'] ?? '') ?>">
 <?php endif; ?>
 
+<!--
+  Synchronize client-side (localStorage) and server-side (PHP Session) login states.
+  This script ensures that JavaScript components, like the CartHandler, have the correct
+  user status on page load, preventing issues where a user is logged in but actions
+  are treated as if they were a guest (or vice-versa).
+
+-->
+
+<script>
+  (function() {
+    try {
+      const serverUser = <?= $currentUser ? json_encode($currentUser) : 'null' ?>;
+      const localUserRaw = localStorage.getItem('DRFUser');
+
+      if (serverUser && !localUserRaw) {
+        console.log('Client-side user not found. Syncing from server session.');
+        localStorage.setItem('DRFUser', JSON.stringify(serverUser));
+      } else if (!serverUser && localUserRaw) {
+        console.log('Server session not found. Clearing client-side user.');
+        localStorage.removeItem('DRFUser');
+      }
+    } catch (e) {
+      console.error('Failed to sync user state with localStorage:', e);
+    }
+  })();
+</script>
+
 <script>
 // Initialize user authentication state immediately
 document.addEventListener('DOMContentLoaded', function() {
