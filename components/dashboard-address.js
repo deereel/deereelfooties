@@ -75,10 +75,10 @@ class DashboardAddressManager {
     const defaultAddress = document.getElementById('defaultAddress');
 
     if (addressId) addressId.value = addressData.address_id || '';
-    if (addressName) addressName.value = addressData.name || '';
+    if (addressName) addressName.value = addressData.address_name || '';
     if (fullNameAddress) fullNameAddress.value = addressData.full_name || '';
     if (phoneAddress) phoneAddress.value = addressData.phone || '';
-    if (streetAddress) streetAddress.value = addressData.line1 || '';
+    if (streetAddress) streetAddress.value = addressData.street_address || '';
     if (city) city.value = addressData.city || '';
     if (state) state.value = addressData.state || '';
     if (country) country.value = addressData.country || '';
@@ -164,15 +164,15 @@ class DashboardAddressManager {
       console.log('Rendering individual address:', address);
       
       // Ensure we have proper fallbacks for all fields
-      const displayName = address.name || address.address_type || 'Address';
+      const displayName = address.address_name || 'Address';
       const fullName = address.full_name || 'No name provided';
-      const line1 = address.line1 || '';
-      const line2 = address.line2 || '';
+      const streetAddress = address.street_address || ''; // ✅ Correct field
       const city = address.city || '';
       const state = address.state || '';
       const country = address.country || '';
       const phone = address.phone || '';
       const isDefault = parseInt(address.is_default) === 1;
+
       
       return `
         <div class="card mb-3">
@@ -180,7 +180,7 @@ class DashboardAddressManager {
             <div class="d-flex justify-content-between align-items-start">
               <div class="flex-grow-1">
                 <h6 class="card-title d-flex align-items-center mb-2">
-                  <span class="me-2">${displayName}</span>
+                  <span class="me-2 text-capitalize">${displayName}</span>
                   ${isDefault ? '<span class="badge bg-primary">Default</span>' : ''}
                 </h6>
                 <div class="address-details">
@@ -188,9 +188,9 @@ class DashboardAddressManager {
                     <strong><i class="fas fa-user me-2 text-muted"></i>${fullName}</strong>
                   </p>
                   <p class="card-text mb-1">
-                    <i class="fas fa-map-marker-alt me-2 text-muted"></i>${line1}
+                    <i class="fas fa-map-marker-alt me-2 text-muted"></i>${streetAddress}
                   </p>
-                  ${line2 ? `<p class="card-text mb-1"><i class="fas fa-map me-2 text-muted"></i>${line2}</p>` : ''}
+                  ${city && state ? `<p class="card-text mb-1"><i class="fas fa-map me-2 text-muted"></i>${city}, ${state}</p>` : ''}
                   <p class="card-text mb-1">
                     <i class="fas fa-city me-2 text-muted"></i>${city}, ${state}
                   </p>
@@ -306,10 +306,10 @@ class DashboardAddressManager {
       const addressId = document.getElementById('address-id').value;
       const addressData = {
         user_id: userId,
-        name: document.getElementById('addressName').value,
+        address_name: document.getElementById('addressName').value,
         full_name: document.getElementById('fullNameAddress').value,
         phone: document.getElementById('phoneAddress').value,
-        line1: document.getElementById('streetAddress').value,
+        street_address: document.getElementById('streetAddress').value,
         city: document.getElementById('city').value,
         state: document.getElementById('state').value,
         country: document.getElementById('country').value,
@@ -323,7 +323,7 @@ class DashboardAddressManager {
       console.log('Saving address data:', addressData);
       
       // Save address
-      const response = await fetch('/api/save-address.php', {
+      const response = await fetch('/api/addresses.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

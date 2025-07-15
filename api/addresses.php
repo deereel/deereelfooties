@@ -1,4 +1,7 @@
 <?php
+
+error_log("Reached [filename].php", 0);
+
 header('Content-Type: application/json');
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 

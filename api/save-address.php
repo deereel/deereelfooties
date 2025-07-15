@@ -1,4 +1,7 @@
 <?php
+
+error_log("Reached [filename].php", 0);
+
 // API endpoint to save or update an address
 header('Content-Type: application/json');
 require_once '../auth/db.php';
