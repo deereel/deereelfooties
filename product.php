@@ -267,8 +267,10 @@ try {
 
             <!-- Additional Options -->
             <div class="flex flex-col sm:flex-row gap-4 mb-8">
-              <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" id="add-to-wishlist-btn">
-                ADD TO WISHLIST
+              <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" 
+                      id="add-to-wishlist-btn" 
+                      data-product-id="<?= htmlspecialchars($productId) ?>">
+                <i class="far fa-heart mr-2"></i> ADD TO WISHLIST
               </button>
               <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" onclick="window.location.href='/customize.php'">
                 CUSTOMIZE THIS SHOE
@@ -358,6 +360,8 @@ try {
                 </tr>
               </thead>
               <tbody>
+                <tr><td>3</td><td>4</td><td>37</td><td>22</td><td>22.0</td></tr>
+                <tr><td>4</td><td>5</td><td>38</td><td>23</td><td>23.0</td></tr>
                 <tr><td>5</td><td>6</td><td>39</td><td>24</td><td>24.0</td></tr>
                 <tr><td>6</td><td>7</td><td>40</td><td>25</td><td>25.0</td></tr>
                 <tr><td>7</td><td>8</td><td>41</td><td>26</td><td>26.0</td></tr>

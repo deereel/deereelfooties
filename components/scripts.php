@@ -7,6 +7,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- Custom Scripts -->
 <script src="/js/cart-handler.js"></script>
+<script src="/js/wishlist.js"></script>
 
 <script>
   // Initialize cart handler and update cart count on page load

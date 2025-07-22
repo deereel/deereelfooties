@@ -1,49 +1,77 @@
-// Dashboard Wishlist Management
-class DashboardWishlistManager {
-  constructor() {
-    this.init();
+// dashboard-wishlist.js - Handles wishlist functionality in the dashboard
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Dashboard wishlist script loaded');
+  
+  // Check if we're on the dashboard page
+  if (document.body.getAttribute('data-page') === 'dashboard') {
+    // Initialize wishlist tab
+    const wishlistTab = document.querySelector('[data-tab="wishlist"]');
+    console.log('Found wishlist tab:', wishlistTab);
+    
+    // Load wishlist items when tab is clicked
+    if (wishlistTab) {
+      wishlistTab.addEventListener('click', function() {
+        console.log('Wishlist tab clicked');
+        setTimeout(loadWishlistItems, 100);
+      });
+    }
+    
+    // Add event listener to all tab links
+    document.querySelectorAll('.tab-link').forEach(link => {
+      if (link.dataset.tab === 'wishlist') {
+        link.addEventListener('click', function() {
+          console.log('Wishlist tab link clicked');
+          setTimeout(loadWishlistItems, 100);
+        });
+      }
+    });
+    
+    // Load wishlist items on page load if hash is #wishlist
+    if (window.location.hash === '#wishlist') {
+      console.log('Loading wishlist from hash');
+      setTimeout(loadWishlistItems, 300);
+    }
+    
+    // Try to load wishlist items after a delay
+    setTimeout(function() {
+      const wishlistTabContent = document.getElementById('wishlist-tab');
+      if (wishlistTabContent && !wishlistTabContent.classList.contains('d-none')) {
+        console.log('Wishlist tab is visible, loading items');
+        loadWishlistItems();
+      }
+    }, 500);
   }
-
-  init() {
-    console.log('Initializing Dashboard Wishlist Manager');
-    this.loadWishlist();
-  }
-
-  async loadWishlist() {
-    const container = document.getElementById('wishlist-container');
+  
+  // Load wishlist items
+  async function loadWishlistItems() {
+    const container = document.getElementById('wishlist-items');
     if (!container) return;
-
+    
+    // Show loading
+    container.innerHTML = `
+      <div class="text-center py-4">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2">Loading your wishlist...</p>
+      </div>
+    `;
+    
     try {
-      // Show loading
-      container.innerHTML = `
-        <div class="text-center py-4">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2">Loading your wishlist...</p>
-        </div>
-      `;
-
-      // Get user data
+      // Get user ID
       const userData = localStorage.getItem('DRFUser');
       if (!userData) {
         container.innerHTML = '<p class="text-center py-4">Please log in to view your wishlist.</p>';
         return;
       }
-
+      
       const user = JSON.parse(userData);
-      const userId = user.user_id || user.id;
-
-      // Fetch wishlist
-      const response = await fetch(`/api/wishlist.php?user_id=${userId}&action=get`);
+      const userId = user.id || user.user_id;
       
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
+      // Fetch wishlist items
+      const response = await fetch(`/api/wishlist.php?user_id=${userId}`);
       const data = await response.json();
-      console.log('Loaded wishlist response:', data);
-
+      
       if (data.success) {
-        this.renderWishlist(data.items || []);
+        renderWishlistItems(data.items || []);
       } else {
         container.innerHTML = `<p class="text-center py-4 text-danger">Error: ${data.message}</p>`;
       }
@@ -52,112 +80,130 @@ class DashboardWishlistManager {
       container.innerHTML = '<p class="text-center py-4 text-danger">Failed to load wishlist. Please try again.</p>';
     }
   }
-
-  renderWishlist(items) {
-    const container = document.getElementById('wishlist-container');
+  
+  // Render wishlist items
+  function renderWishlistItems(items) {
+    const container = document.getElementById('wishlist-items');
     
     if (!items || items.length === 0) {
       container.innerHTML = `
         <div class="text-center py-5">
-          <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+          <i class="far fa-heart fa-3x text-muted mb-3"></i>
           <h5>Your wishlist is empty</h5>
-          <p class="text-muted">Save items you love to your wishlist.</p>
-          <a href="/products.php" class="btn btn-primary mt-2">Start Shopping</a>
+          <p class="text-muted">Items you add to your wishlist will appear here.</p>
+          <a href="/products.php" class="btn btn-primary mt-3">Browse Products</a>
         </div>
       `;
       return;
     }
-
-    const itemsHtml = `
-      <div class="row">
-        ${items.map(item => this.renderWishlistItem(item)).join('')}
-      </div>
-    `;
-
-    container.innerHTML = itemsHtml;
-  }
-
-  renderWishlistItem(item) {
-    const productUrl = item.url || `/product.php?id=${item.product_id}`;
-    const imageUrl = item.image || '/images/product-placeholder.jpg';
-    const price = parseFloat(item.price).toFixed(2);
     
-    return `
-      <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card h-100">
-          <div class="position-relative">
-            <img src="${imageUrl}" class="card-img-top" alt="${item.name}" style="height: 200px; object-fit: cover;">
-            <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2" 
-                    onclick="event.preventDefault(); dashboardWishlistManager.removeFromWishlist(${item.product_id})">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title">${item.name}</h5>
-            <p class="card-text text-primary mb-3">$${price}</p>
-            <div class="mt-auto">
-              <a href="${productUrl}" class="btn btn-outline-primary btn-sm">View Details</a>
+    const itemsHtml = items.map(item => {
+      return `
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-3">
+              <img src="${item.image}" class="img-fluid rounded-start" alt="${item.product_name}" style="max-height: 150px; object-fit: cover;">
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <h5 class="card-title">${item.product_name}</h5>
+                  <button class="btn btn-sm btn-outline-danger remove-wishlist-item" data-wishlist-id="${item.wishlist_id}">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <p class="card-text">₦${parseFloat(item.price).toLocaleString()}</p>
+                <div class="d-flex gap-2 mt-3">
+                  <a href="/product.php?id=${item.product_id}" class="btn btn-sm btn-outline-primary">View Details</a>
+                  <button class="btn btn-sm btn-primary add-to-cart-from-wishlist" 
+                          data-product-id="${item.product_id}"
+                          data-product-name="${item.product_name}"
+                          data-price="${item.price}"
+                          data-image="${item.image}">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
+    }).join('');
+    
+    container.innerHTML = itemsHtml;
+    
+    // Add event listeners for remove buttons
+    document.querySelectorAll('.remove-wishlist-item').forEach(button => {
+      button.addEventListener('click', function() {
+        removeWishlistItem(this.dataset.wishlistId);
+      });
+    });
+    
+    // Add event listeners for add to cart buttons
+    document.querySelectorAll('.add-to-cart-from-wishlist').forEach(button => {
+      button.addEventListener('click', function() {
+        addToCartFromWishlist(this);
+      });
+    });
   }
-
-  async removeFromWishlist(productId) {
+  
+  // Remove item from wishlist
+  async function removeWishlistItem(wishlistId) {
+    if (!confirm('Are you sure you want to remove this item from your wishlist?')) {
+      return;
+    }
+    
     try {
-      // Get user data
       const userData = localStorage.getItem('DRFUser');
       if (!userData) {
-        alert('Please log in to manage your wishlist');
+        alert('Please log in to manage your wishlist.');
         return;
       }
-
+      
       const user = JSON.parse(userData);
-      const userId = user.user_id || user.id;
-
-      // Remove from wishlist
+      const userId = user.id || user.user_id;
+      
       const response = await fetch('/api/wishlist.php', {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          action: 'remove',
           user_id: userId,
-          product_id: productId
+          wishlist_id: wishlistId
         })
       });
       
       const data = await response.json();
       
       if (data.success) {
-        // Update local storage wishlist if it exists
-        const wishlist = JSON.parse(localStorage.getItem('DRFWishlist') || '[]');
-        const updatedWishlist = wishlist.filter(id => id !== productId);
-        localStorage.setItem('DRFWishlist', JSON.stringify(updatedWishlist));
-        
-        // Reload wishlist
-        this.loadWishlist();
+        // Reload wishlist items
+        loadWishlistItems();
       } else {
-        alert(`Error: ${data.message}`);
+        alert(data.message || 'Failed to remove item from wishlist');
       }
     } catch (error) {
-      console.error('Error removing from wishlist:', error);
-      alert('Failed to remove item from wishlist. Please try again.');
+      console.error('Error removing wishlist item:', error);
+      alert('An error occurred. Please try again.');
     }
   }
-
-  // Cart functionality has been removed
-  async addToCart(productId) {
-    alert('Cart functionality has been removed from the system.');
-  }
-}
-
-// Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
-  // Check if we're on the dashboard page
-  if (document.body.getAttribute('data-page') === 'dashboard') {
-    window.dashboardWishlistManager = new DashboardWishlistManager();
+  
+  // Add to cart from wishlist
+  function addToCartFromWishlist(button) {
+    if (!window.cartHandler) {
+      alert('Cart functionality is not available');
+      return;
+    }
+    
+    const product = {
+      product_id: button.dataset.productId,
+      product_name: button.dataset.productName,
+      price: parseFloat(button.dataset.price),
+      image: button.dataset.image,
+      quantity: 1
+    };
+    
+    window.cartHandler.addToCart(product);
+    alert('Product added to cart!');
   }
 });

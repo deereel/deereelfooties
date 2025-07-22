@@ -70,6 +70,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           <div class="flex flex-wrap gap-2">
             <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
                         text-sm font-medium cursor-pointer transition"
+                data-size="37">37</div>
+            <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                        text-sm font-medium cursor-pointer transition"
+                data-size="38">38</div>
+            <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
+                        text-sm font-medium cursor-pointer transition"
                 data-size="39">39</div>
             <div class="size-filter w-10 h-10 flex items-center justify-center border border-gray-300 rounded-full 
                         text-sm font-medium cursor-pointer transition"
@@ -549,4 +555,3 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   </script>
 </body>
 </html>
-

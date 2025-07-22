@@ -66,6 +66,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 </thead>
                 <tbody>
                   <tr>
+                    <td class="border p-3">3</td>
+                    <td class="border p-3">4</td>
+                    <td class="border p-3">37</td>
+                    <td class="border p-3">22</td>
+                    <td class="border p-3">22.0</td>
+                  </tr>
+                  <tr>
+                    <td class="border p-3">4</td>
+                    <td class="border p-3">5</td>
+                    <td class="border p-3">38</td>
+                    <td class="border p-3">23</td>
+                    <td class="border p-3">23.0</td>
+                  </tr>
+                  <tr>
                     <td class="border p-3">5</td>
                     <td class="border p-3">6</td>
                     <td class="border p-3">39</td>

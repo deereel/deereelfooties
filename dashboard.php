@@ -176,7 +176,7 @@ $page = 'dashboard';
                           <h3 class="mb-0">My Wishlist</h3>
                       </div>
                       <div class="card-body">
-                          <div id="wishlist-container">
+                          <div id="wishlist-items">
                               <div class="text-center py-4">
                                   <div class="spinner-border text-primary" role="status"></div>
                                   <p class="mt-2">Loading your wishlist...</p>
