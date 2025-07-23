@@ -269,7 +269,10 @@ try {
             <div class="flex flex-col sm:flex-row gap-4 mb-8">
               <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" 
                       id="add-to-wishlist-btn" 
-                      data-product-id="<?= htmlspecialchars($productId) ?>">
+                      data-product-id="<?= htmlspecialchars($productId) ?>"
+                      data-price="<?= $productPrice ?>"
+                      data-product-name="<?= htmlspecialchars($productName) ?>"
+                      data-image="<?= htmlspecialchars($mainImage) ?>">
                 <i class="far fa-heart mr-2"></i> ADD TO WISHLIST
               </button>
               <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" onclick="window.location.href='/customize.php'">

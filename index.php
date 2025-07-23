@@ -113,7 +113,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
         ?>
-          <div class="group">
+          <div class="group product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <a href="product.php?slug=<?= $product['slug'] ?>" class="block">
               <div class="relative overflow-hidden rounded-lg mb-4 shadow-sm group-hover:shadow-md transition">
                 <div class="aspect-[3/4] overflow-hidden">
@@ -123,6 +123,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 <?php if ($product['is_new_collection']): ?>
                 <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">NEW</span>
                 <?php endif; ?>
+                <!-- Wishlist Icon -->
+                <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
+                        data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
+                        data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                        data-price="<?= $product['price'] ?>"
+                        data-image="<?= $product['main_image'] ?>">
+                  <i class="far fa-heart"></i>
+                </button>
               </div>
               <h3 class="font-medium text-lg"><?= $product['name'] ?></h3>
               <p class="text-accent font-semibold">₦<?= number_format($product['price']) ?></p>
@@ -214,7 +222,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           if (count($featuredProducts) > 0) {
             foreach ($featuredProducts as $product):
         ?>
-          <div class="group">
+          <div class="group product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <a href="product.php?slug=<?= $product['slug'] ?>" class="block">
               <div class="relative overflow-hidden rounded-lg mb-4 shadow-sm group-hover:shadow-md transition">
                 <div class="aspect-[3/4] overflow-hidden">
@@ -222,8 +230,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                        class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
                 </div>
                 <?php if ($product['is_featured']): ?>
-                <span class="absolute top-4 right-4 bg-primary text-white text-xs px-2 py-1">FEATURED</span>
+                <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">FEATURED</span>
                 <?php endif; ?>
+                <!-- Wishlist Icon -->
+                <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
+                        data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
+                        data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                        data-price="<?= $product['price'] ?>"
+                        data-image="<?= $product['main_image'] ?>">
+                  <i class="far fa-heart"></i>
+                </button>
               </div>
               <h3 class="font-medium text-lg"><?= $product['name'] ?></h3>
               <p class="text-accent font-semibold">₦<?= number_format($product['price']) ?></p>

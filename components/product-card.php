@@ -17,7 +17,8 @@
     <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
             data-product-id="<?= $product['product_id'] ?? $product['id'] ?? '' ?>"
             data-product-name="<?= htmlspecialchars($product['name'] ?? $product['product_name'] ?? 'Product') ?>"
-            data-price="<?= $product['price'] ?? 0 ?>">
+            data-price="<?= $product['price'] ?? 0 ?>"
+            data-image="<?= $product['main_image'] ?? $product['image'] ?? '/images/oxford-cap-toe-80201.webp' ?>">
       <i class="far fa-heart"></i>
     </button>
   </div>

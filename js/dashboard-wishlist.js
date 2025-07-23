@@ -2,6 +2,18 @@
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Dashboard wishlist script loaded');
   
+  // Listen for wishlist update events
+  document.addEventListener('wishlistUpdated', function() {
+    console.log('Wishlist updated event received');
+    if (document.body.getAttribute('data-page') === 'dashboard') {
+      const wishlistTabContent = document.getElementById('wishlist-tab');
+      if (wishlistTabContent && !wishlistTabContent.classList.contains('d-none')) {
+        console.log('Refreshing wishlist after update');
+        loadWishlistItems();
+      }
+    }
+  });
+  
   // Check if we're on the dashboard page
   if (document.body.getAttribute('data-page') === 'dashboard') {
     // Initialize wishlist tab

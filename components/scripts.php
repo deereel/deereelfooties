@@ -8,6 +8,9 @@
 <!-- Custom Scripts -->
 <script src="/js/cart-handler.js"></script>
 <script src="/js/wishlist.js"></script>
+<script src="/js/product-grid.js"></script>
+<script src="/js/product-filters.js"></script>
+<script src="/js/subcategory-links.js"></script>
 
 <script>
   // Initialize cart handler and update cart count on page load

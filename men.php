@@ -132,25 +132,25 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           if (count($featuredProducts) > 0) {
             foreach ($featuredProducts as $product):
         ?>
-          <div class="group hover-accent">
-            <!-- Add wishlist button inside each product card -->
-            <div class="absolute top-2 right-2 z-10">
-              <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
-                      data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
-                      data-product-name="<?= $product['name'] ?>"
-                      data-product-price="<?= $product['price'] ?>"
-                      data-product-image="<?= $product['main_image'] ?>">
-                <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
+          <div class="group hover-accent product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
+            <div class="relative">
+              <a href="product.php?slug=<?= $product['slug'] ?>">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg"><?= $product['name'] ?></h3>
+                <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              </a>
+              <!-- Wishlist Icon -->
+              <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
+                      data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
+                      data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                      data-price="<?= $product['price'] ?>"
+                      data-image="<?= $product['main_image'] ?>">
+                <i class="far fa-heart"></i>
               </button>
             </div>
-            <a href="product.php?slug=<?= $product['slug'] ?>">
-              <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-              </div>
-              <h3 class="text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-            </a>
           </div>
         <?php 
             endforeach;
@@ -199,18 +199,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
         ?>
-          <div class="group hover-accent">
-            <a href="product.php?slug=<?= $product['slug'] ?>">
-              <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-                <?php if ($product['is_new_collection']): ?>
-                <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">NEW</span>
-                <?php endif; ?>
-              </div>
-              <h3 class="text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-            </a>
+          <div class="group hover-accent product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
+            <div class="relative">
+              <a href="product.php?slug=<?= $product['slug'] ?>">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                  <?php if ($product['is_new_collection']): ?>
+                  <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">NEW</span>
+                  <?php endif; ?>
+                </div>
+                <h3 class="text-lg"><?= $product['name'] ?></h3>
+                <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              </a>
+              <!-- Wishlist Icon -->
+              <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
+                      data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
+                      data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                      data-price="<?= $product['price'] ?>"
+                      data-image="<?= $product['main_image'] ?>">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
           </div>
         <?php 
             endforeach;

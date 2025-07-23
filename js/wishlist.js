@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-    // Product card wishlist icons
-    const wishlistIcons = document.querySelectorAll('.wishlist-icon');
+    // Product card wishlist icons - both classes to ensure all are covered
+    const wishlistIcons = document.querySelectorAll('.wishlist-icon, .add-to-wishlist-icon');
     console.log('Found wishlist icons:', wishlistIcons.length);
     
     wishlistIcons.forEach(icon => {
@@ -27,6 +27,17 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Wishlist icon clicked', this);
         handleWishlistAction(this);
       });
+    });
+    
+    // Add event delegation for dynamically added wishlist icons
+    document.addEventListener('click', function(e) {
+      if (e.target && (e.target.closest('.wishlist-icon') || e.target.closest('.add-to-wishlist-icon'))) {
+        e.preventDefault();
+        e.stopPropagation();
+        const icon = e.target.closest('.wishlist-icon') || e.target.closest('.add-to-wishlist-icon');
+        console.log('Wishlist icon clicked via delegation', icon);
+        handleWishlistAction(icon);
+      }
     });
   }
   
@@ -46,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Get product data
-    const productId = element.dataset.productId;
+    let productId = element.dataset.productId;
     let productName, productPrice, productImage;
     
     // For product page button
@@ -60,29 +71,36 @@ document.addEventListener('DOMContentLoaded', function() {
     } 
     // For product card icon
     else {
-      // Try to get data directly from the button first
-      productId = element.dataset.productId;
+      // Try to get data directly from the element's data attributes first
       productName = element.dataset.productName;
-      productPrice = parseFloat(element.dataset.price || '0');
+      productPrice = parseFloat(element.dataset.price || element.dataset.productPrice || '0');
+      productImage = element.dataset.image || element.dataset.productImage;
       
       // If data is missing, try to get from parent card
-      if (!productName || !productPrice) {
+      if (!productName || !productPrice || !productImage) {
         const card = element.closest('.product-card');
         if (!card) {
           console.error('Could not find parent product card');
           return;
         }
         
-        productName = productName || card.querySelector('h3')?.textContent || '';
+        productName = productName || card.dataset.name || card.querySelector('h3')?.textContent || '';
+        
         if (!productPrice) {
-          const priceText = card.querySelector('p')?.textContent || '';
-          productPrice = parseFloat(priceText.replace(/[^\d\.]/g, '')) || 0;
+          productPrice = parseFloat(card.dataset.price || '0');
+          if (!productPrice) {
+            const priceText = card.querySelector('p')?.textContent || '';
+            productPrice = parseFloat(priceText.replace(/[^\d\.]/g, '')) || 0;
+          }
         }
+        
         productId = productId || card.dataset.productId;
+        
+        // If still no image, get from nearest img tag
+        if (!productImage) {
+          productImage = card.querySelector('img')?.src || '';
+        }
       }
-      
-      // Get image from nearest img tag
-      productImage = element.closest('.product-card')?.querySelector('img')?.src || '';
       
       console.log('Product card wishlist data:', { productId, productName, productPrice, productImage });
     }
@@ -104,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
+    console.log('Adding to wishlist:', product);
+    
     try {
       const response = await fetch('/api/wishlist.php', {
         method: 'POST',
@@ -120,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       
       const data = await response.json();
+      console.log('Wishlist API response:', data);
       
       if (data.success) {
         // Update UI
@@ -135,6 +156,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show success message
         alert('Item added to your wishlist!');
+        
+        // Trigger event for wishlist update if dashboard is open
+        const wishlistUpdateEvent = new CustomEvent('wishlistUpdated');
+        document.dispatchEvent(wishlistUpdateEvent);
       } else {
         alert(data.message || 'Failed to add item to wishlist');
       }

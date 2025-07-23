@@ -1,4 +1,5 @@
-export function initProductGrid() {
+// Make function available globally for non-module usage
+function initProductGrid() {
   const urlParams = new URLSearchParams(window.location.search);
   const productCards = document.querySelectorAll('.product-card');
   const activeFilters = document.getElementById('active-filters');
@@ -36,7 +37,7 @@ export function initProductGrid() {
 
     productCards.forEach(card => {
       const price = parseInt(card.dataset.price);
-      const sizes = card.dataset.size.split(',');
+      const sizes = card.dataset.size ? card.dataset.size.split(',') : [];
       const color = card.dataset.color;
 
       const productType = card.dataset.type?.toLowerCase().replace(/s$/, "").trim();
@@ -46,7 +47,16 @@ export function initProductGrid() {
       const priceMatch = selectedPrices.length === 0 || selectedPrices.some(p => price >= p.range[0] && price < p.range[1]);
       const sizeMatch = selectedSizes.size === 0 || [...selectedSizes].some(s => sizes.includes(s));
       const colorMatch = selectedColors.size === 0 || selectedColors.has(color);
-      const typeMatch = typeParam === "all" || productType === typeParam || productName.includes(typeParam);
+      
+      // Improved type matching to handle partial matches and keywords
+      let typeMatch = typeParam === "all";
+      if (!typeMatch && productType) {
+        typeMatch = productType.includes(typeParam) || typeParam.includes(productType);
+      }
+      if (!typeMatch && productName) {
+        typeMatch = productName.includes(typeParam);
+      }
+      
       const genderMatch = genderParam === "all" || productGender === genderParam;
 
       const shouldShow = priceMatch && sizeMatch && colorMatch && typeMatch && genderMatch;
@@ -187,3 +197,12 @@ export function initProductGrid() {
   // Initial run
   filterProducts();
 }
+
+// Initialize product grid on page load
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if we're on a product category page
+  const productGrid = document.getElementById('product-grid');
+  if (productGrid) {
+    initProductGrid();
+  }
+});

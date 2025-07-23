@@ -30,7 +30,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         </div>
       </div>
    
-      <!-- Mobile-only Inner Filter for Shoe Types -->
+      <!-- Mobile Inner Filter for Shoe Types -->
     <div class="block md:hidden sticky top-16 z-40 bg-white border-b px-4 py-2 overflow-x-auto whitespace-nowrap space-x-3 flex shadow-sm clean-scroll">
       <button onclick="filterByType('loafers')" data-type="loafers" class="type-filter inline-block px-4 py-2 border rounded text-sm font-medium hover:bg-gray-100">
         Loafers
@@ -150,19 +150,31 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                   $sizes = explode(',', $product['sizes'] ?? '');
             ?>
           <div class="group product-card"
+               data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
                data-price="<?= $product['price'] ?>"
                data-size="<?= $product['sizes'] ?>"
                data-color="<?= $product['colors'] ?>"
                data-type="<?= $product['type'] ?>"
+               data-name="<?= $product['name'] ?>"
                data-gender="<?= $product['gender'] ?>">
-            <a href="/product.php?slug=<?= $product['slug'] ?>">
-              <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                     class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
-              </div>
-              <h3 class="text-lg"><?= $product['name'] ?></h3>
-              <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-            </a>
+            <div class="relative">
+              <a href="/product.php?slug=<?= $product['slug'] ?>">
+                <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                  <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
+                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                </div>
+                <h3 class="text-lg"><?= $product['name'] ?></h3>
+                <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+              </a>
+              <!-- Wishlist Icon -->
+              <button class="wishlist-icon absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:shadow-lg transition-all"
+                      data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
+                      data-product-name="<?= htmlspecialchars($product['name']) ?>"
+                      data-price="<?= $product['price'] ?>"
+                      data-image="<?= $product['main_image'] ?>">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
           </div>
         <?php 
               endforeach;
