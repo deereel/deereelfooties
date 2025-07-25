@@ -70,131 +70,185 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
             
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">
-                        Orders
-                        <?php if ($customerFilter > 0): ?>
-                            <small class="text-muted">for Customer #<?php echo $customerFilter; ?></small>
-                        <?php endif; ?>
-                    </h1>
+                    <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <a href="?<?php echo $customerFilter > 0 ? 'customer_id=' . $customerFilter : ''; ?>" class="btn btn-sm btn-outline-secondary <?php echo $statusFilter === '' ? 'active' : ''; ?>">All</a>
-                            <a href="?status=Pending<?php echo $customerFilter > 0 ? '&customer_id=' . $customerFilter : ''; ?>" class="btn btn-sm btn-outline-secondary <?php echo $statusFilter === 'Pending' ? 'active' : ''; ?>">Pending</a>
-                            <a href="?status=Processing<?php echo $customerFilter > 0 ? '&customer_id=' . $customerFilter : ''; ?>" class="btn btn-sm btn-outline-secondary <?php echo $statusFilter === 'Processing' ? 'active' : ''; ?>">Processing</a>
-                            <a href="?status=Payment+Confirmed<?php echo $customerFilter > 0 ? '&customer_id=' . $customerFilter : ''; ?>" class="btn btn-sm btn-outline-secondary <?php echo $statusFilter === 'Payment Confirmed' ? 'active' : ''; ?>">Payment Confirmed</a>
-                            <a href="?status=Completed<?php echo $customerFilter > 0 ? '&customer_id=' . $customerFilter : ''; ?>" class="btn btn-sm btn-outline-secondary <?php echo $statusFilter === 'Completed' ? 'active' : ''; ?>">Completed</a>
+                            <span class="badge bg-primary fs-6">Welcome back, Admin!</span>
                         </div>
-                        <?php if ($customerFilter > 0): ?>
-                        <div class="btn-group">
-                            <a href="?" class="btn btn-sm btn-outline-danger">
-                                <i class="bi bi-x-circle me-1"></i> Clear Customer Filter
-                            </a>
-                        </div>
-                        <?php endif; ?>
                     </div>
                 </div>
                 
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Payment</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (count($orders) > 0): ?>
-                                <?php foreach ($orders as $order): ?>
-                                    <tr>
-                                        <td>#<?php echo $order['order_id']; ?></td>
-                                        <td>
-                                            <?php 
-                                            echo htmlspecialchars($order['customer_name'] ?? 'Guest'); 
-                                            if (!empty($order['user_id'])) {
-                                                echo ' (ID: ' . $order['user_id'] . ')';
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
-                                        <td>₦<?php echo number_format($order['subtotal'] ?? $order['total'] ?? 0, 2); ?></td>
-                                        <td>
-                                            <span class="badge bg-<?php 
-                                                echo $order['status'] === 'Completed' ? 'success' : 
-                                                    ($order['status'] === 'Processing' ? 'primary' : 
-                                                    ($order['status'] === 'Cancelled' ? 'danger' : 'warning')); 
-                                            ?>">
-                                                <?php echo $order['status']; ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            // Check payment confirmation status first
-                                            if (isset($order['payment_confirmed']) && $order['payment_confirmed']) {
-                                                echo '<span class="badge bg-success">Confirmed</span>';
-                                            } else {
-                                                // Check if payment proof exists
-                                                $proofStmt = $pdo->prepare("SELECT id FROM payment_proof WHERE order_id = ?");
-                                                $proofStmt->execute([$order['order_id']]);
-                                                $hasProof = $proofStmt->rowCount() > 0;
-                                                
-                                                if ($hasProof) {
-                                                    echo '<span class="badge bg-warning">Uploaded</span>';
-                                                } else {
-                                                    echo '<span class="badge bg-secondary">Pending</span>';
-                                                }
-                                            }
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <a href="order-details.php?id=<?php echo $order['order_id']; ?>" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-eye"></i> View
-                                            </a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" class="text-center">No orders found</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                <!-- Dashboard Stats -->
+                <div class="row mb-4">
+                    <?php
+                    // Get dashboard statistics
+                    try {
+                        // Total orders
+                        $totalOrdersStmt = $pdo->query("SELECT COUNT(*) FROM orders");
+                        $totalOrdersCount = $totalOrdersStmt->fetchColumn();
+                        
+                        // Total revenue
+                        $revenueStmt = $pdo->query("SELECT SUM(COALESCE(subtotal, total, 0)) FROM orders WHERE status = 'Completed'");
+                        $totalRevenue = $revenueStmt->fetchColumn() ?: 0;
+                        
+                        // Pending orders
+                        $pendingStmt = $pdo->query("SELECT COUNT(*) FROM orders WHERE status = 'Pending'");
+                        $pendingOrders = $pendingStmt->fetchColumn();
+                        
+                        // Total customers
+                        $customersStmt = $pdo->query("SELECT COUNT(*) FROM users");
+                        $totalCustomers = $customersStmt->fetchColumn();
+                    } catch (PDOException $e) {
+                        $totalOrdersCount = 0;
+                        $totalRevenue = 0;
+                        $pendingOrders = 0;
+                        $totalCustomers = 0;
+                    }
+                    ?>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-primary">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title"><?php echo $totalOrdersCount; ?></h4>
+                                        <p class="card-text">Total Orders</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-bag fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-success">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title">₦<?php echo number_format($totalRevenue, 2); ?></h4>
+                                        <p class="card-text">Total Revenue</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-currency-dollar fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-warning">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title"><?php echo $pendingOrders; ?></h4>
+                                        <p class="card-text">Pending Orders</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-clock fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-white bg-info">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="card-title"><?php echo $totalCustomers; ?></h4>
+                                        <p class="card-text">Total Customers</p>
+                                    </div>
+                                    <div class="align-self-center">
+                                        <i class="bi bi-people fs-1"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- Pagination -->
-                <?php if ($totalPages > 1): ?>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page - 1; ?>&status=<?php echo $statusFilter; ?>" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            
-                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                <li class="page-item <?php echo $i === $page ? 'active' : ''; ?>">
-                                    <a class="page-link" href="?page=<?php echo $i; ?>&status=<?php echo $statusFilter; ?>"><?php echo $i; ?></a>
-                                </li>
-                            <?php endfor; ?>
-                            
-                            <li class="page-item <?php echo $page >= $totalPages ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page + 1; ?>&status=<?php echo $statusFilter; ?>" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                <?php endif; ?>
+                <!-- Recent Orders -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Recent Orders</h5>
+                        <a href="#" onclick="showAllOrders()" class="btn btn-sm btn-outline-primary">View All Orders</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Get recent orders (limit to 10)
+                                    $recentOrdersStmt = $pdo->prepare("SELECT * FROM orders ORDER BY created_at DESC LIMIT 10");
+                                    $recentOrdersStmt->execute();
+                                    $recentOrders = $recentOrdersStmt->fetchAll(PDO::FETCH_ASSOC);
+                                    
+                                    if (count($recentOrders) > 0):
+                                        foreach ($recentOrders as $order):
+                                    ?>
+                                        <tr>
+                                            <td>#<?php echo $order['order_id']; ?></td>
+                                            <td><?php echo htmlspecialchars($order['customer_name'] ?? 'Guest'); ?></td>
+                                            <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
+                                            <td>₦<?php echo number_format($order['subtotal'] ?? $order['total'] ?? 0, 2); ?></td>
+                                            <td>
+                                                <span class="badge bg-<?php 
+                                                    echo $order['status'] === 'Completed' ? 'success' : 
+                                                        ($order['status'] === 'Processing' ? 'primary' : 
+                                                        ($order['status'] === 'Cancelled' ? 'danger' : 'warning')); 
+                                                ?>">
+                                                    <?php echo $order['status']; ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="order-details.php?id=<?php echo $order['order_id']; ?>" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-eye"></i> View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php 
+                                        endforeach;
+                                    else:
+                                    ?>
+                                        <tr>
+                                            <td colspan="6" class="text-center">No orders found</td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/admin.js"></script>
+    <script>
+        function showAllOrders() {
+            // Update sidebar to highlight Orders
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.textContent.trim().includes('Orders')) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Load orders page content
+            window.location.href = 'orders.php';
+        }
+    </script>
 </body>
 </html>
