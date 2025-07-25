@@ -223,9 +223,21 @@ $currentUser = [
       </div>
 
       <!-- Checkout Button -->
+      <?php if ($currentUser): ?>
       <button class="btn btn-success w-100 mb-4" id="checkout-btn" disabled>
         <i class="fas fa-credit-card me-2"></i> Proceed to Checkout
       </button>
+      <?php else: ?>
+      <div class="alert alert-warning mb-3">
+        <p><i class="fas fa-exclamation-triangle me-2"></i> You must be logged in to checkout.</p>
+      </div>
+      <button class="btn btn-primary w-100 mb-2" id="login-to-checkout-btn">
+        <i class="fas fa-sign-in-alt me-2"></i> Login to Checkout
+      </button>
+      <a href="/signup.php" class="btn btn-outline-secondary w-100 mb-4">
+        <i class="fas fa-user-plus me-2"></i> Create Account
+      </a>
+      <?php endif; ?>
     </div>
   </div>
 </main>
@@ -446,20 +458,30 @@ document.addEventListener('DOMContentLoaded', function() {
       const checkoutBtn = document.getElementById('checkout-btn');
       if (checkoutBtn) {
           checkoutBtn.addEventListener('click', function() {
-              // Check if user is logged in
-              const userData = localStorage.getItem('DRFUser');
-              if (!userData) {
-                  alert('Please log in to proceed with checkout');
-                  // Show login modal or redirect to login
-                  const loginModal = document.getElementById('loginModal');
-                  if (loginModal && typeof bootstrap !== 'undefined') {
-                      new bootstrap.Modal(loginModal).show();
-                  }
-                  return;
-              }
-                
+              // Save customer info to localStorage before proceeding to checkout
+              saveCustomerInfo();
+              
               // Proceed to checkout
               window.location.href = '/checkout.php';
+          });
+      }
+      
+      // Login to checkout button
+      const loginToCheckoutBtn = document.getElementById('login-to-checkout-btn');
+      if (loginToCheckoutBtn) {
+          loginToCheckoutBtn.addEventListener('click', function() {
+              // Save the current URL as the redirect target after login
+              sessionStorage.setItem('redirect_after_login', '/checkout.php');
+              
+              // Show login modal if available
+              const loginModal = document.getElementById('loginModal');
+              if (loginModal && typeof bootstrap !== 'undefined') {
+                  const modal = new bootstrap.Modal(loginModal);
+                  modal.show();
+              } else {
+                  // Redirect to login page if modal not available
+                  window.location.href = '/login.php?redirect=' + encodeURIComponent('/checkout.php');
+              }
           });
       }
   }
@@ -690,7 +712,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (selectedCountry === 'Nigeria' && selectedState) {
       locationText = selectedState === 'Lagos' ? 'Lagos' : 'other Nigerian states';
     } else if (AFRICAN_COUNTRIES.includes(selectedCountry)) {
-      locationText = 'African countries';
+      locationText = 'other African countries';
     } else {
       locationText = 'international delivery';
     }
@@ -986,6 +1008,34 @@ document.addEventListener('DOMContentLoaded', function() {
       updateShippingProgress();
     }
   });
+  
+  // Save customer information to localStorage
+  function saveCustomerInfo() {
+    // Only save if the form is visible (for guests or if user is adding a new address)
+    const addressForm = document.getElementById('address-form-fields');
+    if (addressForm && addressForm.style.display !== 'none') {
+      const customerInfo = {
+        name: document.getElementById('client-name').value.trim(),
+        phone: document.getElementById('client-phone').value.trim(),
+        address: document.getElementById('shipping-address').value.trim(),
+        city: document.getElementById('city-input').value.trim(),
+        state: document.getElementById('state-select').value,
+        country: document.getElementById('country-select').value
+      };
+      
+      // Only save if at least name and address are provided
+      if (customerInfo.name && customerInfo.address) {
+        localStorage.setItem('DRFCustomerInfo', JSON.stringify(customerInfo));
+      }
+    } else if (window.cartHandler && window.cartHandler.isLoggedIn) {
+      // For logged-in users with selected address
+      const selectedAddress = document.querySelector('.address-select:checked');
+      if (selectedAddress) {
+        const addressId = selectedAddress.value;
+        localStorage.setItem('DRFSelectedAddressId', addressId);
+      }
+    }
+  }
 });
 </script>
 </body>

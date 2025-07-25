@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Check if we're on a product category page
   if (path.includes('-shoes.php') || path.includes('-boots.php') || 
-      path.includes('-mules.php') || path.includes('-slippers.php')) {
+      path.includes('-mules.php') || path.includes('-slippers.php') || path.includes('-sneakers.php')) {
     
     // Highlight active type filter in mobile view
     const typeParam = urlParams.get('type');
@@ -76,6 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mainCategory = `/products/${gender}/${gender}-mules.php`;
       } else if (productType.includes('slipper')) {
         mainCategory = `/products/${gender}/${gender}-slippers.php`;
+      } else if (productType.includes('sneaker')) {
+        mainCategory = `/products/${gender}/${gender}-sneakers.php`;
       }
       
       // Update breadcrumb links if we have a subcategory type and main category

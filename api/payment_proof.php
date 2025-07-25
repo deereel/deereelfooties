@@ -30,6 +30,8 @@ switch ($method) {
         // Handle file upload
         if (isset($_FILES['proof_image']) && isset($_POST['order_id'])) {
             $orderId = $_POST['order_id'];
+            $userId = isset($_POST['user_id']) ? $_POST['user_id'] : null;
+            $customerName = isset($_POST['customer_name']) ? $_POST['customer_name'] : 'Guest';
             
             // Check if order exists
             $checkStmt = $pdo->prepare("SELECT * FROM orders WHERE order_id = ?");
@@ -54,23 +56,74 @@ switch ($method) {
             
             // Allow certain file formats
             $allowTypes = array('jpg', 'png', 'jpeg', 'pdf');
-            if (in_array($fileType, $allowTypes)) {
+            if (in_array(strtolower($fileType), $allowTypes)) {
                 // Upload file to server
                 if (move_uploaded_file($_FILES["proof_image"]["tmp_name"], $targetFilePath)) {
                     // Insert file path into database
                     $filePath = 'uploads/payment_proofs/' . $fileName;
-                    $stmt = $pdo->prepare("INSERT INTO payment_proof (order_id, proof_image) VALUES (?, ?)");
+                    
+                    // Check if payment_proof table has the necessary columns
+                    try {
+                        // Try to get table structure
+                        $tableCheckStmt = $pdo->prepare("DESCRIBE payment_proof");
+                        $tableCheckStmt->execute();
+                        $columns = $tableCheckStmt->fetchAll(PDO::FETCH_COLUMN);
+                        
+                        // Check if user_id and customer_name columns exist
+                        $hasUserIdColumn = in_array('user_id', $columns);
+                        $hasCustomerNameColumn = in_array('customer_name', $columns);
+                        
+                        // If columns don't exist, alter table to add them
+                        if (!$hasUserIdColumn) {
+                            $alterStmt = $pdo->prepare("ALTER TABLE payment_proof ADD COLUMN user_id INT NULL");
+                            $alterStmt->execute();
+                        }
+                        
+                        if (!$hasCustomerNameColumn) {
+                            $alterStmt = $pdo->prepare("ALTER TABLE payment_proof ADD COLUMN customer_name VARCHAR(255) NULL");
+                            $alterStmt->execute();
+                        }
+                    } catch (PDOException $e) {
+                        // If table doesn't exist, create it
+                        $createTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS payment_proof (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            order_id INT NOT NULL,
+                            proof_image VARCHAR(255) NOT NULL,
+                            user_id INT NULL,
+                            customer_name VARCHAR(255) NULL,
+                            uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        )");
+                        $createTableStmt->execute();
+                    }
+                    
+                    // Insert payment proof with user information
+                    $stmt = $pdo->prepare("INSERT INTO payment_proof (order_id, proof_image, user_id, customer_name) VALUES (?, ?, ?, ?)");
                     
                     try {
-                        $stmt->execute([$orderId, $filePath]);
+                        $stmt->execute([$orderId, $filePath, $userId, $customerName]);
                         
                         // Update order status to Processing
                         $updateStmt = $pdo->prepare("UPDATE orders SET status = 'Processing' WHERE order_id = ?");
                         $updateStmt->execute([$orderId]);
                         
-                        // Add entry to order progress
-                        $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
-                        $progressStmt->execute([$orderId, 'Payment proof uploaded']);
+                        // Check if order_progress table exists
+                        try {
+                            $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
+                            $progressStmt->execute([$orderId, 'Payment proof uploaded by ' . $customerName]);
+                        } catch (PDOException $e) {
+                            // If table doesn't exist, create it
+                            $createProgressTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS order_progress (
+                                id INT AUTO_INCREMENT PRIMARY KEY,
+                                order_id INT NOT NULL,
+                                status_update VARCHAR(255) NOT NULL,
+                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                            )");
+                            $createProgressTableStmt->execute();
+                            
+                            // Try again
+                            $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
+                            $progressStmt->execute([$orderId, 'Payment proof uploaded by ' . $customerName]);
+                        }
                         
                         echo json_encode(['success' => true, 'message' => 'Payment proof uploaded successfully']);
                     } catch (PDOException $e) {

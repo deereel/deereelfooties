@@ -1,0 +1,155 @@
+/* Admin Dashboard Styles */
+
+body {
+  font-size: .875rem;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100; /* Behind the navbar */
+  padding: 48px 0 0; /* Height of navbar */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+  position: relative;
+  top: 0;
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+  padding: .5rem 1rem;
+}
+
+.sidebar .nav-link.active {
+  color: #2470dc;
+}
+
+.sidebar .nav-link:hover {
+  color: #007bff;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+/* Navbar */
+.navbar-brand {
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+  font-size: 1rem;
+  background-color: rgba(0, 0, 0, .25);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+}
+
+/* Content */
+.navbar .navbar-toggler {
+  top: .25rem;
+  right: 1rem;
+}
+
+/* Payment proof image */
+.payment-proof-img {
+  max-height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+/* Timeline for order progress */
+.timeline {
+  list-style-type: none;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.timeline:before {
+  content: ' ';
+  background: #e9ecef;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  z-index: 1;
+}
+
+.timeline-item {
+  margin: 1.5rem 0;
+  position: relative;
+}
+
+.timeline-item:before {
+  content: ' ';
+  background: white;
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid #2470dc;
+  left: -0.7rem;
+  width: 14px;
+  height: 14px;
+  z-index: 2;
+  top: 0.25rem;
+}
+
+.timeline-date {
+  display: block;
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-content {
+  margin: 0;
+}
+
+/* Tables */
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, .075);
+}
+
+/* Cards */
+.card {
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Login page */
+.login-page {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+  height: 100vh;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767.98px) {
+  .sidebar {
+    top: 5rem;
+  }
+}

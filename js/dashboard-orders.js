@@ -95,20 +95,20 @@ class DashboardOrdersManager {
                 <h6>Order Summary</h6>
                 <div class="d-flex justify-content-between mb-2">
                   <span>Subtotal:</span>
-                  <span>$${parseFloat(order.subtotal).toFixed(2)}</span>
+                  <span>₦${parseFloat(order.subtotal).toFixed(2)}</span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                   <span>Shipping:</span>
-                  <span>$${parseFloat(order.shipping_cost).toFixed(2)}</span>
+                  <span>₦${parseFloat(order.shipping).toFixed(2)}</span>
                 </div>
                 ${order.discount ? `
                 <div class="d-flex justify-content-between mb-2 text-success">
                   <span>Discount:</span>
-                  <span>-$${parseFloat(order.discount).toFixed(2)}</span>
+                  <span>-₦${parseFloat(order.discount).toFixed(2)}</span>
                 </div>` : ''}
                 <div class="d-flex justify-content-between fw-bold mt-2">
                   <span>Total:</span>
-                  <span>$${parseFloat(order.total).toFixed(2)}</span>
+                  <span>₦${parseFloat(order.total).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -137,16 +137,17 @@ class DashboardOrdersManager {
     return items.map(item => `
       <div class="d-flex mb-2">
         <div class="me-3" style="width: 60px; height: 60px;">
-          <img src="${item.image || '/images/product-placeholder.jpg'}" class="img-fluid rounded" alt="${item.name}">
+          <img src="${item.image || '/images/product-placeholder.jpg'}" class="img-fluid rounded" alt="${item.product_name || 'Product'}">
         </div>
         <div>
-          <p class="mb-0 fw-bold">${item.name}</p>
+          <p class="mb-0 fw-bold">${item.product_name || 'Product'}</p>
           <p class="mb-0 text-muted small">
-            ${item.variant ? `Variant: ${item.variant}` : ''}
+            ${item.color ? `Color: ${item.color}` : ''}
             ${item.size ? `Size: ${item.size}` : ''}
+            ${item.width ? `Width: ${item.width}` : ''}
           </p>
           <p class="mb-0">
-            $${parseFloat(item.price).toFixed(2)} × ${item.quantity}
+            ₦${parseFloat(item.price).toFixed(2)} × ${item.quantity}
           </p>
         </div>
       </div>

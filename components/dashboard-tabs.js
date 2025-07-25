@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
   if (tabLinks.length > 0 && tabContents.length > 0) {
     console.log('Found', tabLinks.length, 'tab links and', tabContents.length, 'tab contents');
     
+    // Hide all non-active tabs initially
+    tabContents.forEach(tab => {
+      if (!tab.classList.contains('active')) {
+        tab.style.display = 'none';
+      }
+    });
+    
     // Function to show a specific tab
     function showTab(tabId) {
       console.log('Showing tab:', tabId);
@@ -53,6 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const hash = window.location.hash.substring(1);
     if (hash && document.getElementById(hash + '-tab')) {
       showTab(hash);
+    } else {
+      // If no hash, show dashboard tab by default
+      showTab('dashboard');
     }
   }
 });

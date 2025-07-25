@@ -60,6 +60,20 @@ class CartHandler {
       return;
     }
     
+    // Method 5: Check if isLoggedIn flag is set in localStorage
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      // Try to find a user ID from any source
+      const possibleId = localStorage.getItem('userId') || 
+                         localStorage.getItem('user_id') || 
+                         sessionStorage.getItem('userId');
+      if (possibleId) {
+        this.isLoggedIn = true;
+        this.userId = possibleId;
+        console.log('User logged in via isLoggedIn flag with ID:', this.userId);
+        return;
+      }
+    }
+    
     // No login detected
     this.isLoggedIn = false;
     this.userId = null;

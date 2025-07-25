@@ -108,7 +108,7 @@
             <i class="fab fa-tiktok text-lg"></i>
             <span class="sr-only">Tiktok</span>
           </a>
-          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%2C%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
+          <a href="https://wa.me/2347031864772?text=Hello%20DeeReeL%20Footies%20%20I%20would%20like%20to%20place%20order%20for..." class="hover:text-gray-600">
             <i class="fab fa-whatsapp text-lg"></i>
             <span class="sr-only">Twitter</span>
           </a>

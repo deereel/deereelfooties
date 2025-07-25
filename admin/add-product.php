@@ -59,6 +59,7 @@
                     <option value="boots">Boots</option>
                     <option value="slippers">Slippers</option>
                     <option value="mules">Mules</option>
+                    <option value="sneakers">Sneakers</option>
                   </select>
                 </div>
               </div>
@@ -205,6 +206,7 @@
                       <option value="boots">Boots</option>
                       <option value="slippers">Slippers</option>
                       <option value="mules">Mules</option>
+                      <option value="sneakers">Sneakers</option>
                     </select>
                   </div>
                 </div>
@@ -297,6 +299,33 @@
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Check if we should switch to edit tab
+      const urlParams = new URLSearchParams(window.location.search);
+      const editProductId = urlParams.get('edit') || localStorage.getItem('editProductId');
+      
+      if (editProductId) {
+        // Switch to edit tab
+        const editTab = document.getElementById('edit-tab');
+        const addTab = document.getElementById('add-tab');
+        const editContent = document.getElementById('edit-content');
+        const addContent = document.getElementById('add-content');
+        
+        // Activate edit tab
+        addTab.classList.remove('active');
+        editTab.classList.add('active');
+        addContent.classList.remove('show', 'active');
+        editContent.classList.add('show', 'active');
+        
+        // Set the product in dropdown and trigger change
+        setTimeout(() => {
+          const productSelect = document.getElementById('product-select');
+          productSelect.value = editProductId;
+          productSelect.dispatchEvent(new Event('change'));
+        }, 100);
+        
+        // Clear localStorage
+        localStorage.removeItem('editProductId');
+      }
       // Add Product Form
       const addForm = document.getElementById('add-product-form');
       
@@ -385,13 +414,13 @@
               const product = data.data;
               
               // Fill form with product data
-              document.getElementById('edit-product-id').value = product.product_id;
-              document.getElementById('edit-name').value = product.name;
-              document.getElementById('edit-slug').value = product.slug;
-              document.getElementById('edit-price').value = product.price;
-              document.getElementById('edit-gender').value = product.gender;
-              document.getElementById('edit-category').value = product.category;
-              document.getElementById('edit-type').value = product.type;
+              document.getElementById('edit-product-id').value = product.product_id || '';
+              document.getElementById('edit-name').value = product.name || '';
+              document.getElementById('edit-slug').value = product.slug || '';
+              document.getElementById('edit-price').value = product.price || '';
+              document.getElementById('edit-gender').value = product.gender || '';
+              document.getElementById('edit-category').value = product.category || '';
+              document.getElementById('edit-type').value = product.type || '';
               document.getElementById('edit-colors').value = product.colors || '';
               document.getElementById('edit-sizes').value = product.sizes || '';
               document.getElementById('edit-short-description').value = product.short_description || '';
@@ -402,10 +431,10 @@
               const features = JSON.parse(product.features || '[]');
               document.getElementById('edit-features').value = features.join('\n');
               
-              document.getElementById('edit-main-image').value = product.main_image;
+              document.getElementById('edit-main-image').value = product.main_image || '';
               document.getElementById('edit-additional-images').value = product.additional_images || '';
-              document.getElementById('edit-is-featured').checked = product.is_featured == 1;
-              document.getElementById('edit-is-new-collection').checked = product.is_new_collection == 1;
+              document.getElementById('edit-is-featured').checked = (product.is_featured == 1 || product.is_featured == '1');
+              document.getElementById('edit-is-new-collection').checked = (product.is_new_collection == 1 || product.is_new_collection == '1');
               
               // Show edit form
               editFormContainer.style.display = 'block';

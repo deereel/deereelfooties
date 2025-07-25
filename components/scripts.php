@@ -136,7 +136,7 @@
                   if (window.location.pathname.includes('cart')) {
                     window.location.reload(); // Reload cart page to show merged items
                   } else {
-                    window.location.href = '/dashboard/';
+                    window.location.href = '/dashboard.php';
                   }
                 });
               } else {
@@ -149,7 +149,7 @@
                 if (window.location.pathname.includes('cart')) {
                   window.location.reload();
                 } else {
-                  window.location.href = '/dashboard/';
+                  window.location.href = '/dashboard.php';
                 }
               }
             } else {

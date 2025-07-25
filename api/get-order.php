@@ -37,7 +37,7 @@ try {
     $order['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Get order progress
-    $stmt = $pdo->prepare("SELECT * FROM order_progress WHERE order_id = ? ORDER BY update_date DESC");
+    $stmt = $pdo->prepare("SELECT * FROM order_progress WHERE order_id = ? ORDER BY created_at DESC");
     $stmt->execute([$orderId]);
     $order['progress'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     

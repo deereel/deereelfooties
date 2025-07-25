@@ -40,8 +40,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     <div class="container mx-auto px-4">
       <h2 class="text-3xl font-light mb-12 text-center">Shop by Category</h2>
       
-      <!-- Category Grid - 4 Categories like Women's Page -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Category Grid - 5 Categories -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
         <!-- Shoes Category -->
         <a href="/products/men/men-shoes.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
@@ -106,6 +106,24 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Slippers</h3>
                 <p class="text-white/80 text-sm mb-2">Comfort & Casual</p>
+                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                  Shop Now
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Sneakers Category -->
+        <a href="/products/men/men-sneakers.php" class="group relative overflow-hidden rounded-lg shadow-lg">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img src="/images/penny loafer 600.webp" 
+                 alt="Men's Sneakers" 
+                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+              <div>
+                <h3 class="text-xl font-light text-white mb-1">Sneakers</h3>
+                <p class="text-white/80 text-sm mb-2">Sport & Casual</p>
                 <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
                   Shop Now
                 </span>

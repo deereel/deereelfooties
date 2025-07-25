@@ -3,6 +3,16 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
+
+// Store redirect URL in session if provided
+if (isset($_GET['redirect'])) {
+  $_SESSION['redirect_after_login'] = $_GET['redirect'];
+}
+
+// Store message if provided
+if (isset($_GET['message'])) {
+  $_SESSION['login_message'] = $_GET['message'];
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,6 +45,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 <div class="alert alert-success">
                   <?= $_SESSION['success']; ?>
                   <?php unset($_SESSION['success']); ?>
+                </div>
+              <?php endif; ?>
+              
+              <?php if (isset($_SESSION['login_message'])): ?>
+                <div class="alert alert-info">
+                  <?= $_SESSION['login_message']; ?>
+                  <?php unset($_SESSION['login_message']); ?>
                 </div>
               <?php endif; ?>
               
@@ -126,7 +143,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               
               // Redirect to dashboard or previous page
               const redirectUrl = new URLSearchParams(window.location.search).get('redirect');
-              window.location.href = redirectUrl || '/dashboard.php';
+              const storedRedirect = sessionStorage.getItem('redirect_after_login');
+              
+              // Clear stored redirect
+              sessionStorage.removeItem('redirect_after_login');
+              
+              // Use redirect in this priority: URL param > sessionStorage > default
+              window.location.href = redirectUrl || storedRedirect || '/dashboard.php';
             } else {
               // Show error
               if (errorElement) {

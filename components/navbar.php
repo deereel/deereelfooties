@@ -83,6 +83,7 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
       
           <li><a class="dropdown-item" href="/products/men/men-slippers.php">Slippers/Sandals</a></li>
           <li><a class="dropdown-item" href="/products/men/men-mules.php">Mules</a></li>
+          <li><a class="dropdown-item" href="/products/men/men-sneakers.php">Sneakers</a></li>
         </ul>
       </div>
       
@@ -116,6 +117,7 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
       
           <li><a class="dropdown-item" href="/products/women/women-slippers.php">Slippers/Sandals</a></li>
           <li><a class="dropdown-item" href="/products/women/women-mules.php">Mules</a></li>
+          <li><a class="dropdown-item" href="/products/women/women-sneakers.php">Sneakers</a></li>
         </ul>
       </div>
 
