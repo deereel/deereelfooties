@@ -15,15 +15,42 @@ if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php');
 
-// Get user data from session with fallback
-if (isset($_SESSION['user'])) {
-    $user = $_SESSION['user'];
+// Get user data from database
+$userId = null;
+if (isset($_SESSION['user']['id'])) {
+    $userId = $_SESSION['user']['id'];
 } elseif (isset($_SESSION['user_id'])) {
-    $user = [
-        'id' => $_SESSION['user_id'],
-        'name' => $_SESSION['username'] ?? 'User',
-        'email' => $_SESSION['user_email'] ?? ''
-    ];
+    $userId = $_SESSION['user_id'];
+}
+
+if ($userId) {
+    try {
+        $userStmt = $pdo->prepare("SELECT * FROM users WHERE user_id = ?");
+        $userStmt->execute([$userId]);
+        $user = $userStmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$user) {
+            // Fallback to session data if database query fails
+            $user = $_SESSION['user'] ?? [
+                'id' => $_SESSION['user_id'] ?? null,
+                'name' => $_SESSION['username'] ?? 'User',
+                'email' => $_SESSION['user_email'] ?? ''
+            ];
+        } else {
+            // Ensure consistent key naming
+            $user['id'] = $user['user_id'];
+        }
+    } catch (PDOException $e) {
+        // Fallback to session data on database error
+        $user = $_SESSION['user'] ?? [
+            'id' => $_SESSION['user_id'] ?? null,
+            'name' => $_SESSION['username'] ?? 'User',
+            'email' => $_SESSION['user_email'] ?? ''
+        ];
+    }
+} else {
+    header('Location: index.php');
+    exit;
 }
 $page = 'dashboard';
 ?>
@@ -209,36 +236,86 @@ $page = 'dashboard';
               <!-- Personal Data Tab -->
               <div id="personal-tab" class="tab-content">
                   <div class="card">
-                      <div class="card-header">
-                          <h3 class="mb-0">My Data</h3>
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                          <h3 class="mb-0">My Profile</h3>
+                          <a href="/account-settings.php" class="btn btn-primary">
+                              <i class="fas fa-edit me-2"></i>Edit Profile
+                          </a>
                       </div>
                       <div class="card-body">
-                          <form id="personal-form">
-                              <div class="row">
-                                  <div class="col-md-6 mb-3">
-                                      <label for="fullName" class="form-label">Full Name</label>
-                                      <input type="text" class="form-control" id="fullName" value="<?php echo htmlspecialchars($user['name']); ?>">
+                          <div class="row">
+                              <div class="col-md-8">
+                                  <div class="row mb-4">
+                                      <div class="col-md-6 mb-3">
+                                          <div class="border-bottom pb-2">
+                                              <label class="form-label text-muted small">Full Name</label>
+                                              <p class="mb-0 fw-medium"><?php echo htmlspecialchars($user['name']); ?></p>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 mb-3">
+                                          <div class="border-bottom pb-2">
+                                              <label class="form-label text-muted small">Email Address</label>
+                                              <p class="mb-0 fw-medium"><?php echo htmlspecialchars($user['email']); ?></p>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 mb-3">
+                                          <div class="border-bottom pb-2">
+                                              <label class="form-label text-muted small">Phone Number</label>
+                                              <p class="mb-0 fw-medium"><?php echo !empty($user['phone']) ? htmlspecialchars($user['phone']) : '<span class="text-muted">Not provided</span>'; ?></p>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6 mb-3">
+                                          <div class="border-bottom pb-2">
+                                              <label class="form-label text-muted small">Account ID</label>
+                                              <p class="mb-0 fw-medium">#<?php echo htmlspecialchars($user['id'] ?? $user['user_id'] ?? 'N/A'); ?></p>
+                                          </div>
+                                      </div>
                                   </div>
-                                  <div class="col-md-6 mb-3">
-                                      <label for="email" class="form-label">Email</label>
-                                      <input type="email" class="form-control" id="email" value="<?php echo htmlspecialchars($user['email']); ?>" readonly>
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                      <label for="phone" class="form-label">Phone</label>
-                                      <input type="tel" class="form-control" id="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>">
-                                  </div>
-                                  <div class="col-md-6 mb-3">
-                                      <label for="gender" class="form-label">Gender</label>
-                                      <select class="form-select" id="gender">
-                                          <option value="">Select Gender</option>
-                                          <option value="male" <?php echo (isset($user['gender']) && $user['gender'] == 'male') ? 'selected' : ''; ?>>Male</option>
-                                          <option value="female" <?php echo (isset($user['gender']) && $user['gender'] == 'female') ? 'selected' : ''; ?>>Female</option>
-                                          <option value="other" <?php echo (isset($user['gender']) && $user['gender'] == 'other') ? 'selected' : ''; ?>>Other</option>
-                                      </select>
+                                  
+                                  <div class="row">
+                                      <div class="col-12">
+                                          <h5 class="mb-3">Account Information</h5>
+                                          <div class="bg-light p-3 rounded">
+                                              <div class="row">
+                                                  <div class="col-md-6">
+                                                      <small class="text-muted">Member Since</small>
+                                                      <p class="mb-0"><?php 
+                                                          if (isset($user['created_at'])) {
+                                                              echo date('F d, Y', strtotime($user['created_at']));
+                                                          } else {
+                                                              echo 'N/A';
+                                                          }
+                                                      ?></p>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                      <small class="text-muted">Account Status</small>
+                                                      <p class="mb-0"><span class="badge bg-success">Active</span></p>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
                                   </div>
                               </div>
-                              <button type="submit" class="btn btn-primary">Save Changes</button>
-                          </form>
+                              
+                              <div class="col-md-4">
+                                  <div class="text-center">
+                                      <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px;">
+                                          <i class="fas fa-user fa-2x"></i>
+                                      </div>
+                                      <h5><?php echo htmlspecialchars($user['name']); ?></h5>
+                                      <p class="text-muted"><?php echo htmlspecialchars($user['email']); ?></p>
+                                      
+                                      <div class="mt-4">
+                                          <a href="/account-settings.php" class="btn btn-outline-primary btn-sm w-100 mb-2">
+                                              <i class="fas fa-edit me-2"></i>Edit Profile
+                                          </a>
+                                          <a href="/dashboard.php#address" class="btn btn-outline-secondary btn-sm w-100 tab-link" data-tab="address">
+                                              <i class="fas fa-address-book me-2"></i>Manage Addresses
+                                          </a>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
                   </div>
               </div>

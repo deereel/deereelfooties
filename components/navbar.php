@@ -162,7 +162,7 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#orders"><i class="fas fa-box me-2"></i>My Orders</a></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#wishlist"><i class="fas fa-heart me-2"></i>Wishlist</a></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#designs"><i class="fas fa-palette me-2"></i>My Designs</a></li>
-          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#personal"><i class="fas fa-user-edit me-2"></i>Account Settings</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/account-settings.php"><i class="fas fa-user-edit me-2"></i>Account Settings</a></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><hr class="dropdown-divider"></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a href="#" class="dropdown-item logout-btn text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
         </ul>
