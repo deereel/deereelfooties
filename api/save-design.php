@@ -1,11 +1,13 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../auth/db.php';
-require_once '../auth/auth.php';
 
 header('Content-Type: application/json');
 
 // Check if user is logged in
-if (!isLoggedIn()) {
+if (!isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'You must be logged in to save designs']);
     exit;
 }
@@ -18,7 +20,7 @@ if (!$data || !isset($data['design_name']) || !isset($data['design_data'])) {
     exit;
 }
 
-$userId = $_SESSION['user_id'];
+$userId = $_SESSION['user']['id'] ?? $_SESSION['user_id'];
 $designName = $data['design_name'];
 $designData = json_encode($data['design_data']);
 
@@ -38,6 +40,16 @@ try {
         }
     } else {
         // Create new design
+        // Ensure table exists with correct structure
+        $pdo->exec("CREATE TABLE IF NOT EXISTS saved_designs (
+            design_id INT AUTO_INCREMENT PRIMARY KEY,
+            user_id INT NOT NULL,
+            design_name VARCHAR(255) NOT NULL,
+            design_data TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )");
+        
         $stmt = $pdo->prepare("INSERT INTO saved_designs (user_id, design_name, design_data) VALUES (?, ?, ?)");
         $stmt->execute([$userId, $designName, $designData]);
         

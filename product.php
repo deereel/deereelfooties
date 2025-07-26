@@ -275,7 +275,7 @@ try {
                       data-image="<?= htmlspecialchars($mainImage) ?>">
                 <i class="far fa-heart mr-2"></i> ADD TO WISHLIST
               </button>
-              <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" onclick="window.location.href='/customize.php'">
+              <button class="border border-black px-4 py-2 flex-1 hover:bg-black hover:text-white transition" id="customize-btn">
                 CUSTOMIZE THIS SHOE
               </button>
             </div>
@@ -556,6 +556,25 @@ try {
           } else {
             alert('Cart functionality is not available');
           }
+        });
+      }
+      
+      // Customize button
+      const customizeBtn = document.getElementById('customize-btn');
+      if (customizeBtn) {
+        customizeBtn.addEventListener('click', function() {
+          const color = document.getElementById('selected-color').value;
+          const size = document.getElementById('selected-size').value;
+          const width = document.getElementById('selected-width').value;
+          
+          // Build customize URL with product data
+          let customizeUrl = '/customize.php?product_id=<?= $productId ?>&name=<?= urlencode($productName) ?>&price=<?= $productPrice ?>&image=<?= urlencode($mainImage) ?>';
+          
+          if (color) customizeUrl += '&color=' + encodeURIComponent(color);
+          if (size) customizeUrl += '&size=' + encodeURIComponent(size);
+          if (width) customizeUrl += '&width=' + encodeURIComponent(width);
+          
+          window.location.href = customizeUrl;
         });
       }
     });

@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Function to show a specific tab
-    function showTab(tabId) {
+    function showTab(tabId, updateHash = true) {
       console.log('Showing tab:', tabId);
       
       // Hide all tabs
@@ -36,10 +36,15 @@ document.addEventListener('DOMContentLoaded', function() {
         targetTab.style.display = 'block';
         
         // Add active class to tab link
-        document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        const tabLink = document.querySelector(`[data-tab="${tabId}"]`);
+        if (tabLink) {
+          tabLink.classList.add('active');
+        }
         
-        // Update URL hash
-        window.location.hash = tabId;
+        // Only update URL hash if not coming from URL parameter
+        if (updateHash) {
+          window.location.hash = tabId;
+        }
         
         console.log('Tab displayed:', tabId);
       } else {
@@ -56,12 +61,26 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
     
-    // Check URL hash on page load
+    // Check URL hash or parameter on page load
     const hash = window.location.hash.substring(1);
-    if (hash && document.getElementById(hash + '-tab')) {
-      showTab(hash);
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    
+    let targetTab = null;
+    let fromParam = false;
+    
+    // Check for tab parameter first, then hash
+    if (tabParam && document.getElementById(tabParam + '-tab')) {
+      targetTab = tabParam;
+      fromParam = true;
+    } else if (hash && document.getElementById(hash + '-tab')) {
+      targetTab = hash;
+    }
+    
+    if (targetTab) {
+      showTab(targetTab, !fromParam);
     } else {
-      // If no hash, show dashboard tab by default
+      // If no hash or parameter, show dashboard tab by default
       showTab('dashboard');
     }
   }

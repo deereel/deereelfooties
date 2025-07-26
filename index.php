@@ -59,13 +59,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     <div class="container mx-auto px-4">
       <div class="text-center mb-16">
         <h2 class="text-4xl font-light mb-4">Craftsmanship Meets Style</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">Explore our collections of handcrafted footwear, designed for those who appreciate quality and elegance.</p>
+        <p class="text-gray-600 max-w-2xl mx-auto">Explore our collections of handcrafted footwear, designed for those who appreciate quality and elegance. Each pair is meticulously crafted using traditional Goodyear welted construction by skilled Nigerian artisans with premium sustainable leather.</p>
       </div>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <a href="/men.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[16/9] overflow-hidden">
-            <img src="/images/penny loafer 600.webp" alt="Men's Collection" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <img src="/images/penny loafer 600.webp" alt="Premium Men's Handcrafted Loafers and Dress Shoes Collection" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
               <div>
                 <h3 class="text-3xl font-light text-white mb-2">Men's Collection</h3>
@@ -78,7 +78,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         
         <a href="/women.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[16/9] overflow-hidden">
-            <img src="/images/Oxford Cap Toe 600.webp" alt="Women's Collection" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
+            <img src="/images/Oxford Cap Toe 600.webp" alt="Elegant Women's Handcrafted Oxford and Designer Shoes Collection" class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
               <div>
                 <h3 class="text-3xl font-light text-white mb-2">Women's Collection</h3>
@@ -170,7 +170,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div class="order-2 lg:order-1">
           <h2 class="text-4xl font-light mb-6">Handcrafted Excellence</h2>
-          <p class="text-gray-600 mb-8">Each pair of DeeReel Footies is meticulously crafted by skilled artisans using premium materials and traditional techniques passed down through generations.</p>
+          <p class="text-gray-600 mb-8">Each pair of DeeReel Footies is meticulously crafted by skilled Nigerian artisans using premium sustainable leather and traditional Goodyear welted construction techniques passed down through generations. Our handcrafted shoes combine durability, comfort, and luxury for discerning customers seeking quality footwear.</p>
           <ul class="space-y-4 mb-8">
             <li class="flex items-start">
               <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>

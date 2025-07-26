@@ -39,38 +39,39 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             <div>
               <h3 class="font-medium mb-2">CUSTOMER SERVICE</h3>
               <p class="mb-1">Email: <a href="mailto:deereelfooties@gmail.com" class="underline">deereelfooties@gmail.com</a></p>
-              <p>Phone: +34 971 50 16 02</p>
-              <p class="text-sm text-gray-500 mt-2">Monday to Friday: 9:00 AM - 6:00 PM (CET)</p>
+              <p class="mb-1">Phone: <a href="tel:+2348134235110" class="underline">+2348134235110</a></p>
+              <p class="mb-1">WhatsApp: <a href="https://wa.me/2347031864772" class="underline" target="_blank">07031864772</a></p>
+              <p class="text-sm text-gray-500 mt-2">Monday to Friday: 9:00 AM - 6:00 PM</p>
             </div>
             
             <div>
               <h3 class="font-medium mb-2">HEADQUARTERS</h3>
               <address class="not-italic">
                 DeeReeL Footies<br>
-                Carrer del Quarter, 23<br>
-                07300 Inca, Balearic Islands<br>
-                Spain
+                2, Oluwa street, off Oke-Ayo street.<br>
+                Ishaga Lagos.<br>
+                Nigeria
               </address>
             </div>
             
             <div>
               <h3 class="font-medium mb-2">FOLLOW US</h3>
               <div class="flex space-x-4">
-                <a href="#" class="hover:text-gray-600">
+                <a href="https://instagram.com/deereelfooties" target="_blank" class="hover:text-gray-600">
                   <i class="fab fa-instagram text-lg"></i>
                   <span class="sr-only">Instagram</span>
                 </a>
-                <a href="#" class="hover:text-gray-600">
-                  <i class="fab fa-facebook text-lg"></i>
-                  <span class="sr-only">Facebook</span>
+                <a href="https://www.tiktok.com/@deereel.footies" target="_blank" class="hover:text-gray-600">
+                  <i class="fab fa-tiktok text-lg"></i>
+                  <span class="sr-only">TikTok</span>
                 </a>
-                <a href="#" class="hover:text-gray-600">
-                  <i class="fab fa-twitter text-lg"></i>
-                  <span class="sr-only">Twitter</span>
+                <a href="https://wa.me/2347031864772" target="_blank" class="hover:text-gray-600">
+                  <i class="fab fa-whatsapp text-lg"></i>
+                  <span class="sr-only">WhatsApp</span>
                 </a>
-                <a href="#" class="hover:text-gray-600">
-                  <i class="fab fa-youtube text-lg"></i>
-                  <span class="sr-only">YouTube</span>
+                <a href="mailto:deereelfooties@gmail.com" class="hover:text-gray-600">
+                  <i class="fas fa-envelope text-lg"></i>
+                  <span class="sr-only">Email</span>
                 </a>
               </div>
             </div>
@@ -156,9 +157,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               </div>
             </div>
             
-            <div>
+            <div class="flex gap-4">
               <button type="submit" class="bg-black text-white px-8 py-3 hover:bg-gray-800 transition">
                 SEND MESSAGE
+              </button>
+              <button type="button" id="whatsapp-btn" class="bg-green-600 text-white px-8 py-3 hover:bg-green-700 transition">
+                <i class="fab fa-whatsapp mr-2"></i>WHATSAPP
               </button>
             </div>
           </form>
@@ -264,7 +268,71 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contact-form');
+      const whatsappBtn = document.getElementById('whatsapp-btn');
+      const successDiv = document.getElementById('form-success');
+      const errorDiv = document.getElementById('form-error');
+      
+      // Handle form submission
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          subject: document.getElementById('subject').value,
+          message: document.getElementById('message').value
+        };
+        
+        // Create email content
+        const emailSubject = `Contact Form: ${formData.subject}`;
+        const emailBody = `New contact form submission:
 
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Subject: ${formData.subject}
+Message: ${formData.message}`;
+        
+        // Open email client
+        window.location.href = `mailto:deereelfooties@gmail.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+        
+        // Show success message
+        successDiv.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
+        contactForm.reset();
+      });
+      
+      // Handle WhatsApp button
+      whatsappBtn.addEventListener('click', function() {
+        const formData = {
+          name: document.getElementById('name').value || 'Not provided',
+          email: document.getElementById('email').value || 'Not provided',
+          phone: document.getElementById('phone').value || 'Not provided',
+          subject: document.getElementById('subject').value || 'General Inquiry',
+          message: document.getElementById('message').value || 'No message provided'
+        };
+        
+        const whatsappMessage = `Hello DeeReel Footies! 👋
+
+I'm contacting you regarding: ${formData.subject}
+
+👤 Name: ${formData.name}
+📧 Email: ${formData.email}
+📱 Phone: ${formData.phone}
+
+💬 Message:
+${formData.message}
+
+Looking forward to hearing from you!`;
+        
+        window.open(`https://wa.me/2347031864772?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+      });
+    });
+  </script>
   
 </body>
 </html>

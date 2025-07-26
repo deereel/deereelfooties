@@ -16,12 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
   const preview3dModal = document.getElementById('preview-3d-modal');
   const close3dBtn = document.getElementById('close-3d-btn');
   
-  // Base prices
+  // Base prices by type
   const basePrices = {
     oxford: 85000,
     derby: 82000,
-    loafer: 78000,
-    monk: 88000
+    loafers: 78000,
+    monk: 88000,
+    chelsea: 95000,
+    wingtip: 98000,
+    captoe: 92000,
+    jodhpur: 96000,
+    zipper: 94000,
+    balmoral: 97000,
+    classic: 75000,
+    modern: 78000,
+    sandals: 65000,
+    casual: 70000,
+    athletic: 72000
   };
   
   // Material price adjustments
@@ -32,31 +43,61 @@ document.addEventListener('DOMContentLoaded', function() {
   };
   
   // Current selections
-  let currentStyle = 'oxford';
+  let currentCategory = 'shoes';
+  let currentType = 'oxford';
   let currentColor = 'black';
   let currentMaterial = 'calf';
   let currentSize = null;
   
+  // Product types by category
+  const productTypes = {
+    shoes: [
+      { type: 'oxford', name: 'Oxford', description: 'Classic formal' },
+      { type: 'derby', name: 'Derby', description: 'Open lacing' },
+      { type: 'loafers', name: 'Loafers', description: 'Slip-on style' },
+      { type: 'monk', name: 'Monk Strap', description: 'Buckle closure' }
+    ],
+    boots: [
+      { type: 'chelsea', name: 'Chelsea', description: 'Elastic sides' },
+      { type: 'wingtip', name: 'Wingtip', description: 'Decorative toe' },
+      { type: 'captoe', name: 'Cap Toe', description: 'Toe cap detail' },
+      { type: 'jodhpur', name: 'Jodhpur', description: 'Ankle strap' },
+      { type: 'zipper', name: 'Zipper', description: 'Side zip closure' },
+      { type: 'balmoral', name: 'Balmoral', description: 'Closed lacing' }
+    ],
+    slippers: [
+      { type: 'classic', name: 'Classic', description: 'Traditional comfort' },
+      { type: 'sandals', name: 'Sandals', description: 'Open toe style' }
+    ],
+    mules: [
+      { type: 'classic', name: 'Classic', description: 'Traditional style' },
+      { type: 'modern', name: 'Modern', description: 'Contemporary cut' }
+    ],
+    sneakers: [
+      { type: 'casual', name: 'Casual', description: 'Everyday wear' },
+      { type: 'athletic', name: 'Athletic', description: 'Sport style' }
+    ]
+  };
+  
   // Load saved design if available
   if (window.designData) {
-    currentStyle = designData.style || currentStyle;
+    currentCategory = designData.category || currentCategory;
+    currentType = designData.type || currentType;
     currentColor = designData.color || currentColor;
     currentMaterial = designData.material || currentMaterial;
     currentSize = designData.size || currentSize;
-    
-    // Update UI to match saved design
-    document.querySelector(`.custom-option[data-style="${currentStyle}"]`).classList.add('active');
-    document.querySelector(`.custom-color[data-color="${currentColor}"]`).classList.add('active');
-    document.querySelector(`input[name="material"][value="${currentMaterial}"]`).checked = true;
-    
-    if (currentSize) {
-      document.querySelector(`.size-option[data-size="${currentSize}"]`).classList.add('selected');
-    }
   }
   
   // Load saved designs
   function loadSavedDesigns() {
     if (!savedDesignsContainer) return;
+    
+    // Check if user is logged in
+    const userData = localStorage.getItem('DRFUser');
+    if (!userData) {
+      savedDesignsContainer.innerHTML = '<div class="col-span-full text-center py-8"><p>Please <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-black underline">log in</a> to view saved designs.</p></div>';
+      return;
+    }
     
     fetch('/api/saved-designs.php')
       .then(response => response.json())
@@ -72,9 +113,17 @@ document.addEventListener('DOMContentLoaded', function() {
           const card = document.createElement('div');
           card.className = 'bg-white rounded-lg shadow-md overflow-hidden';
           
+          const imageMap = {
+            'oxford-black': '/images/Oxford Cap Toe 600.webp',
+            'derby-black': '/images/cram solid oxford.webp',
+            'loafer-black': '/images/penny loafer 600.webp'
+          };
+          const imageKey = `${designData.style}-${designData.color}`;
+          const imageUrl = imageMap[imageKey] || '/images/Oxford Cap Toe 600.webp';
+          
           card.innerHTML = `
             <div class="aspect-[3/4] bg-gray-100">
-              <img src="/images/${designData.style}-${designData.color || 'black'}.jpg" 
+              <img src="${imageUrl}" 
                    alt="Saved Design" 
                    class="w-full h-full object-cover">
             </div>
@@ -97,54 +146,105 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
   
+  // Populate type options based on category
+  function populateTypeOptions() {
+    const typeContainer = document.getElementById('type-options');
+    const types = productTypes[currentCategory] || [];
+    
+    typeContainer.innerHTML = '';
+    types.forEach((typeData, index) => {
+      const button = document.createElement('button');
+      button.className = `p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center type-option ${index === 0 ? 'active' : ''}`;
+      button.dataset.type = typeData.type;
+      button.innerHTML = `
+        <h4 class="font-medium text-sm">${typeData.name}</h4>
+        <p class="text-xs text-gray-600">${typeData.description}</p>
+      `;
+      typeContainer.appendChild(button);
+    });
+    
+    // Set default type
+    if (types.length > 0) {
+      currentType = types[0].type;
+    }
+    
+    // Add event listeners
+    addTypeEventListeners();
+  }
+  
   // Update preview and price
   function updatePreview() {
-    // Update image (in a real app, you'd have different images for each combination)
-    shoePreview.src = `/images/${currentStyle}-${currentColor}.jpg`;
-    
-    // Update title and description
-    const titles = {
-      oxford: 'Oxford Cap Toe',
-      derby: 'Derby Plain Toe',
-      loafer: 'Penny Loafer',
-      monk: 'Double Monk Strap'
-    };
-    
-    const descriptions = {
-      oxford: 'Classic formal shoe with cap toe detail',
-      derby: 'Versatile shoe with open lacing system',
-      loafer: 'Elegant slip-on style with penny strap',
-      monk: 'Sophisticated shoe with double buckle closure'
-    };
-    
-    previewTitle.textContent = titles[currentStyle];
-    previewDescription.textContent = descriptions[currentStyle];
-    
-    // Calculate and update price
-    const basePrice = basePrices[currentStyle];
-    const materialAdjustment = materialPrices[currentMaterial];
-    const totalPrice = basePrice + materialAdjustment;
-    
-    previewPrice.textContent = `₦${totalPrice.toLocaleString()}`;
-    finalPrice.textContent = `₦${totalPrice.toLocaleString()}`;
-    
-    // Update 3D model if viewer is initialized
-    if (window.shoeViewer) {
-      window.shoeViewer.setStyle(currentStyle);
-      window.shoeViewer.setColor(currentColor);
-      window.shoeViewer.setMaterial(currentMaterial);
+    // Fetch product from database based on category and type
+    fetchProductData(currentCategory, currentType).then(product => {
+      if (product) {
+        shoePreview.src = product.main_image;
+        previewTitle.textContent = product.name;
+        previewDescription.textContent = product.short_description;
+        
+        // Calculate price
+        const basePrice = parseFloat(product.price) || basePrices[currentType] || 85000;
+        const materialAdjustment = materialPrices[currentMaterial];
+        const totalPrice = basePrice + materialAdjustment;
+        
+        previewPrice.textContent = `₦${totalPrice.toLocaleString()}`;
+        finalPrice.textContent = `₦${totalPrice.toLocaleString()}`;
+      } else {
+        // Fallback to default images
+        const imageMap = {
+          'oxford-black': '/images/Oxford Cap Toe 600.webp',
+          'derby-black': '/images/cram solid oxford.webp',
+          'loafer-black': '/images/penny loafer 600.webp'
+        };
+        
+        const imageKey = `${currentType}-${currentColor}`;
+        shoePreview.src = imageMap[imageKey] || '/images/Oxford Cap Toe 600.webp';
+        
+        const basePrice = basePrices[currentType] || 85000;
+        const materialAdjustment = materialPrices[currentMaterial];
+        const totalPrice = basePrice + materialAdjustment;
+        
+        previewPrice.textContent = `₦${totalPrice.toLocaleString()}`;
+        finalPrice.textContent = `₦${totalPrice.toLocaleString()}`;
+      }
+    });
+  }
+  
+  // Fetch product data from database
+  async function fetchProductData(category, type) {
+    try {
+      const response = await fetch(`/api/get-product.php?category=${category}&type=${type}`);
+      const data = await response.json();
+      return data.success ? data.product : null;
+    } catch (error) {
+      console.error('Error fetching product:', error);
+      return null;
     }
   }
   
-  // Style selection
-  styleOptions.forEach(option => {
+  // Category selection
+  const categoryOptions = document.querySelectorAll('.category-option');
+  categoryOptions.forEach(option => {
     option.addEventListener('click', function() {
-      styleOptions.forEach(opt => opt.classList.remove('active'));
-      this.classList.add('active');
-      currentStyle = this.dataset.style;
+      categoryOptions.forEach(opt => opt.classList.remove('active', 'border-black'));
+      this.classList.add('active', 'border-black');
+      currentCategory = this.dataset.category;
+      populateTypeOptions();
       updatePreview();
     });
   });
+  
+  // Type selection event listeners
+  function addTypeEventListeners() {
+    const typeOptions = document.querySelectorAll('.type-option');
+    typeOptions.forEach(option => {
+      option.addEventListener('click', function() {
+        typeOptions.forEach(opt => opt.classList.remove('active', 'border-black'));
+        this.classList.add('active', 'border-black');
+        currentType = this.dataset.type;
+        updatePreview();
+      });
+    });
+  }
   
   // Color selection
   colorOptions.forEach(option => {
@@ -200,7 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       const designData = {
-        style: currentStyle,
+        category: currentCategory,
+        type: currentType,
         color: currentColor,
         material: currentMaterial,
         size: currentSize
@@ -239,11 +340,67 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Cart functionality has been removed
+  // Add to Cart functionality
   if (addToCartBtn) {
     addToCartBtn.addEventListener('click', function() {
-      showNotification('Cart functionality has been removed. Please contact us to place an order.');
+      if (!currentSize) {
+        showNotification('Please select a size before adding to cart.');
+        return;
+      }
+      
+      const cartItem = {
+        product_id: `custom_${Date.now()}`,
+        product_name: `Custom ${currentType}`,
+        name: `Custom ${currentType}`,
+        price: calculatePrice(),
+        quantity: 1,
+        image: shoePreview.src,
+        color: currentColor,
+        size: currentSize,
+        width: '',
+        custom_design: true,
+        specifications: `${currentType} in ${currentColor} ${currentMaterial}, Size ${currentSize}`
+      };
+      
+      if (window.cartHandler) {
+        window.cartHandler.addToCart(cartItem).then(() => {
+          showNotification('Custom design added to cart!');
+        }).catch(() => {
+          showNotification('Error adding design to cart');
+        });
+      } else {
+        showNotification('Cart system not available');
+      }
     });
+  }
+  
+  // Share Design functionality
+  const shareDesignBtn = document.getElementById('share-design-btn');
+  if (shareDesignBtn) {
+    shareDesignBtn.addEventListener('click', function() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'My Custom Shoe Design',
+          text: `Check out my custom ${currentStyle} design in ${currentColor}!`,
+          url: window.location.href
+        });
+      } else {
+        // Fallback: copy to clipboard
+        const shareText = `Check out my custom ${currentStyle} design in ${currentColor}! ${window.location.href}`;
+        navigator.clipboard.writeText(shareText).then(() => {
+          showNotification('Design link copied to clipboard!');
+        }).catch(() => {
+          showNotification('Unable to share. Please copy the URL manually.');
+        });
+      }
+    });
+  }
+  
+  // Helper function to calculate price
+  function calculatePrice() {
+    const basePrice = basePrices[currentType] || 85000;
+    const materialAdjustment = materialPrices[currentMaterial];
+    return basePrice + materialAdjustment;
   }
   
   // Helper function to get user ID - returns null if not logged in
@@ -279,6 +436,25 @@ document.addEventListener('DOMContentLoaded', function() {
   if (close3dBtn) {
     close3dBtn.addEventListener('click', function() {
       if (preview3dModal) {
+        preview3dModal.classList.add('hidden');
+      }
+    });
+  }
+  
+  // Additional close button for 3D modal
+  const close3dOverlay = document.getElementById('close-3d-overlay');
+  if (close3dOverlay) {
+    close3dOverlay.addEventListener('click', function() {
+      if (preview3dModal) {
+        preview3dModal.classList.add('hidden');
+      }
+    });
+  }
+  
+  // Close modal when clicking outside
+  if (preview3dModal) {
+    preview3dModal.addEventListener('click', function(e) {
+      if (e.target === preview3dModal) {
         preview3dModal.classList.add('hidden');
       }
     });
@@ -324,10 +500,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 3000);
   }
   
-  // Initialize preview
+  // Initialize
+  populateTypeOptions();
   updatePreview();
-  
-  // Load saved designs
   loadSavedDesigns();
   
   // Scroll to Top Button

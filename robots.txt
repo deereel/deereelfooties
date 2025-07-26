@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /api/
+Disallow: /config/
+Disallow: /logs/
+
+# Allow important pages
+Allow: /products/
+Allow: /men.php
+Allow: /women.php
+Allow: /customize.php
+
+# Sitemap location
+Sitemap: https://deereelfooties.com/sitemap.xml

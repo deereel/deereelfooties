@@ -123,7 +123,7 @@ if ($designId > 0) {
         <p class="text-gray-600">Use our interactive customizer to create your perfect pair</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
         <!-- Preview Area -->
         <div class="order-2 lg:order-1">
           <div class="bg-white rounded-lg shadow-lg p-8">
@@ -147,33 +147,45 @@ if ($designId > 0) {
 
         <!-- Customization Options -->
         <div class="order-1 lg:order-2">
-          <div class="space-y-8">
-            <!-- Style Selection -->
+          <div class="space-y-6 lg:space-y-8">
+            <!-- Category Selection -->
             <div>
-              <h3 class="text-xl font-medium mb-4">1. Choose Style</h3>
-              <div class="grid grid-cols-2 gap-4">
-                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option active" data-style="oxford">
-                  <h4 class="font-medium">Oxford</h4>
-                  <p class="text-sm text-gray-600">Classic formal</p>
+              <h3 class="text-xl font-medium mb-4">1. Choose Category</h3>
+              <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                <button class="p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center category-option active" data-category="shoes">
+                  <h4 class="font-medium text-sm">Shoes</h4>
+                  <p class="text-xs text-gray-600">Formal & casual</p>
                 </button>
-                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="derby">
-                  <h4 class="font-medium">Derby</h4>
-                  <p class="text-sm text-gray-600">Open lacing</p>
+                <button class="p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center category-option" data-category="boots">
+                  <h4 class="font-medium text-sm">Boots</h4>
+                  <p class="text-xs text-gray-600">Ankle & high</p>
                 </button>
-                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="loafer">
-                  <h4 class="font-medium">Loafer</h4>
-                  <p class="text-sm text-gray-600">Slip-on style</p>
+                <button class="p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center category-option" data-category="slippers">
+                  <h4 class="font-medium text-sm">Slippers</h4>
+                  <p class="text-xs text-gray-600">Comfort wear</p>
                 </button>
-                <button class="p-4 border-2 border-gray-300 rounded-lg hover:border-black transition text-left custom-option" data-style="monk">
-                  <h4 class="font-medium">Monk Strap</h4>
-                  <p class="text-sm text-gray-600">Buckle closure</p>
+                <button class="p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center category-option" data-category="mules">
+                  <h4 class="font-medium text-sm">Mules</h4>
+                  <p class="text-xs text-gray-600">Backless style</p>
                 </button>
+                <button class="p-3 border-2 border-gray-300 rounded-lg hover:border-black transition text-center category-option" data-category="sneakers">
+                  <h4 class="font-medium text-sm">Sneakers</h4>
+                  <p class="text-xs text-gray-600">Athletic style</p>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Type Selection -->
+            <div>
+              <h3 class="text-xl font-medium mb-4">2. Choose Type</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="type-options">
+                <!-- Types will be populated based on category -->
               </div>
             </div>
 
             <!-- Color Selection -->
             <div>
-              <h3 class="text-xl font-medium mb-4">2. Select Color</h3>
+              <h3 class="text-xl font-medium mb-4">3. Select Color</h3>
               <div class="flex flex-wrap gap-3">
                 <button class="w-12 h-12 rounded-full border-4 border-black custom-color active" style="background-color: #000000;" data-color="black" title="Black"></button>
                 <button class="w-12 h-12 rounded-full border-4 border-transparent hover:border-gray-400 custom-color" style="background-color: #8B4513;" data-color="brown" title="Brown"></button>
@@ -185,7 +197,7 @@ if ($designId > 0) {
 
             <!-- Material Selection -->
             <div>
-              <h3 class="text-xl font-medium mb-4">3. Choose Material</h3>
+              <h3 class="text-xl font-medium mb-4">4. Choose Material</h3>
               <div class="space-y-3">
                 <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                   <input type="radio" name="material" value="calf" class="mr-3" checked>
@@ -213,22 +225,37 @@ if ($designId > 0) {
 
             <!-- Size Selection -->
             <div>
-              <h3 class="text-xl font-medium mb-4">4. Select Size</h3>
-              <div class="grid grid-cols-4 gap-2" id="size-options">
+              <h3 class="text-xl font-medium mb-4">5. Select Size</h3>
+              <div class="grid grid-cols-6 sm:grid-cols-8 gap-2" id="size-options">
                 <?php for ($i = 37; $i <= 47; $i++): ?>
-                <button class="border border-gray-300 py-2 hover:border-black transition size-option" data-size="<?= $i ?>"><?= $i ?></button>
+                <button class="border border-gray-300 py-3 px-2 hover:border-black transition size-option text-sm" data-size="<?= $i ?>"><?= $i ?></button>
                 <?php endfor; ?>
               </div>
+              <p class="text-xs text-gray-500 mt-2">Need help with sizing? <a href="/size-guide.php" class="text-black underline">View Size Guide</a></p>
             </div>
 
             <!-- Action Buttons -->
-            <div class="pt-6 border-t">
-              <button id="add-to-cart-btn" class="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition font-medium mb-4">
-                Add to Cart - <span id="final-price">₦85,000</span>
+            <div class="pt-6 border-t space-y-3">
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="font-medium">Total Price:</span>
+                  <span class="text-2xl font-bold" id="final-price">₦85,000</span>
+                </div>
+                <p class="text-xs text-gray-600">Includes premium materials and handcrafting</p>
+              </div>
+              
+              <button id="add-to-cart-btn" class="w-full bg-black text-white py-4 rounded-lg hover:bg-gray-800 transition font-medium">
+                <i class="fas fa-shopping-cart mr-2"></i>Add to Cart
               </button>
-              <button id="save-design-btn" class="w-full border-2 border-black text-black py-4 rounded-lg hover:bg-black hover:text-white transition font-medium">
-                Save Design
-              </button>
+              
+              <div class="grid grid-cols-2 gap-3">
+                <button id="save-design-btn" class="border-2 border-black text-black py-3 rounded-lg hover:bg-black hover:text-white transition font-medium text-sm">
+                  <i class="fas fa-save mr-1"></i>Save Design
+                </button>
+                <button id="share-design-btn" class="border-2 border-gray-300 text-gray-700 py-3 rounded-lg hover:border-black hover:text-black transition font-medium text-sm">
+                  <i class="fas fa-share mr-1"></i>Share
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -238,13 +265,16 @@ if ($designId > 0) {
 
   <!-- 3D Preview Modal -->
   <div id="preview-3d-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden relative">
       <div class="p-4 border-b flex justify-between items-center">
         <h3 class="text-xl font-medium">3D Preview</h3>
-        <button id="close-3d-btn" class="text-gray-500 hover:text-black">
+        <button id="close-3d-btn" class="text-gray-500 hover:text-black transition">
           <i class="fas fa-times text-xl"></i>
         </button>
       </div>
+      <button id="close-3d-overlay" class="absolute top-2 right-2 w-8 h-8 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center hover:bg-opacity-75 transition z-10">
+        <i class="fas fa-times text-sm"></i>
+      </button>
       <div class="p-4">
         <canvas id="shoe-3d-canvas" class="w-full" style="height: 500px;"></canvas>
       </div>

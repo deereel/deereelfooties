@@ -1,0 +1,92 @@
+/* SEO-Optimized CSS for Better Performance */
+
+/* Optimize font loading */
+@font-face {
+  font-family: 'Cinzel';
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&display=swap');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-display: swap;
+  src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+}
+
+/* Improve Core Web Vitals */
+img {
+  loading: lazy;
+  decoding: async;
+}
+
+/* Critical above-the-fold styles */
+.hero-section {
+  contain: layout style paint;
+}
+
+/* Optimize animations for performance */
+.product-card img {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Improve text rendering */
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize for search engines */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+/* Structured data visibility */
+.breadcrumb {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.breadcrumb a {
+  color: #374151;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Product schema optimization */
+.product-price {
+  font-weight: 600;
+  color: #059669;
+}
+
+.product-availability {
+  color: #059669;
+  font-size: 0.875rem;
+}
+
+/* Review stars for schema */
+.rating-stars {
+  color: #fbbf24;
+  font-size: 1rem;
+}
+
+/* Skip links for accessibility and SEO */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 6px;
+}

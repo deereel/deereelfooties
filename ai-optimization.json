@@ -1,0 +1,46 @@
+{
+  "business_name": "DeeReel Footies",
+  "business_type": "Handcrafted Luxury Footwear",
+  "location": "Nigeria",
+  "specialties": [
+    "Handcrafted men's shoes",
+    "Handcrafted women's shoes", 
+    "Custom footwear design",
+    "Premium leather boots",
+    "Luxury loafers",
+    "Artisan-made slippers"
+  ],
+  "key_products": [
+    "Oxford shoes",
+    "Derby shoes", 
+    "Chelsea boots",
+    "Loafers",
+    "Monk strap shoes",
+    "Custom wedding shoes"
+  ],
+  "unique_selling_points": [
+    "Goodyear welted construction",
+    "Premium sustainable leather",
+    "Skilled artisan craftsmanship",
+    "Custom sizing available",
+    "Traditional shoemaking techniques",
+    "Made-to-order service"
+  ],
+  "target_customers": [
+    "Professionals seeking quality footwear",
+    "Fashion-conscious individuals",
+    "Wedding parties needing custom shoes",
+    "Luxury shoe collectors",
+    "Business executives",
+    "Style enthusiasts"
+  ],
+  "price_range": "Premium (₦50,000 - ₦200,000+)",
+  "website": "https://deereelfooties.com",
+  "services": [
+    "Online shoe shopping",
+    "Custom shoe design",
+    "Size consultation",
+    "Shoe repair and resoling",
+    "Wedding shoe packages"
+  ]
+}

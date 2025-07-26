@@ -11,27 +11,30 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
 ?>
 
 <header class="sticky-top shadow-sm" style="background-color: var(--color-primary) !important;">
-  <!-- First Row: Logo and Search Icon -->
-  <div class="d-flex justify-content-between align-items-center px-4 py-1 mb-1">
+  <!-- Desktop: Logo and Search Icon -->
+  <div class="d-none d-lg-flex justify-content-between align-items-center px-4 py-1 mb-1">
     <a href="/index.php" class="navbar-brand d-flex align-items-center" style="color: var(--color-text-light) !important;">
       <img src="/images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 70px;">
       <span class="nav-brand-title" style="font-size: 1.5rem; font-weight: 600; color: var(--color-text-light) !important;">DeeReel Footies</span>
     </a>
 
-    <button class="btn btn-outline-light d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation" style="border-color: var(--color-secondary) !important; color: var(--color-text-light) !important;">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <button class="btn d-none d-lg-inline" style="color: var(--color-text-light) !important;">
+    <button class="btn" style="color: var(--color-text-light) !important;">
       <i class="fas fa-search"></i>
     </button>
   </div>
 
   <!-- Mobile Navigation -->
-  <div class="mobile-nav d-lg-none">
+  <div class="mobile-nav d-lg-none d-flex justify-content-between align-items-center px-4 py-2">
     <button class="btn btn-outline-light" id="mobileMenuToggle" aria-label="Toggle navigation" style="border-color: var(--color-secondary) !important; color: var(--color-text-light) !important;">
       ☰ Menu
     </button>
+    
+    <a href="/index.php" class="navbar-brand d-flex align-items-center" style="color: var(--color-text-light) !important;">
+      <img src="/images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 60px;">
+      <span class="nav-brand-title" style="font-size: 1.3rem; font-weight: 600; color: var(--color-text-light) !important;">DeeReel Footies</span>
+    </a>
+    
+    <div style="width: 80px;"></div>
 
     <div class="mobile-nav-overlay hidden fixed inset-0 bg-black/80 z-50">
       <div class="mobile-nav-content bg-white h-full w-3/4 max-w-sm shadow-lg p-6 overflow-y-auto">
@@ -159,9 +162,9 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
           
           <!-- Logged in state -->
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
-          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#orders"><i class="fas fa-box me-2"></i>My Orders</a></li>
-          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#wishlist"><i class="fas fa-heart me-2"></i>Wishlist</a></li>
-          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php#designs"><i class="fas fa-palette me-2"></i>My Designs</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php?tab=orders"><i class="fas fa-box me-2"></i>My Orders</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php?tab=wishlist"><i class="fas fa-heart me-2"></i>Wishlist</a></li>
+          <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/dashboard.php?tab=designs"><i class="fas fa-palette me-2"></i>My Designs</a></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a class="dropdown-item" href="/account-settings.php"><i class="fas fa-user-edit me-2"></i>Account Settings</a></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><hr class="dropdown-divider"></li>
           <li class="logged-in <?= $currentUser ? '' : 'd-none' ?>"><a href="#" class="dropdown-item logout-btn text-danger"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
@@ -248,5 +251,31 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  
+  // Mobile menu functionality
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const closeMobileMenu = document.getElementById('closeMobileMenu');
+  const mobileNavOverlay = document.querySelector('.mobile-nav-overlay');
+  
+  if (mobileMenuToggle && mobileNavOverlay) {
+    mobileMenuToggle.addEventListener('click', function() {
+      mobileNavOverlay.classList.remove('hidden');
+    });
+  }
+  
+  if (closeMobileMenu && mobileNavOverlay) {
+    closeMobileMenu.addEventListener('click', function() {
+      mobileNavOverlay.classList.add('hidden');
+    });
+  }
+  
+  // Close mobile menu when clicking overlay
+  if (mobileNavOverlay) {
+    mobileNavOverlay.addEventListener('click', function(e) {
+      if (e.target === mobileNavOverlay) {
+        mobileNavOverlay.classList.add('hidden');
+      }
+    });
+  }
 });
 </script>
