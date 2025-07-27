@@ -185,7 +185,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <span>Handcrafted by skilled artisans with decades of experience</span>
             </li>
           </ul>
-          <a href="/about.php" class="btn-primary px-8 py-3">Our Story</a>
+          <a href="/shoemaking.php" class="btn-primary px-8 py-3">Learn More</a>
         </div>
         <!-- Replace the craftsmanship image div with this code -->
         <div class="order-1 lg:order-2 relative group">

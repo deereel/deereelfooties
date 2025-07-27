@@ -1,4 +1,4 @@
-<<?php
+<?php
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
@@ -205,7 +205,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             </summary>
             <div class="pt-4 text-gray-600">
               <p>
-                We accept returns of unworn shoes in their original packaging within 30 days of delivery. To initiate a return, please contact our customer service team or visit the "Returns" section in your account. Please note that custom or MADE ON ORDER shoes cannot be returned unless there is a manufacturing defect.
+                We accept returns of unworn shoes in their original packaging within 30 days of delivery. To initiate a return, please contact our customer service team. Please note that custom or MADE ON ORDER shoes cannot be returned unless there is a manufacturing defect.
               </p>
             </div>
           </details>

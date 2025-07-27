@@ -306,6 +306,16 @@ try {
             </summary>
             <div class="pt-4 pb-2 text-gray-600">
               <?= nl2br(htmlspecialchars($detailsCare)) ?>
+              <?php if (!empty($detailsCare)): ?>
+                <div class="mt-4 pt-4 border-t">
+              <?php endif; ?>
+                <p class="mb-2">For comprehensive care instructions and tips to maintain your DeeReel Footies shoes:</p>
+                <a href="/care-guide.php" class="inline-block bg-black text-white px-4 py-2 text-sm hover:bg-gray-800 transition">
+                  <i class="fas fa-external-link-alt mr-2"></i>View Complete Care Guide
+                </a>
+              <?php if (!empty($detailsCare)): ?>
+                </div>
+              <?php endif; ?>
             </div>
           </details>
 

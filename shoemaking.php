@@ -7,313 +7,416 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Shoemaking | DeeReel Footies</title>
+  <title>Shoemaking Craftsmanship | DeeReel Footies</title>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
 </head>
-
 <body class="bg-background" data-page="shoemaking">
-  
 
+  <!-- Hero Section -->
+  <section class="relative bg-gray-900 text-white py-20">
+    <div class="absolute inset-0 bg-black opacity-60"></div>
+    <div class="relative max-w-7xl mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-6xl font-light mb-6">The Art of Shoemaking</h1>
+      <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+        Handcrafted excellence from our workshop in Lagos, Nigeria. 
+        Where traditional techniques meet modern design.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="#workshop-tour" class="bg-white text-black px-8 py-3 hover:bg-gray-100 transition">
+          Explore Our Workshop
+        </a>
+        <a href="/moo.php" class="border border-white px-8 py-3 hover:bg-white hover:text-black transition">
+          Commission Your Shoes
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Main Content -->
   <main>
-    <!-- Hero Section -->
-    <section class="relative w-full h-[500px]">
-      <img src="/images/shoemaking-hero.jpg" alt="DeeReeL Footies Shoemaking" class="object-cover w-full h-full">
-      <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-        <div class="text-center text-white max-w-3xl px-4">
-          <h1 class="text-4xl md:text-5xl font-light mb-4">THE ART OF SHOEMAKING</h1>
-          <p class="text-lg md:text-xl">Craftsmanship passed down through generations</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Introduction -->
-    <section class="py-16 px-4">
-      <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-3xl font-light mb-6">A LEGACY OF EXCELLENCE</h2>
-        <p class="mb-8">
-          Since 1866, DeeReeL Footies has been dedicated to the art of traditional shoemaking. Our commitment to quality
-          and craftsmanship has been passed down through generations, preserving techniques that have stood the
-          test of time while embracing innovation where it enhances our craft.
-        </p>
-        <p>
-          Every pair of DeeReeL Footies shoes represents over 150 years of expertise, with each step of the process
-          executed by skilled artisans in our workshop in Mallorca, Spain. From selecting the finest leathers
-          to the final polish, we maintain an unwavering dedication to excellence.
-        </p>
-      </div>
-    </section>
-
-    <!-- Craftsmanship Process -->
-    <section class="py-16 bg-neutral-100">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-light text-center mb-12">THE SHOEMAKING PROCESS</h2>
-        
-        <!-- Step 1: Design -->
-        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
-          <div class="order-2 md:order-1">
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 1</span>
-            <h3 class="text-2xl font-light mb-4">DESIGN & LAST SELECTION</h3>
-            <p class="mb-4">
-              Every DeeReeL Footies shoe begins with a design concept and the selection of an appropriate last. The last is a
-              three-dimensional form that determines the shape and fit of the shoe. Our collection of lasts has been
-              developed and refined over decades to provide both aesthetic appeal and comfort.
-            </p>
-            <p>
-              Our designers work closely with our master craftsmen to ensure that each design not only looks beautiful
-              but can be executed to our exacting standards. This collaborative process ensures that innovation is
-              balanced with practicality and tradition.
-            </p>
-          </div>
-          <div class="relative h-[400px] order-1 md:order-2">
-            <img src="/images/shoemaking-design.jpg" alt="Design & Last Selection" class="object-cover w-full h-full">
-          </div>
-        </div>
-        
-        <!-- Step 2: Pattern Making -->
-        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
-          <div class="relative h-[400px]">
-            <img src="/images/shoemaking-pattern.jpg" alt="Pattern Making" class="object-cover w-full h-full">
-          </div>
-          <div>
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 2</span>
-            <h3 class="text-2xl font-light mb-4">PATTERN MAKING & CUTTING</h3>
-            <p class="mb-4">
-              Once the design is finalized, our pattern makers create precise templates for each component of the shoe.
-              These patterns are then used to cut the leather pieces that will form the upper of the shoe.
-            </p>
-            <p>
-              The cutting process requires exceptional skill and attention to detail. Our artisans carefully select
-              sections of the hide that have the optimal characteristics for each part of the shoe, ensuring both
-              beauty and durability. This meticulous selection process minimizes waste while maximizing quality.
-            </p>
-          </div>
-        </div>
-        
-        <!-- Step 3: Stitching -->
-        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
-          <div class="order-2 md:order-1">
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 3</span>
-            <h3 class="text-2xl font-light mb-4">STITCHING & ASSEMBLY</h3>
-            <p class="mb-4">
-              The cut leather pieces are then carefully stitched together to form the upper of the shoe. This process
-              requires precision and expertise, as the stitching must be both strong and aesthetically pleasing.
-            </p>
-            <p>
-              Our artisans use a combination of machine and hand stitching, depending on the requirements of each
-              section. Decorative elements such as broguing or medallions are meticulously executed during this phase,
-              adding character and distinction to each pair.
-            </p>
-          </div>
-          <div class="relative h-[400px] order-1 md:order-2">
-            <img src="/images/shoemaking-stitching.jpg" alt="Stitching & Assembly" class="object-cover w-full h-full">
-          </div>
-        </div>
-        
-        <!-- Step 4: Lasting -->
-        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
-          <div class="relative h-[400px]">
-            <img src="/images/shoemaking-lasting.jpg" alt="Lasting" class="object-cover w-full h-full">
-          </div>
-          <div>
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 4</span>
-            <h3 class="text-2xl font-light mb-4">LASTING</h3>
-            <p class="mb-4">
-              Lasting is the process of shaping the upper around the last to give the shoe its final form. This
-              critical step requires both strength and finesse, as the leather must be stretched and secured without
-              damaging its integrity.
-            </p>
-            <p>
-              Our craftsmen use traditional wooden lasts and specialized tools to achieve the perfect shape. The upper
-              is pulled taut over the last and temporarily secured with tacks. This process is what gives DeeReeL Footies shoes
-              their distinctive silhouette and ensures a comfortable fit.
-            </p>
-          </div>
-        </div>
-        
-        <!-- Step 5: Goodyear Welting -->
-        <div class="grid md:grid-cols-2 gap-12 items-center mb-20">
-          <div class="order-2 md:order-1">
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 5</span>
-            <h3 class="text-2xl font-light mb-4">GOODYEAR WELTING</h3>
-            <p class="mb-4">
-              DeeReeL Footies is renowned for our Goodyear welted construction, a technique that enhances both the durability
-              and repairability of our shoes. This method involves stitching a strip of leather (the welt) to the upper
-              and insole, then stitching the outsole to the welt.
-            </p>
-            <p>
-              This double-stitching process creates a shoe that can be resoled multiple times, extending its lifespan
-              significantly. It also provides superior water resistance and structural integrity. While more
-              time-consuming and labor-intensive than other construction methods, Goodyear welting represents our
-              commitment to creating shoes that last a lifetime.
-            </p>
-          </div>
-          <div class="relative h-[400px] order-1 md:order-2">
-            <img src="/images/shoemaking-welting.jpg" alt="Goodyear Welting" class="object-cover w-full h-full">
-          </div>
-        </div>
-        
-        <!-- Step 6: Finishing -->
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div class="relative h-[400px]">
-            <img src="/images/shoemaking-finishing.jpg" alt="Finishing" class="object-cover w-full h-full">
-          </div>
-          <div>
-            <span class="inline-block bg-black text-white px-3 py-1 mb-4">STEP 6</span>
-            <h3 class="text-2xl font-light mb-4">FINISHING</h3>
-            <p class="mb-4">
-              The final stage in our shoemaking process is finishing, where each pair receives the attention to detail
-              that sets DeeReeL Footies apart. The edges of the soles are trimmed, shaped, and polished to perfection.
-            </p>
-            <p class="mb-4">
-              The uppers are meticulously cleaned and conditioned, then polished to bring out the natural beauty of the
-              leather. Any decorative elements are refined, and the shoes undergo a thorough quality inspection to
-              ensure they meet our exacting standards.
-            </p>
-            <p>
-              Only after passing this rigorous inspection are the shoes ready to be boxed and shipped to our customers
-              around the world, carrying with them the pride and tradition of DeeReeL Footies craftsmanship.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Materials -->
-    <section class="py-16 px-4">
-      <div class="max-w-7xl mx-auto">
-        <h2 class="text-3xl font-light text-center mb-12">EXCEPTIONAL MATERIALS</h2>
-        
-        <div class="grid md:grid-cols-2 gap-12 mb-16">
-          <div>
-            <h3 class="text-2xl font-light mb-6">THE FINEST LEATHERS</h3>
-            <p class="mb-4">
-              At DeeReeL Footies, we believe that exceptional shoes begin with exceptional materials. We source our leathers
-              from the world's most prestigious tanneries, selecting only those that meet our stringent quality
-              standards.
-            </p>
-            <p class="mb-4">
-              From buttery-soft calfskin to rich shell cordovan, each type of leather is chosen for its specific
-              characteristics and beauty. We work closely with our suppliers to ensure sustainable and ethical
-              practices, respecting both tradition and the environment.
-            </p>
-            <p>
-              Our leather selection includes:
-            </p>
-            <ul class="list-disc pl-5 mt-2 space-y-1">
-              <li>Box Calf: Smooth, fine-grained leather with excellent durability</li>
-              <li>Museum Calf: Distinguished by its subtle mottled appearance</li>
-              <li>Shell Cordovan: Renowned for its durability and distinctive patina</li>
-              <li>Suede: Soft, velvety leather with a luxurious texture</li>
-              <li>Grain Leather: Naturally textured leather with enhanced water resistance</li>
-            </ul>
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="relative aspect-square overflow-hidden">
-              <img src="/images/leather-1.jpg" alt="Box Calf Leather" class="object-cover w-full h-full">
-            </div>
-            <div class="relative aspect-square overflow-hidden">
-              <img src="/images/leather-2.jpg" alt="Museum Calf Leather" class="object-cover w-full h-full">
-            </div>
-            <div class="relative aspect-square overflow-hidden">
-              <img src="/images/leather-3.jpg" alt="Shell Cordovan Leather" class="object-cover w-full h-full">
-            </div>
-            <div class="relative aspect-square overflow-hidden">
-              <img src="/images/leather-4.jpg" alt="Suede Leather" class="object-cover w-full h-full">
-            </div>
-          </div>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-12">
-          <div class="order-2 md:order-1">
-            <h3 class="text-2xl font-light mb-6">COMPONENTS & DETAILS</h3>
-            <p class="mb-4">
-              Beyond the leather uppers, every component of a DeeReeL Footies shoe is selected with the same attention to
-              quality and performance. Our oak-tanned leather soles provide the perfect balance of durability and
-              flexibility, while our cork fillings mold to the wearer's foot for personalized comfort.
-            </p>
-            <p class="mb-4">
-              We use only the finest threads for our stitching, ensuring both strength and aesthetic appeal. Our laces,
-              linings, and even our hidden components like toe puffs and heel counters are all chosen to contribute to
-              the overall excellence of the final product.
-            </p>
-            <p>
-              It's this holistic approach to quality—where every element, visible or not, is given equal
-              importance—that defines the DeeReeL Footies difference and ensures that our shoes provide exceptional comfort,
-              durability, and style.
-            </p>
-          </div>
-          <div class="relative h-[400px] order-1 md:order-2">
-            <img src="/images/shoemaking-components.jpg" alt="Shoe Components" class="object-cover w-full h-full">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Workshop -->
-    <section class="py-16 bg-neutral-900 text-white">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl font-light text-center mb-12">OUR WORKSHOP IN MALLORCA</h2>
-        
+    <div class="max-w-7xl mx-auto px-4 py-16">
+      
+      <!-- Introduction -->
+      <section class="mb-20">
         <div class="grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <p class="mb-4">
-              Nestled in the heart of Inca, Mallorca, our workshop is where tradition meets innovation. For over a
-              century, this island has been home to our craft, with skills and knowledge passed down through
-              generations of artisans.
+            <h2 class="text-3xl font-light mb-6">Craftsmanship Rooted in Tradition</h2>
+            <p class="text-lg mb-6 text-gray-600">
+              At DeeReel Footies, every pair of shoes tells a story of meticulous craftsmanship. 
+              Our workshop in Lagos, Nigeria, serves as the heart of our operation, where skilled 
+              artisans blend time-honored techniques with contemporary innovation.
             </p>
-            <p class="mb-4">
-              Today, our workshop combines time-honored techniques with modern efficiency, creating an environment
-              where craftsmanship can flourish. Our team of skilled artisans—many of whom have been with us for
-              decades—bring passion and expertise to every pair of shoes they create.
+            <p class="text-lg mb-6 text-gray-600">
+              Each shoe is a testament to our commitment to quality, durability, and style. 
+              From the selection of premium materials to the final finishing touches, 
+              every step is executed with precision and passion.
             </p>
-            <p>
-              We take pride in maintaining this workshop tradition in an age of mass production, believing that the
-              human touch and attention to detail are irreplaceable elements in creating truly exceptional footwear.
-            </p>
+            <div class="grid grid-cols-2 gap-6 mt-8">
+              <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">15+</div>
+                <p class="text-sm text-gray-600">Years of Experience</p>
+              </div>
+              <div class="text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">50+</div>
+                <p class="text-sm text-gray-600">Shoes Crafted Monthly</p>
+              </div>
+            </div>
           </div>
-          <div class="relative h-[400px]">
-            <img src="/images/workshop.jpg" alt="DeeReeL Footies Workshop in Lagos Nigeria" class="object-cover w-full h-full">
+          <div class="relative">
+            <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+              <i class="fas fa-hammer text-6xl text-gray-400"></i>
+            </div>
+            <div class="absolute -bottom-6 -right-6 bg-blue-600 text-white p-4 rounded-lg">
+              <i class="fas fa-map-marker-alt mr-2"></i>
+              <span class="font-medium">Lagos, Nigeria</span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CTA -->
-    <section class="py-16 px-4 text-center">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="text-3xl font-light mb-6">EXPERIENCE DEEREEL FOOTIES CRAFTSMANSHIP</h2>
-        <p class="mb-8">
-          Discover the difference that over 150 years of shoemaking expertise makes. Browse our collections to find
-          your perfect pair of DeeReeL Footies shoes, handcrafted with pride and passion.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-          <a href="/men.php" class="bg-black text-white px-8 py-3 hover:bg-gray-800 transition">
-            SHOP MEN'S COLLECTION
-          </a>
-          <a href="/women.php" class="bg-black text-white px-8 py-3 hover:bg-gray-800 transition">
-            SHOP WOMEN'S COLLECTION
-          </a>
+      <!-- Workshop Tour -->
+      <section id="workshop-tour" class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-light mb-4">Inside Our Lagos Workshop</h2>
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+            Take a journey through our workshop and discover the meticulous process 
+            behind every pair of DeeReel Footies shoes.
+          </p>
         </div>
-      </div>
-    </section>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="text-center">
+            <div class="bg-gray-200 aspect-square rounded-lg mb-4 flex items-center justify-center">
+              <i class="fas fa-cut text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium mb-2">Pattern Making & Cutting</h3>
+            <p class="text-gray-600">
+              Our master craftsmen create precise patterns and carefully cut premium leather 
+              using traditional techniques passed down through generations.
+            </p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-gray-200 aspect-square rounded-lg mb-4 flex items-center justify-center">
+              <i class="fas fa-hand-paper text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium mb-2">Hand Stitching</h3>
+            <p class="text-gray-600">
+              Every stitch is placed with care and precision. Our artisans use the finest threads 
+              and traditional hand-stitching methods for superior durability.
+            </p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-gray-200 aspect-square rounded-lg mb-4 flex items-center justify-center">
+              <i class="fas fa-shoe-prints text-4xl text-gray-400"></i>
+            </div>
+            <h3 class="text-xl font-medium mb-2">Lasting & Finishing</h3>
+            <p class="text-gray-600">
+              The final shaping and finishing process ensures perfect fit and comfort, 
+              with attention to every detail from sole to upper.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- The Process -->
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-light mb-4">Our Shoemaking Process</h2>
+          <p class="text-lg text-gray-600">From concept to completion, every step is carefully executed</p>
+        </div>
+
+        <div class="space-y-12">
+          <!-- Step 1 -->
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="order-2 md:order-1">
+              <div class="flex items-center mb-4">
+                <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                <h3 class="text-2xl font-medium">Design & Pattern Creation</h3>
+              </div>
+              <p class="text-gray-600 mb-4">
+                Every shoe begins with a vision. Our designers create detailed patterns and templates, 
+                ensuring each design meets our standards for both aesthetics and functionality.
+              </p>
+              <ul class="text-gray-600 space-y-2">
+                <li>• Custom pattern development</li>
+                <li>• Material selection and testing</li>
+                <li>• Prototype creation and refinement</li>
+              </ul>
+            </div>
+            <div class="order-1 md:order-2">
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <i class="fas fa-drafting-compass text-6xl text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <i class="fas fa-layer-group text-6xl text-gray-400"></i>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center mb-4">
+                <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                <h3 class="text-2xl font-medium">Material Preparation</h3>
+              </div>
+              <p class="text-gray-600 mb-4">
+                We source only the finest materials from trusted suppliers. Each piece of leather 
+                is carefully inspected and prepared for the crafting process.
+              </p>
+              <ul class="text-gray-600 space-y-2">
+                <li>• Premium leather selection</li>
+                <li>• Quality control inspection</li>
+                <li>• Conditioning and preparation</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="order-2 md:order-1">
+              <div class="flex items-center mb-4">
+                <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                <h3 class="text-2xl font-medium">Cutting & Assembly</h3>
+              </div>
+              <p class="text-gray-600 mb-4">
+                Using traditional cutting techniques, our craftsmen carefully cut each piece. 
+                The assembly process requires skill and patience to ensure perfect alignment.
+              </p>
+              <ul class="text-gray-600 space-y-2">
+                <li>• Precision cutting techniques</li>
+                <li>• Hand-guided assembly</li>
+                <li>• Quality checks at each stage</li>
+              </ul>
+            </div>
+            <div class="order-1 md:order-2">
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <i class="fas fa-cut text-6xl text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <i class="fas fa-tools text-6xl text-gray-400"></i>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center mb-4">
+                <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">4</div>
+                <h3 class="text-2xl font-medium">Lasting & Construction</h3>
+              </div>
+              <p class="text-gray-600 mb-4">
+                The lasting process shapes the shoe over a wooden last, creating the final form. 
+                This critical step determines the fit and comfort of the finished shoe.
+              </p>
+              <ul class="text-gray-600 space-y-2">
+                <li>• Goodyear welt construction</li>
+                <li>• Hand-lasted for perfect fit</li>
+                <li>• Sole attachment and shaping</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div class="order-2 md:order-1">
+              <div class="flex items-center mb-4">
+                <div class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mr-4">5</div>
+                <h3 class="text-2xl font-medium">Finishing & Quality Control</h3>
+              </div>
+              <p class="text-gray-600 mb-4">
+                The final stage involves meticulous finishing work, polishing, and comprehensive 
+                quality control to ensure every shoe meets our exacting standards.
+              </p>
+              <ul class="text-gray-600 space-y-2">
+                <li>• Hand polishing and buffing</li>
+                <li>• Final quality inspection</li>
+                <li>• Packaging and presentation</li>
+              </ul>
+            </div>
+            <div class="order-1 md:order-2">
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <i class="fas fa-gem text-6xl text-gray-400"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Materials & Techniques -->
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-light mb-4">Premium Materials & Techniques</h2>
+          <p class="text-lg text-gray-600">We use only the finest materials and time-tested techniques</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-leaf text-2xl text-amber-600"></i>
+            </div>
+            <h3 class="font-medium mb-2">Full-Grain Leather</h3>
+            <p class="text-sm text-gray-600">Premium leather that develops beautiful patina over time</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-circle text-2xl text-blue-600"></i>
+            </div>
+            <h3 class="font-medium mb-2">Goodyear Welt</h3>
+            <p class="text-sm text-gray-600">Traditional construction method for durability and repairability</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-hand-holding-heart text-2xl text-green-600"></i>
+            </div>
+            <h3 class="font-medium mb-2">Hand Stitching</h3>
+            <p class="text-sm text-gray-600">Every stitch placed by skilled artisans for superior quality</p>
+          </div>
+          
+          <div class="text-center">
+            <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <i class="fas fa-tree text-2xl text-purple-600"></i>
+            </div>
+            <h3 class="font-medium mb-2">Cedar Components</h3>
+            <p class="text-sm text-gray-600">Natural cedar elements for moisture control and freshness</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Workshop Location -->
+      <section class="mb-20">
+        <div class="bg-gray-50 rounded-lg p-8">
+          <div class="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 class="text-3xl font-light mb-4">Visit Our Lagos Workshop</h2>
+              <p class="text-lg text-gray-600 mb-6">
+                Experience the art of shoemaking firsthand. Our workshop in Lagos welcomes 
+                visitors who want to see traditional craftsmanship in action.
+              </p>
+              
+              <div class="space-y-4 mb-6">
+                <div class="flex items-center">
+                  <i class="fas fa-map-marker-alt text-blue-600 mr-3"></i>
+                  <span>2, Oluwa street, off Oke-Ayo street, Ishaga Lagos, Nigeria</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-clock text-blue-600 mr-3"></i>
+                  <span>Monday - Friday: 9:00 AM - 6:00 PM</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-phone text-blue-600 mr-3"></i>
+                  <span>+234 813 423 5110</span>
+                </div>
+              </div>
+              
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="/contact.php" class="bg-black text-white px-6 py-3 text-center hover:bg-gray-800 transition">
+                  Schedule a Visit
+                </a>
+                <a href="https://wa.me/2347031864772?text=Hello! I'd like to visit your workshop in Lagos" 
+                   target="_blank" class="border border-black px-6 py-3 text-center hover:bg-black hover:text-white transition">
+                  <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <div class="bg-gray-200 aspect-[4/3] rounded-lg flex items-center justify-center">
+                <div class="text-center">
+                  <i class="fas fa-building text-6xl text-gray-400 mb-4"></i>
+                  <p class="text-gray-500">Workshop Location</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Call to Action -->
+      <section class="text-center">
+        <div class="bg-black text-white rounded-lg p-12">
+          <h2 class="text-3xl font-light mb-4">Ready to Experience Our Craftsmanship?</h2>
+          <p class="text-xl mb-8 opacity-90">
+            Discover the difference that traditional shoemaking techniques can make
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/products.php" class="bg-white text-black px-8 py-3 hover:bg-gray-100 transition">
+              Browse Our Collection
+            </a>
+            <a href="/moo.php" class="border border-white px-8 py-3 hover:bg-white hover:text-black transition">
+              Commission Custom Shoes
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
- <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
   <!-- Scroll to Top Button -->
   <a href="#" class="btn btn-dark position-fixed bottom-0 end-0 m-4 shadow rounded-circle" style="z-index: 999; width: 45px; height: 45px; display: none;" id="scrollToTop">
     <i class="fas fa-chevron-up"></i>
   </a>
 
-
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
 
+  <script>
+    // Smooth scrolling for anchor links
+    document.addEventListener('DOMContentLoaded', function() {
+      const anchorLinks = document.querySelectorAll('a[href^="#"]');
+      
+      anchorLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
 
+      // Add scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe elements for animation
+      document.querySelectorAll('section').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(section);
+      });
+    });
+  </script>
   
 </body>
 </html>
