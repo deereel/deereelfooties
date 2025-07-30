@@ -51,7 +51,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Shoes</h3>
                 <p class="text-white/80 text-sm mb-2">Elegant & Stylish</p>
-                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                <span class="inline-block px-3 py-1 border border-white text-white hover:bg-white hover:text-black transition text-xs">
                   Shop Now
                 </span>
               </div>
@@ -69,7 +69,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Boots</h3>
                 <p class="text-white/80 text-sm mb-2">Chic & Comfortable</p>
-                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                <span class="inline-block px-3 py-1 border border-white text-white hover:bg-white hover:text-black transition text-xs">
                   Shop Now
                 </span>
               </div>
@@ -87,7 +87,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Mules</h3>
                 <p class="text-white/80 text-sm mb-2">Effortless Style</p>
-                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                <span class="inline-block px-3 py-1 border border-white text-white hover:bg-white hover:text-black transition text-xs">
                   Shop Now
                 </span>
               </div>
@@ -105,7 +105,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Slippers</h3>
                 <p class="text-white/80 text-sm mb-2">Luxurious Comfort</p>
-                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                <span class="inline-block px-3 py-1 border border-white text-white hover:bg-white hover:text-black transition text-xs">
                   Shop Now
                 </span>
               </div>
@@ -123,7 +123,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <div>
                 <h3 class="text-xl font-light text-white mb-1">Sneakers</h3>
                 <p class="text-white/80 text-sm mb-2">Active & Trendy</p>
-                <span class="inline-block px-3 py-1 border border-white text-white group-hover:bg-white group-hover:text-black transition text-xs">
+                <span class="inline-block px-3 py-1 border border-white text-white hover:bg-white hover:text-black transition text-xs">
                   Shop Now
                 </span>
               </div>
@@ -141,20 +141,47 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php
         try {
-          // Get featured women's products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'women' AND is_featured = 1 ORDER BY created_at DESC LIMIT 15");
+          // Calculate seed based on 2-day intervals
+          $daysSinceEpoch = floor(time() / (60 * 60 * 24));
+          $twoDayInterval = floor($daysSinceEpoch / 2);
+          
+          // Get all women's products and unisex products, shuffle with consistent seed
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN ('women', 'unisex') ORDER BY product_id");
           $stmt->execute();
-          $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          $allWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          // Shuffle with seed for consistent results within 2-day period
+          mt_srand($twoDayInterval + 500); // Different seed from men's
+          shuffle($allWomenProducts);
+          
+          // Take first 15 as featured
+          $featuredProducts = array_slice($allWomenProducts, 0, 15);
           
           if (count($featuredProducts) > 0) {
             foreach ($featuredProducts as $product):
+              // Get second image from gallery
+              $gallery = [];
+              if (!empty($product['gallery'])) {
+                $gallery = explode(',', $product['gallery']);
+              } elseif (!empty($product['additional_images'])) {
+                $gallery = explode(',', $product['additional_images']);
+              }
+              $secondImage = $product['main_image'];
+              foreach($gallery as $img) {
+                $img = trim($img);
+                if ($img !== $product['main_image']) {
+                  $secondImage = $img;
+                  break;
+                }
+              }
         ?>
           <div class="group hover-accent product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <div class="relative">
               <a href="product.php?slug=<?= $product['slug'] ?>">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                       class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
+                       data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                 </div>
                 <h3 class="text-lg"><?= $product['name'] ?></h3>
                 <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
@@ -208,20 +235,47 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php
         try {
-          // Get new collection women's products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = 'women' AND is_new_collection = 1 ORDER BY created_at DESC LIMIT 10");
+          // Calculate seed based on 2-day intervals (different seed for new arrivals)
+          $daysSinceEpoch = floor(time() / (60 * 60 * 24));
+          $twoDayInterval = floor($daysSinceEpoch / 2);
+          
+          // Get all women's products and unisex products, shuffle with consistent seed
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN ('women', 'unisex') ORDER BY product_id");
           $stmt->execute();
-          $newProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          $allWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          // Shuffle with different seed for new arrivals section
+          mt_srand($twoDayInterval + 1500); // Different seed from featured
+          shuffle($allWomenProducts);
+          
+          // Take first 10 as new arrivals
+          $newProducts = array_slice($allWomenProducts, 0, 10);
           
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
+              // Get second image from gallery
+              $gallery = [];
+              if (!empty($product['gallery'])) {
+                $gallery = explode(',', $product['gallery']);
+              } elseif (!empty($product['additional_images'])) {
+                $gallery = explode(',', $product['additional_images']);
+              }
+              $secondImage = $product['main_image'];
+              foreach($gallery as $img) {
+                $img = trim($img);
+                if ($img !== $product['main_image']) {
+                  $secondImage = $img;
+                  break;
+                }
+              }
         ?>
           <div class="group hover-accent product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <div class="relative">
               <a href="product.php?slug=<?= $product['slug'] ?>">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                       class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
+                       data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                   <?php if ($product['is_new_collection']): ?>
                   <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">NEW</span>
                   <?php endif; ?>
@@ -274,8 +328,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/wishlist-modal.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/cart-modal.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
   
   <!-- Swiper JS -->
@@ -295,6 +347,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           el: '.swiper-pagination',
           clickable: true,
         },
+      });
+      
+      // Product image hover functionality
+      const productCards = document.querySelectorAll('.product-card');
+      productCards.forEach(card => {
+        const img = card.querySelector('.product-main-image');
+        if (!img) return;
+        
+        const mainSrc = img.dataset.main;
+        const hoverSrc = img.dataset.hover;
+        
+        if (hoverSrc && hoverSrc !== mainSrc) {
+          card.addEventListener('mouseenter', () => {
+            img.src = hoverSrc;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            img.src = mainSrc;
+          });
+        }
       });
     });
   </script>

@@ -145,6 +145,24 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 ?>
                 <div class="swiper-slide grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   <?php foreach ($chunk as $product): ?>
+                <?php
+                  // Get second image from gallery or additional_images
+                  $gallery = [];
+                  if (!empty($product['gallery'])) {
+                    $gallery = explode(',', $product['gallery']);
+                  } elseif (!empty($product['additional_images'])) {
+                    $gallery = explode(',', $product['additional_images']);
+                  }
+                  // Get second image, skip main image if it's first in gallery
+                  $secondImage = $product['main_image'];
+                  foreach($gallery as $img) {
+                    $img = trim($img);
+                    if ($img !== $product['main_image']) {
+                      $secondImage = $img;
+                      break;
+                    }
+                  }
+                ?>
                 <div class="group product-card relative"
                     data-price="<?= $product['price'] ?>"
                     data-size="<?= $product['sizes'] ?>"
@@ -167,7 +185,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                     <a href="product.php?slug=<?= $product['slug'] ?>">
                       <div class="relative aspect-[3/4] overflow-hidden mb-4">
                         <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                            class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                            class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
+                            data-main="<?= $product['main_image'] ?>"
+                            data-hover="<?= $secondImage ?>">
                       </div>
                       <h3 class="text-lg"><?= $product['name'] ?></h3>
                       <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
@@ -493,6 +513,31 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
       applyFiltersFromURL();
 
+      // Product image hover functionality
+      function initImageHover() {
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+          const img = card.querySelector('.product-main-image');
+          if (!img) return;
+          
+          const mainSrc = img.dataset.main;
+          const hoverSrc = img.dataset.hover;
+          
+          if (hoverSrc && hoverSrc !== mainSrc) {
+            card.addEventListener('mouseenter', () => {
+              img.src = hoverSrc;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+              img.src = mainSrc;
+            });
+          }
+        });
+      }
+      
+      // Initialize hover on page load
+      initImageHover();
+
       // Sorting
       const sortSelect = document.getElementById('sortSelect');
 
@@ -546,6 +591,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             type: 'fraction',
           },
         });
+        
+        // Reinitialize image hover after sorting
+        initImageHover();
       }
 
       sortSelect.addEventListener('change', function() {

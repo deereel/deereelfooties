@@ -128,7 +128,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               $category = 'shoes';
               $singularCategory = rtrim($category, 's'); // Remove trailing 's' to get singular form
 
-              $stmt = $pdo->prepare("SELECT * FROM products WHERE gender = ? AND 
+              $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN (?, 'unisex') AND 
                                     (category = ? OR category = ? OR 
                                     type LIKE ? OR type LIKE ?) 
                                     ORDER BY created_at DESC");
@@ -148,6 +148,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 foreach ($products as $product):
                   $colors = explode(',', $product['colors'] ?? '');
                   $sizes = explode(',', $product['sizes'] ?? '');
+                  // Get second image from gallery
+                  $gallery = [];
+                  if (!empty($product['gallery'])) {
+                    $gallery = explode(',', $product['gallery']);
+                  } elseif (!empty($product['additional_images'])) {
+                    $gallery = explode(',', $product['additional_images']);
+                  }
+                  $secondImage = $product['main_image'];
+                  foreach($gallery as $img) {
+                    $img = trim($img);
+                    if ($img !== $product['main_image']) {
+                      $secondImage = $img;
+                      break;
+                    }
+                  }
             ?>
           <div class="group product-card"
                data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>"
@@ -161,7 +176,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
               <a href="/product.php?slug=<?= $product['slug'] ?>">
                 <div class="relative aspect-[3/4] overflow-hidden mb-4">
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                       class="object-cover w-full h-full group-hover:scale-105 transition duration-500">
+                       class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
+                       data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                 </div>
                 <h3 class="text-lg"><?= $product['name'] ?></h3>
                 <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
@@ -205,5 +221,29 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Product image hover functionality
+      const productCards = document.querySelectorAll('.product-card');
+      productCards.forEach(card => {
+        const img = card.querySelector('.product-main-image');
+        if (!img) return;
+        
+        const mainSrc = img.dataset.main;
+        const hoverSrc = img.dataset.hover;
+        
+        if (hoverSrc && hoverSrc !== mainSrc) {
+          card.addEventListener('mouseenter', () => {
+            img.src = hoverSrc;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            img.src = mainSrc;
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>

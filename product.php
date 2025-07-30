@@ -57,7 +57,8 @@ try {
         $productId = $dbProduct['product_id'] ?? $dbProduct['id'] ?? 0;
         $productName = $dbProduct['name'] ?? $dbProduct['product_name'] ?? 'Product';
         $productPrice = $dbProduct['price'] ?? 0;
-        $productDescription = $dbProduct['description'] ?? $dbProduct['short_description'] ?? '';
+        $productShortDescription = $dbProduct['short_description'] ?? '';
+        $productFullDescription = $dbProduct['description'] ?? '';
         $productFeatures = $dbProduct['features'] ?? '';
         
         // Get product images
@@ -161,7 +162,7 @@ try {
           <div class="col-md-6">
             <!-- Product Info -->
             <h3 class="fw-bold"><?= htmlspecialchars($productName) ?></h3>
-            <p class="text-muted"><?= htmlspecialchars($productDescription) ?></p>
+            <p class="text-muted"><?= htmlspecialchars($productShortDescription) ?></p>
             
             <?php if (!empty($productFeatures)): ?>
             <ul class="list-disc pl-5 mb-4 text-gray-600">
@@ -293,7 +294,7 @@ try {
               </span>
             </summary>
             <div class="pt-4 pb-2 text-gray-600">
-              <?= $productDescription ?>
+              <?= nl2br(htmlspecialchars($productFullDescription)) ?>
             </div>
           </details>
 

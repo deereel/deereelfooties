@@ -112,13 +112,29 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
+              // Get second image from gallery
+              $gallery = [];
+              if (!empty($product['gallery'])) {
+                $gallery = explode(',', $product['gallery']);
+              } elseif (!empty($product['additional_images'])) {
+                $gallery = explode(',', $product['additional_images']);
+              }
+              $secondImage = $product['main_image'];
+              foreach($gallery as $img) {
+                $img = trim($img);
+                if ($img !== $product['main_image']) {
+                  $secondImage = $img;
+                  break;
+                }
+              }
         ?>
           <div class="group product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <a href="product.php?slug=<?= $product['slug'] ?>" class="block">
               <div class="relative overflow-hidden rounded-lg mb-4 shadow-sm group-hover:shadow-md transition">
                 <div class="aspect-[3/4] overflow-hidden">
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                       class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                       class="product-main-image w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
+                       data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                 </div>
                 <?php if ($product['is_new_collection']): ?>
                 <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">NEW</span>
@@ -190,11 +206,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Replace the craftsmanship image div with this code -->
         <div class="order-1 lg:order-2 relative group">
           <img src="/images/craftsmanship.jpg" alt="Craftsmanship" class="rounded-lg shadow-lg w-full">
-          <div class="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/U0--UIuRE3E?autoplay=1" title="Making Shoe Patterns" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div id="video-overlay" class="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+            <iframe id="craft-video" width="100%" height="100%" src="" title="Making Shoe Patterns" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: none;"></iframe>
           </div>
-          <div class="absolute inset-0 flex items-center justify-center opacity-70 group-hover:opacity-0 transition-opacity duration-300">
-            <i class="fas fa-play-circle text-white text-5xl"></i>
+          <div id="play-button" class="absolute inset-0 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+            <i class="fas fa-play-circle text-white text-5xl hover:text-gray-200 transition"></i>
           </div>
         </div>
       </div>
@@ -214,20 +230,47 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <?php
         try {
-          // Get featured products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE is_featured = 1 ORDER BY created_at DESC LIMIT 5");
+          // Calculate seed based on 2-day intervals
+          $daysSinceEpoch = floor(time() / (60 * 60 * 24));
+          $twoDayInterval = floor($daysSinceEpoch / 2);
+          
+          // Get all products and shuffle with consistent seed
+          $stmt = $pdo->prepare("SELECT * FROM products ORDER BY product_id");
           $stmt->execute();
-          $featuredProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          $allProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          // Shuffle with seed for consistent results within 2-day period
+          mt_srand($twoDayInterval);
+          shuffle($allProducts);
+          
+          // Take first 5 as featured
+          $featuredProducts = array_slice($allProducts, 0, 5);
           
           if (count($featuredProducts) > 0) {
             foreach ($featuredProducts as $product):
+              // Get second image from gallery
+              $gallery = [];
+              if (!empty($product['gallery'])) {
+                $gallery = explode(',', $product['gallery']);
+              } elseif (!empty($product['additional_images'])) {
+                $gallery = explode(',', $product['additional_images']);
+              }
+              $secondImage = $product['main_image'];
+              foreach($gallery as $img) {
+                $img = trim($img);
+                if ($img !== $product['main_image']) {
+                  $secondImage = $img;
+                  break;
+                }
+              }
         ?>
           <div class="group product-card" data-product-id="<?= $product['product_id'] ?? $product['id'] ?? $product['slug'] ?>" data-price="<?= $product['price'] ?>" data-name="<?= $product['name'] ?>">
             <a href="product.php?slug=<?= $product['slug'] ?>" class="block">
               <div class="relative overflow-hidden rounded-lg mb-4 shadow-sm group-hover:shadow-md transition">
                 <div class="aspect-[3/4] overflow-hidden">
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
-                       class="w-full h-full object-cover transform group-hover:scale-105 transition duration-500">
+                       class="product-main-image w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
+                       data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                 </div>
                 <?php if ($product['is_featured']): ?>
                 <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">FEATURED</span>
@@ -336,19 +379,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     </div>
   </section>
 
-  <!-- Newsletter Section -->
-  <section class="py-20 bg-primary text-white">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-light mb-4">Join Our Newsletter</h2>
-      <p class="max-w-2xl mx-auto mb-8">Subscribe to receive updates on new collections, exclusive offers, and styling tips.</p>
-      <form class="max-w-md mx-auto flex flex-wrap">
-        <input type="email" placeholder="Your email address" class="flex-1 min-w-[200px] px-4 py-3 rounded-l text-black">
-        <button type="submit" class="bg-secondary text-primary px-6 py-3 rounded-r hover:bg-secondary-dark transition">Subscribe</button>
-      </form>
-    </div>
-  </section>
-
-  
+    
 
  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
 
@@ -379,6 +410,38 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           el: '.swiper-pagination',
           clickable: true,
         },
+      });
+      
+      // Video play functionality
+      const playButton = document.getElementById('play-button');
+      const videoIframe = document.getElementById('craft-video');
+      const videoOverlay = document.getElementById('video-overlay');
+      
+      playButton.addEventListener('click', function() {
+        videoIframe.src = 'https://www.youtube.com/embed/U0--UIuRE3E?autoplay=1&mute=0';
+        videoIframe.style.display = 'block';
+        playButton.style.display = 'none';
+        videoOverlay.style.opacity = '1';
+      });
+      
+      // Product image hover functionality
+      const productCards = document.querySelectorAll('.product-card');
+      productCards.forEach(card => {
+        const img = card.querySelector('.product-main-image');
+        if (!img) return;
+        
+        const mainSrc = img.dataset.main;
+        const hoverSrc = img.dataset.hover;
+        
+        if (hoverSrc && hoverSrc !== mainSrc) {
+          card.addEventListener('mouseenter', () => {
+            img.src = hoverSrc;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            img.src = mainSrc;
+          });
+        }
       });
     });
   </script>
