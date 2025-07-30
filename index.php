@@ -19,7 +19,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="swiper-wrapper">
         <!-- Slide 1 -->
         <div class="swiper-slide">
-          <div class="slide-bg" style="background-image: url('/images/hero-1.jpg');"></div>
+          <div class="slide-bg" style="background-image: url('/images/hero-1.webp');"></div>
           <div class="slide-content">
             <div class="container mx-auto px-4">
               <div class="max-w-xl">
@@ -36,7 +36,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         
         <!-- Slide 2 -->
         <div class="swiper-slide">
-          <div class="slide-bg" style="background-image: url('/images/hero-2.jpg');"></div>
+          <div class="slide-bg" style="background-image: url('/images/hero-2.webp');"></div>
           <div class="slide-content">
             <div class="container mx-auto px-4">
               <div class="max-w-xl ml-auto text-right">
@@ -105,10 +105,36 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
         <?php
         try {
-          // Get new collection products
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE is_new_collection = 1 ORDER BY created_at DESC LIMIT 4");
+          // Get products added in last 60 days
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE created_at >= DATE_SUB(NOW(), INTERVAL 60 DAY) ORDER BY created_at DESC");
           $stmt->execute();
-          $newProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          $recentProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          // Calculate seed for 2-day shuffling
+          $daysSinceEpoch = floor(time() / (60 * 60 * 24));
+          $twoDayInterval = floor($daysSinceEpoch / 2);
+          mt_srand($twoDayInterval + 2000);
+          
+          if (count($recentProducts) >= 5) {
+            shuffle($recentProducts);
+            $newProducts = array_slice($recentProducts, 0, 5);
+          } else {
+            // Get all products to fill remaining slots
+            $stmt = $pdo->prepare("SELECT * FROM products ORDER BY product_id");
+            $stmt->execute();
+            $allProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Remove recent products from all products to avoid duplicates
+            $recentIds = array_column($recentProducts, 'product_id');
+            $olderProducts = array_filter($allProducts, function($p) use ($recentIds) {
+              return !in_array($p['product_id'], $recentIds);
+            });
+            
+            shuffle($olderProducts);
+            $needed = 5 - count($recentProducts);
+            $fillerProducts = array_slice($olderProducts, 0, $needed);
+            $newProducts = array_merge($recentProducts, $fillerProducts);
+          }
           
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
@@ -136,7 +162,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                        class="product-main-image w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
                        data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
                 </div>
-                <?php if ($product['is_new_collection']): ?>
+                <?php if (strtotime($product['created_at']) >= strtotime('-60 days')): ?>
                 <span class="absolute top-4 left-4 bg-primary text-white text-xs px-2 py-1">NEW</span>
                 <?php endif; ?>
                 <!-- Wishlist Icon -->
@@ -205,7 +231,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         </div>
         <!-- Replace the craftsmanship image div with this code -->
         <div class="order-1 lg:order-2 relative group">
-          <img src="/images/craftsmanship.jpg" alt="Craftsmanship" class="rounded-lg shadow-lg w-full">
+          <img src="/images/craftsmanship.webp" alt="Craftsmanship" class="rounded-lg shadow-lg w-full">
           <div id="video-overlay" class="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
             <iframe id="craft-video" width="100%" height="100%" src="" title="Making Shoe Patterns" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display: none;"></iframe>
           </div>

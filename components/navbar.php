@@ -14,7 +14,7 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
   <!-- Desktop: Logo and Search Icon -->
   <div class="d-none d-lg-flex justify-content-between align-items-center px-4 py-1 mb-1">
     <a href="/index.php" class="navbar-brand d-flex align-items-center" style="color: var(--color-text-light) !important;">
-      <img src="/images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 70px;">
+      <img src="/images/drf-logo.webp" alt="DeeReeL Footies Logo" style="height: 70px;">
       <span class="nav-brand-title" style="font-size: 1.5rem; font-weight: 600; color: var(--color-text-light) !important;">DeeReel Footies</span>
     </a>
 
@@ -30,7 +30,7 @@ if (!$currentUser && isset($_SESSION['user_id'])) {
     </button>
     
     <a href="/index.php" class="navbar-brand d-flex align-items-center" style="color: var(--color-text-light) !important;">
-      <img src="/images/drf-logo.png" alt="DeeReeL Footies Logo" style="height: 60px;">
+      <img src="/images/drf-logo.webp" alt="DeeReeL Footies Logo" style="height: 60px;">
       <span class="nav-brand-title" style="font-size: 1.3rem; font-weight: 600; color: var(--color-text-light) !important;">DeeReel Footies</span>
     </a>
     

@@ -21,7 +21,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <main>
     <!-- Hero Section -->
     <section class="relative w-full h-[400px]">
-      <img src="/images/moo-hero.jpg" alt="DRF MADE ON ORDER" class="object-cover w-full h-full">
+      <img src="/images/moo.webp" alt="DRF MADE ON ORDER" class="object-cover w-full h-full">
       <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
         <div class="text-center text-white max-w-3xl px-4">
           <h1 class="text-4xl md:text-5xl font-light mb-4">MADE ON ORDER</h1>
@@ -69,9 +69,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     <section class="py-16 bg-neutral-100">
       <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-3xl font-light text-center mb-12">THE MoO PROCESS</h2>
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div class="relative h-[500px]">
-            <img src="/images/moo-process.jpg" alt="MoO Process" class="object-cover w-full h-full">
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <div class="flex justify-center">
+            <img src="/images/moo-process.webp" alt="MoO Process" class="max-w-full h-auto rounded-lg shadow-lg">
           </div>
           <div>
             <div class="space-y-8">
@@ -121,25 +121,25 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div class="text-center">
             <div class="relative aspect-square overflow-hidden mb-4">
-              <img src="/images/material-1.jpg" alt="Shell Cordovan" class="object-cover w-full h-full">
+              <img src="/images/material-1.webp" alt="Shell Cordovan" class="object-cover w-full h-full">
             </div>
             <h3 class="text-lg">SHELL CORDOVAN</h3>
           </div>
           <div class="text-center">
             <div class="relative aspect-square overflow-hidden mb-4">
-              <img src="/images/material-2.jpg" alt="Museum Calf" class="object-cover w-full h-full">
+              <img src="/images/material-2.webp" alt="Museum Calf" class="object-cover w-full h-full">
             </div>
             <h3 class="text-lg">MUSEUM CALF</h3>
           </div>
           <div class="text-center">
             <div class="relative aspect-square overflow-hidden mb-4">
-              <img src="/images/material-3.jpg" alt="Box Calf" class="object-cover w-full h-full">
+              <img src="/images/material-3.webp" alt="Box Calf" class="object-cover w-full h-full">
             </div>
             <h3 class="text-lg">BOX CALF</h3>
           </div>
           <div class="text-center">
             <div class="relative aspect-square overflow-hidden mb-4">
-              <img src="/images/material-4.jpg" alt="Suede" class="object-cover w-full h-full">
+              <img src="/images/material-4.webp" alt="Suede" class="object-cover w-full h-full">
             </div>
             <h3 class="text-lg">SUEDE</h3>
           </div>

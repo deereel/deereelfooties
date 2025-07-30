@@ -18,19 +18,37 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <section class="relative">
     <div class="swiper hero-swiper">
       <div class="swiper-wrapper">
+        <!-- Slide 1 -->
         <div class="swiper-slide">
-          <div class="slide-bg" style="background-image: url('images/Oxford Cap Toe 600.webp');"></div>
+          <div class="slide-bg" style="background-image: url('/images/women-hero.webp');"></div>
           <div class="slide-content">
             <div class="container mx-auto px-4">
               <div class="max-w-xl">
-                <h1 class="text-5xl md:text-6xl font-light mb-4">Women's Collection</h1>
-                <p class="text-xl mb-8">Handcrafted luxury footwear for the modern woman.</p>
-                <a href="#categories" class="btn-primary px-8 py-3">Explore Now</a>
+                <h1 class="text-5xl md:text-6xl font-light mb-4">Elegance Redefined</h1>
+                <p class="text-xl mb-8">Sophisticated footwear crafted for the woman who leads with grace.</p>
+                <a href="#categories" class="btn-primary px-8 py-3">Shop Women's</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <div class="slide-bg" style="background-image: url('/images/women-hero1.webp');"></div>
+          <div class="slide-content">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl ml-auto text-right">
+                <h1 class="text-5xl md:text-6xl font-light mb-4">Unstoppable Style</h1>
+                <p class="text-xl mb-8">Where timeless beauty meets modern confidence in every stride.</p>
+                <div class="flex flex-wrap gap-4 justify-end">
+                  <a href="/customize.php" class="btn-primary px-8 py-3">Create Yours</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div class="swiper-pagination"></div>
     </div>
   </section>
 
@@ -44,7 +62,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Shoes Category -->
         <a href="/products/women/women-shoes.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
-            <img src="/images/Oxford Cap Toe 600.webp" 
+            <img src="/images/category-women-shoes.webp" 
                  alt="Women's Shoes" 
                  class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
@@ -62,7 +80,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Boots Category -->
         <a href="/products/women/women-boots.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
-            <img src="/images/penny loafer 600.webp" 
+            <img src="/images/category-women-boots.webp" 
                  alt="Women's Boots" 
                  class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
@@ -80,7 +98,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Mules Category -->
         <a href="/products/women/women-mules.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
-            <img src="/images/cram solid oxford.webp" 
+            <img src="/images/category-women-mules.webp" 
                  alt="Women's Mules" 
                  class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
@@ -98,7 +116,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Slippers Category -->
         <a href="/products/women/women-slippers.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
-            <img src="/images/penny loafer 600.webp" 
+            <img src="/images/category-women-slippers.webp" 
                  alt="Women's Slippers" 
                  class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
@@ -116,7 +134,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
         <!-- Sneakers Category -->
         <a href="/products/women/women-sneakers.php" class="group relative overflow-hidden rounded-lg shadow-lg">
           <div class="aspect-[4/3] overflow-hidden">
-            <img src="/images/penny loafer 600.webp" 
+            <img src="/images/category-women-sneakers.webp" 
                  alt="Women's Sneakers" 
                  class="w-full h-full object-cover transform group-hover:scale-105 transition duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
@@ -150,8 +168,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           $stmt->execute();
           $allWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
           
-          // Shuffle with seed for consistent results within 2-day period
-          mt_srand($twoDayInterval + 500); // Different seed from men's
+          // Shuffle with seed for consistent results within 2-day period (different from new arrivals)
+          mt_srand($twoDayInterval + 1000); // Different seed from men's and new arrivals
           shuffle($allWomenProducts);
           
           // Take first 15 as featured
@@ -235,21 +253,36 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
         <?php
         try {
-          // Calculate seed based on 2-day intervals (different seed for new arrivals)
+          // Get women's and unisex products added in last 60 days
+          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN ('women', 'unisex') AND created_at >= DATE_SUB(NOW(), INTERVAL 60 DAY) ORDER BY created_at DESC");
+          $stmt->execute();
+          $recentWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
+          // Calculate seed for 2-day shuffling
           $daysSinceEpoch = floor(time() / (60 * 60 * 24));
           $twoDayInterval = floor($daysSinceEpoch / 2);
+          mt_srand($twoDayInterval + 1500);
           
-          // Get all women's products and unisex products, shuffle with consistent seed
-          $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN ('women', 'unisex') ORDER BY product_id");
-          $stmt->execute();
-          $allWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          
-          // Shuffle with different seed for new arrivals section
-          mt_srand($twoDayInterval + 1500); // Different seed from featured
-          shuffle($allWomenProducts);
-          
-          // Take first 10 as new arrivals
-          $newProducts = array_slice($allWomenProducts, 0, 10);
+          if (count($recentWomenProducts) >= 10) {
+            shuffle($recentWomenProducts);
+            $newProducts = array_slice($recentWomenProducts, 0, 10);
+          } else {
+            // Get all women's products to fill remaining slots
+            $stmt = $pdo->prepare("SELECT * FROM products WHERE gender IN ('women', 'unisex') ORDER BY product_id");
+            $stmt->execute();
+            $allWomenProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Remove recent products from all products to avoid duplicates
+            $recentIds = array_column($recentWomenProducts, 'product_id');
+            $olderWomenProducts = array_filter($allWomenProducts, function($p) use ($recentIds) {
+              return !in_array($p['product_id'], $recentIds);
+            });
+            
+            shuffle($olderWomenProducts);
+            $needed = 10 - count($recentWomenProducts);
+            $fillerProducts = array_slice($olderWomenProducts, 0, $needed);
+            $newProducts = array_merge($recentWomenProducts, $fillerProducts);
+          }
           
           if (count($newProducts) > 0) {
             foreach ($newProducts as $product):
@@ -276,7 +309,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                   <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>" 
                        class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
                        data-main="<?= $product['main_image'] ?>" data-hover="<?= $secondImage ?>">
-                  <?php if ($product['is_new_collection']): ?>
+                  <?php if (strtotime($product['created_at']) >= strtotime('-60 days')): ?>
                   <span class="absolute top-2 left-2 bg-black text-white text-xs px-2 py-1">NEW</span>
                   <?php endif; ?>
                 </div>

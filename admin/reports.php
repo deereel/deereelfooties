@@ -133,7 +133,7 @@ try {
         <div class="report-header text-center">
             <div class="row align-items-center">
                 <div class="col-md-3">
-                    <img src="../images/drf-logo.png" alt="DeeReel Footies" class="company-logo">
+                    <img src="../images/drf-logo.webp" alt="DeeReel Footies" class="company-logo">
                 </div>
                 <div class="col-md-6">
                     <h1 class="mb-0">DeeReel Footies</h1>

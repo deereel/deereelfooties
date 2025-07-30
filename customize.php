@@ -31,7 +31,7 @@ if ($designId > 0) {
 <body data-page="customize">
 
   <!-- Hero Section -->
-  <section class="hero-section" style="background-image: url('/images/cram solid oxford.webp');">
+  <section class="hero-section" style="background-image: url('/images/customise-hero.webp');">
     <div class="hero-content">
       <div class="container mx-auto px-4 text-center">
         <h1 class="text-5xl md:text-6xl font-light mb-6">Create Your Perfect Shoe</h1>

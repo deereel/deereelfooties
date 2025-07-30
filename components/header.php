@@ -14,7 +14,7 @@
   <!-- Open Graph Meta Tags -->
   <meta property="og:title" content="DeeReel Footies | Handcrafted Luxury Shoes">
   <meta property="og:description" content="Premium handcrafted shoes for men and women. Shop loafers, boots, slippers, and custom footwear.">
-  <meta property="og:image" content="https://deereelfooties.com/images/drf-logo.png">
+  <meta property="og:image" content="https://deereelfooties.com/images/drf-logo.webp">
   <meta property="og:url" content="https://deereelfooties.com<?= $_SERVER['REQUEST_URI'] ?>">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="DeeReel Footies">
@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DeeReel Footies | Handcrafted Luxury Shoes">
   <meta name="twitter:description" content="Premium handcrafted shoes for men and women. Shop loafers, boots, slippers, and custom footwear.">
-  <meta name="twitter:image" content="https://deereelfooties.com/images/drf-logo.png">
+  <meta name="twitter:image" content="https://deereelfooties.com/images/drf-logo.webp">
   
   <!-- AI-Optimized Business Schema -->
   <script type="application/ld+json">
@@ -33,7 +33,7 @@
     "name": "DeeReel Footies",
     "alternateName": "DRF Handcrafted Shoes",
     "url": "https://deereelfooties.com",
-    "logo": "https://deereelfooties.com/images/drf-logo.png",
+    "logo": "https://deereelfooties.com/images/drf-logo.webp",
     "description": "Nigeria's premier handcrafted luxury footwear brand specializing in custom men's and women's shoes using traditional Goodyear welted construction and premium sustainable leather",
     "foundingDate": "2020",
     "address": {
