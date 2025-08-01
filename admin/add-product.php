@@ -367,6 +367,17 @@
           );
         }
         
+        // Pre-populate colors in database
+        if (formData.colors) {
+          fetch('/api/populate-colors.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ colors: formData.colors })
+          });
+        }
+        
         // Send data to API
         fetch('/api/products.php', {
           method: 'POST',
@@ -478,6 +489,17 @@
           formData.features = JSON.stringify(
             featuresText.split('\n').filter(line => line.trim() !== '')
           );
+        }
+        
+        // Pre-populate colors in database
+        if (formData.colors) {
+          fetch('/api/populate-colors.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ colors: formData.colors })
+          });
         }
         
         // Send data to API

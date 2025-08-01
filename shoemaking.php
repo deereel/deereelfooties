@@ -14,22 +14,40 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 <body class="bg-background" data-page="shoemaking">
 
   <!-- Hero Section -->
-  <section class="relative bg-gray-900 text-white py-20">
-    <div class="absolute inset-0 bg-black opacity-60"></div>
-    <div class="relative max-w-7xl mx-auto px-4 text-center">
-      <h1 class="text-4xl md:text-6xl font-light mb-6">The Art of Shoemaking</h1>
-      <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-        Handcrafted excellence from our workshop in Lagos, Nigeria. 
-        Where traditional techniques meet modern design.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="#workshop-tour" class="bg-white text-black px-8 py-3 hover:bg-gray-100 transition">
-          Explore Our Workshop
-        </a>
-        <a href="/moo.php" class="border border-white px-8 py-3 hover:bg-white hover:text-black transition">
-          Commission Your Shoes
-        </a>
+  <section class="relative">
+    <div class="swiper hero-swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <div class="slide-bg" style="background-image: url('/images/shoemaking.webp');"></div>
+          <div class="slide-content">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl">
+                <h1 class="text-5xl md:text-6xl font-light mb-4">Explore Our Workshop</h1>
+                <p class="text-xl mb-8">Witness the artistry behind every handcrafted pair in our Lagos workshop.</p>
+                <a href="#workshop-tour" class="btn-primary px-8 py-3">Take the Tour</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <div class="slide-bg" style="background-image: url('/images/shoemaking1.webp');"></div>
+          <div class="slide-content">
+            <div class="container mx-auto px-4">
+              <div class="max-w-xl ml-auto text-right">
+                <h1 class="text-5xl md:text-6xl font-light mb-4">Commission Your Shoe</h1>
+                <p class="text-xl mb-8">Create bespoke footwear tailored exclusively to your vision and measurements.</p>
+                <div class="flex flex-wrap gap-4 justify-end">
+                  <a href="/moo.php" class="btn-primary px-8 py-3">Start Your Order</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="swiper-pagination"></div>
     </div>
   </section>
 
@@ -54,7 +72,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             </p>
             <div class="grid grid-cols-2 gap-6 mt-8">
               <div class="text-center">
-                <div class="text-3xl font-bold text-blue-600 mb-2">15+</div>
+                <div class="text-3xl font-bold text-blue-600 mb-2">10+</div>
                 <p class="text-sm text-gray-600">Years of Experience</p>
               </div>
               <div class="text-center">
@@ -325,7 +343,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 </a>
                 <a href="https://wa.me/2347031864772?text=Hello! I'd like to visit your workshop in Lagos" 
                    target="_blank" class="border border-black px-6 py-3 text-center hover:bg-black hover:text-white transition">
-                  <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us.
+                  <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us
                 </a>
               </div>
             </div>
@@ -344,18 +362,32 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
       <!-- Call to Action -->
       <section class="text-center">
-        <div class="bg-black text-white rounded-lg p-12">
-          <h2 class="text-3xl font-light mb-4">Ready to Experience Our Craftsmanship?</h2>
-          <p class="text-xl mb-8 opacity-90">
-            Discover the difference that traditional shoemaking techniques can make
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/products.php" class="bg-white text-black px-8 py-3 hover:bg-gray-100 transition">
-              Browse Our Collection
-            </a>
-            <a href="/moo.php" class="border border-white px-8 py-3 hover:bg-white hover:text-black transition">
-              Commission Custom Shoes
-            </a>
+        <div class="bg-gray-100 text-black rounded-lg p-12 relative overflow-hidden">
+          <!-- Logo Pattern Background -->
+          <div class="absolute inset-0 opacity-10">
+            <?php for($row = 0; $row < 4; $row++): ?>
+              <div class="flex justify-between items-center w-full" style="height: 25%;">
+                <?php for($col = 0; $col < 15; $col++): ?>
+                  <img src="/images/drf-logo.webp" alt="" class="w-12 h-12">
+                <?php endfor; ?>
+              </div>
+            <?php endfor; ?>
+          </div>
+          
+          <!-- Content -->
+          <div class="relative z-10">
+            <h2 class="text-3xl font-light mb-4">Ready to Experience Our Craftsmanship?</h2>
+            <p class="text-xl mb-8 opacity-80">
+              Discover the difference that traditional shoemaking techniques can make
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/products.php" class="bg-black text-white px-8 py-3 hover:bg-gray-800 transition">
+                Browse Our Collection
+              </a>
+              <a href="/moo.php" class="border border-black px-8 py-3 hover:bg-black hover:text-white transition">
+                Commission Custom Shoes
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -372,6 +404,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  
+  <!-- Swiper JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="/css/slider.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const swiper = new Swiper('.hero-swiper', {
+        loop: true,
+        autoplay: {
+          delay: 5000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
 
   <script>
     // Smooth scrolling for anchor links
