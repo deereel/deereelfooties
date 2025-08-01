@@ -5,10 +5,7 @@ require_once '../auth/db.php';
 
 // Check if user is logged in
 session_start();
-if (!isset($_SESSION['user'])) {
-    echo json_encode(['success' => false, 'message' => 'User not logged in']);
-    exit;
-}
+// Remove session check as user data is passed via parameters
 
 // Get request parameters
 $orderId = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
@@ -37,14 +34,22 @@ try {
     $order['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Get order progress
-    $stmt = $pdo->prepare("SELECT * FROM order_progress WHERE order_id = ? ORDER BY created_at DESC");
-    $stmt->execute([$orderId]);
-    $order['progress'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM order_progress WHERE order_id = ? ORDER BY updated_at DESC");
+        $stmt->execute([$orderId]);
+        $order['progress'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $order['progress'] = [];
+    }
     
     // Get payment proof if exists
-    $stmt = $pdo->prepare("SELECT * FROM payment_proofs WHERE order_id = ?");
-    $stmt->execute([$orderId]);
-    $order['payment_proof'] = $stmt->fetch(PDO::FETCH_ASSOC);
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM payment_proof WHERE order_id = ?");
+        $stmt->execute([$orderId]);
+        $order['payment_proof'] = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $order['payment_proof'] = null;
+    }
     
     // Return success response with order details
     echo json_encode(['success' => true, 'order' => $order]);

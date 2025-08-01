@@ -267,13 +267,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           cards.forEach(card => {
             let show = true;
 
-            // Filter by gender (case-insensitive)
+            // Filter by gender (case-insensitive, include unisex)
             if (selectedType !== 'all') {
               const cardGender = (card.dataset.gender || '').toLowerCase();
               const selectedTypeLower = selectedType.toLowerCase();
 
-              // Show card only if gender matches selected type
-              if (cardGender !== selectedTypeLower) {
+              // Show card if gender matches selected type OR if it's unisex
+              if (cardGender !== selectedTypeLower && cardGender !== 'unisex') {
                 show = false;
               }
             }
@@ -548,6 +548,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           allCards.push({
             element: card,
             price: parseFloat(card.dataset.price),
+            created: parseInt(card.dataset.created)
           });
         });
 
@@ -557,8 +558,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             return a.price - b.price;
           } else if (sortValue === 'high') {
             return b.price - a.price;
+          } else {
+            // Default: sort by latest (created date descending)
+            return b.created - a.created;
           }
-          return 0;
         });
 
         // Remove all slides

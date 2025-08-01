@@ -168,10 +168,23 @@ class DashboardOrdersManager {
 
   async viewOrderDetails(orderId) {
     try {
+      // Show modal with loading state
+      const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+      const content = document.getElementById('orderDetailsContent');
+      
+      content.innerHTML = `
+        <div class="text-center py-4">
+          <div class="spinner-border text-primary" role="status"></div>
+          <p class="mt-2">Loading order details...</p>
+        </div>
+      `;
+      
+      modal.show();
+
       // Get user data
       const userData = localStorage.getItem('DRFUser');
       if (!userData) {
-        alert('Please log in to view order details');
+        content.innerHTML = '<p class="text-center py-4 text-danger">Please log in to view order details.</p>';
         return;
       }
 
@@ -188,16 +201,114 @@ class DashboardOrdersManager {
       const data = await response.json();
       
       if (data.success) {
-        // Show order details in a modal or redirect to order details page
-        console.log('Order details:', data.order);
-        // Implementation depends on your UI design
+        this.renderOrderDetailsModal(data.order);
       } else {
-        alert(`Error: ${data.message}`);
+        content.innerHTML = `<p class="text-center py-4 text-danger">Error: ${data.message}</p>`;
       }
     } catch (error) {
       console.error('Error loading order details:', error);
-      alert('Failed to load order details. Please try again.');
+      document.getElementById('orderDetailsContent').innerHTML = '<p class="text-center py-4 text-danger">Failed to load order details. Please try again.</p>';
     }
+  }
+
+  renderOrderDetailsModal(order) {
+    const content = document.getElementById('orderDetailsContent');
+    const orderDate = new Date(order.created_at).toLocaleDateString();
+    const statusBadge = this.getStatusBadge(order.status);
+    
+    content.innerHTML = `
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <h6>Order Information</h6>
+          <p><strong>Order ID:</strong> #${order.order_id}</p>
+          <p><strong>Date:</strong> ${orderDate}</p>
+          <p><strong>Status:</strong> ${statusBadge}</p>
+        </div>
+        <div class="col-md-6">
+          <h6>Shipping Address</h6>
+          <p>${this.formatShippingAddress(order)}</p>
+        </div>
+      </div>
+      
+      <div class="mb-4">
+        <h6>Order Items</h6>
+        <div class="table-responsive">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Details</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${(order.items || []).map(item => `
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="${item.image || '/images/product-placeholder.jpg'}" class="me-2" style="width: 40px; height: 40px; object-fit: cover;" alt="${item.product_name}">
+                      <span>${item.product_name}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <small>
+                      ${item.color ? `Color: ${item.color}<br>` : ''}
+                      ${item.size ? `Size: ${item.size}<br>` : ''}
+                      ${item.width ? `Width: ${item.width}` : ''}
+                    </small>
+                  </td>
+                  <td>₦${parseFloat(item.price).toFixed(2)}</td>
+                  <td>${item.quantity}</td>
+                  <td>₦${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-md-6">
+          ${order.payment_proof ? `
+          <h6>Payment Information</h6>
+          <p><strong>Payment Method:</strong> ${order.payment_method || 'Bank Transfer'}</p>
+          <p><strong>Payment Status:</strong> ${order.payment_status || 'Pending'}</p>
+          ` : ''}
+        </div>
+        <div class="col-md-6">
+          <h6>Order Summary</h6>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Subtotal:</span>
+            <span>₦${parseFloat(order.subtotal).toFixed(2)}</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span>Shipping:</span>
+            <span>₦${parseFloat(order.shipping).toFixed(2)}</span>
+          </div>
+          ${order.discount ? `
+          <div class="d-flex justify-content-between mb-2 text-success">
+            <span>Discount:</span>
+            <span>-₦${parseFloat(order.discount).toFixed(2)}</span>
+          </div>` : ''}
+          <hr>
+          <div class="d-flex justify-content-between fw-bold">
+            <span>Total:</span>
+            <span>₦${parseFloat(order.total).toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  formatShippingAddress(order) {
+    const parts = [];
+    if (order.address) parts.push(order.address);
+    if (order.city) parts.push(order.city);
+    if (order.state) parts.push(order.state);
+    if (order.country) parts.push(order.country);
+    return parts.length > 0 ? parts.join(', ') : 'Not provided';
   }
 
   async cancelOrder(orderId) {

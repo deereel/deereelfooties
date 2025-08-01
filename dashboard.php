@@ -376,6 +376,7 @@ $page = 'dashboard';
   <!-- Include scripts in the correct order -->
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/address-modal.php'); ?>  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/order-details-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
   
