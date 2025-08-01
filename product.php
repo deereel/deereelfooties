@@ -106,6 +106,14 @@ try {
     // Log error
     error_log("Error fetching product: " . $e->getMessage());
     $productFound = false;
+    // Initialize PDO for color lookup even if product fetch fails
+    try {
+        $pdo = new PDO("mysql:host=localhost;dbname=drf_database;charset=utf8mb4", "root", "", [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]);
+    } catch (Exception $e2) {
+        // Fallback if database connection fails completely
+    }
 }
 
 // Include header
@@ -196,25 +204,68 @@ try {
               <h3 class="font-medium mb-2">Color</h3>
               <div class="flex space-x-2" id="color-options">
                 <?php 
+                // Include color lookup functionality
+                include_once $_SERVER['DOCUMENT_ROOT'] . '/api/color-lookup.php';
+                
+                // Create color mappings table if needed
+                try {
+                    createColorMappingsTable($pdo);
+                } catch (Exception $e) {
+                    error_log("Color table creation error: " . $e->getMessage());
+                }
+                
                 $colorMap = [
                   'black' => '#000000',
                   'dark brown' => '#5c3a21',
                   'brown' => '#8b4513',
+                  'light brown' => '#cd853f',
                   'tan' => '#d2b48c',
+                  'beige' => '#f5f5dc',
                   'navy' => '#1a2456',
+                  'blue' => '#0066cc',
+                  'dark blue' => '#003366',
                   'burgundy' => '#800020',
+                  'red' => '#cc0000',
+                  'maroon' => '#800000',
                   'grey' => '#808080',
-                  'white' => '#ffffff'
+                  'gray' => '#808080',
+                  'dark grey' => '#555555',
+                  'dark gray' => '#555555',
+                  'light grey' => '#cccccc',
+                  'light gray' => '#cccccc',
+                  'white' => '#ffffff',
+                  'cream' => '#fffdd0',
+                  'cognac' => '#9f4a00',
+                  'camel' => '#c19a6b',
+                  'chestnut' => '#954535',
+                  'mahogany' => '#c04000',
+                  'olive' => '#808000',
+                  'green' => '#008000',
+                  'forest green' => '#228b22',
+                  'wine' => '#722f37',
+                  'purple' => '#800080',
+                  'orange' => '#ff8c00',
+                  'yellow' => '#ffff00',
+                  'gold' => '#ffd700',
+                  'silver' => '#c0c0c0',
+                  'bronze' => '#cd7f32'
                 ];
                 
                 foreach($colors as $color): 
-                  $colorLower = strtolower($color);
-                  $bgColor = $colorMap[$colorLower] ?? '#000000';
+                  $colorLower = strtolower(trim($color));
+                  // Try local map first, then dynamic lookup
+                  $bgColor = $colorMap[$colorLower] ?? getColorHex($color, $pdo);
+                  echo "<script>console.log('Processing color: $color -> $colorLower -> $bgColor');</script>";
                 ?>
-                <button class="color-option w-8 h-8 rounded-full" 
-                        style="background-color: <?= $bgColor ?>;" 
-                        data-color="<?= htmlspecialchars($color) ?>" 
-                        aria-label="<?= htmlspecialchars($color) ?>"></button>
+                <div class="relative">
+                  <button class="color-option w-8 h-8 rounded-full" 
+                          style="background-color: <?= $bgColor ?>;" 
+                          data-color="<?= htmlspecialchars($color) ?>" 
+                          aria-label="<?= htmlspecialchars($color) ?>"></button>
+                  <div class="color-tooltip absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-black text-white text-xs rounded opacity-0 pointer-events-none transition-opacity duration-200">
+                    <?= htmlspecialchars($color) ?>
+                  </div>
+                </div>
                 <?php endforeach; ?>
               </div>
             </div>
@@ -305,8 +356,8 @@ try {
                 <i class="fas fa-chevron-down"></i>
               </span>
             </summary>
-            <div class="pt-4 pb-2 text-gray-600">
-              <?= nl2br(htmlspecialchars($detailsCare)) ?>
+            <div class="pt-4 pb-2 text-gray-600 details-care-content">
+              <?= $detailsCare ?>
               <?php if (!empty($detailsCare)): ?>
                 <div class="mt-4 pt-4 border-t">
               <?php endif; ?>
@@ -478,6 +529,23 @@ try {
           btn.classList.add('ring-2', 'ring-black', 'ring-offset-2');
           document.getElementById('selected-color').value = btn.dataset.color;
         });
+        
+        // Color tooltip hover functionality
+        btn.addEventListener('mouseenter', function() {
+          const tooltip = btn.parentElement.querySelector('.color-tooltip');
+          if (tooltip) {
+            tooltip.classList.remove('opacity-0');
+            tooltip.classList.add('opacity-100');
+          }
+        });
+        
+        btn.addEventListener('mouseleave', function() {
+          const tooltip = btn.parentElement.querySelector('.color-tooltip');
+          if (tooltip) {
+            tooltip.classList.remove('opacity-100');
+            tooltip.classList.add('opacity-0');
+          }
+        });
       });
       
       // Size selection
@@ -590,5 +658,23 @@ try {
       }
     });
   </script>
+  
+  <style>
+    .details-care-content ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .details-care-content li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .details-care-content ol {
+      list-style-type: decimal;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+  </style>
 </body>
 </html>
