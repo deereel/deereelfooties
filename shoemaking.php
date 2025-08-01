@@ -325,7 +325,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
                 </a>
                 <a href="https://wa.me/2347031864772?text=Hello! I'd like to visit your workshop in Lagos" 
                    target="_blank" class="border border-black px-6 py-3 text-center hover:bg-black hover:text-white transition">
-                  <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us
+                  <i class="fab fa-whatsapp mr-2"></i>WhatsApp Us.
                 </a>
               </div>
             </div>
