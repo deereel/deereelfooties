@@ -29,9 +29,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
         <div class="mb-12">
           <p>
-            Discover exceptional quality at special prices. Our outlet features a selection of DeeReeL Footies shoes with minor
-            cosmetic imperfections or from previous seasons, all offered at discounted prices. Each pair maintains our
-            high standards of craftsmanship and durability.
+            Step into excellence with our complete collection of handcrafted footwear. Each pair represents the perfect fusion of traditional Nigerian craftsmanship and contemporary design, meticulously created to deliver unmatched comfort, style, and durability for the modern individual.
           </p>
         </div>
       

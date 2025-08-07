@@ -44,7 +44,7 @@ try {
     
     // Get payment proof if exists
     try {
-        $stmt = $pdo->prepare("SELECT * FROM payment_proof WHERE order_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM payment_proofs WHERE order_id = ?");
         $stmt->execute([$orderId]);
         $order['payment_proof'] = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {

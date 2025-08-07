@@ -5,6 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 require_once 'db.php';
+require_once 'security.php';
 
 // Close session immediately to release lock
 session_write_close();
@@ -25,8 +26,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $password = $_POST['password'] ?? '';
         }
         
+        // Rate limiting
+        session_start();
+        if (!checkRateLimit('login', 5, 900)) {
+            session_write_close();
+            $response['error'] = 'Too many login attempts. Try again in 15 minutes.';
+            echo json_encode($response);
+            exit;
+        }
+        session_write_close();
+        
+        // Input validation
+        $email = sanitizeInput($email);
         if (empty($email) || empty($password)) {
             $response['error'] = 'Please fill in all fields';
+            echo json_encode($response);
+            exit;
+        }
+        
+        if (!validateEmail($email)) {
+            $response['error'] = 'Invalid email format';
             echo json_encode($response);
             exit;
         }

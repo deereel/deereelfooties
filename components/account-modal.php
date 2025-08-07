@@ -72,6 +72,7 @@
         <div class="mt-3 text-center">
           <p id="loginText">Don't have an account? <a href="#" id="showSignupForm">Sign up</a></p>
           <p id="signupText" class="d-none">Already have an account? <a href="#" id="showLoginForm">Sign in</a></p>
+          <p><a href="/reset-password-request.php">Forgot Password?</a></p>
         </div>
       </div>
     </div>

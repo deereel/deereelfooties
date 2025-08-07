@@ -8,9 +8,11 @@ ini_set('log_errors', 1);
 ini_set('error_log', '../logs/php-errors.log');
 
 require_once '../auth/db.php';
+require_once '../auth/security.php';
 
 // Set headers for JSON response
 header('Content-Type: application/json');
+session_start();
 
 // Log the request method and data
 file_put_contents('../logs/register-debug.log', 'Request Method: ' . $_SERVER['REQUEST_METHOD'] . PHP_EOL, FILE_APPEND);
@@ -26,15 +28,38 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $data = json_decode(file_get_contents('php://input'), true);
 file_put_contents('../logs/register-debug.log', 'Decoded Data: ' . print_r($data, true) . PHP_EOL, FILE_APPEND);
 
+// Rate limiting
+if (!checkRateLimit('register', 3, 3600)) {
+    echo json_encode(['success' => false, 'message' => 'Too many registration attempts. Try again later.']);
+    exit;
+}
+
+// CSRF validation
+if (!validateCSRFToken($data['csrf_token'] ?? '')) {
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
+    exit;
+}
+
 // Validate required fields
 if (!isset($data['name']) || !isset($data['email']) || !isset($data['password'])) {
     echo json_encode(['success' => false, 'message' => 'Missing required fields']);
     exit;
 }
 
-$name = $data['name'];
-$email = $data['email'];
+$name = sanitizeInput($data['name']);
+$email = sanitizeInput($data['email']);
 $password = $data['password'];
+
+// Validate inputs
+if (!validateEmail($email)) {
+    echo json_encode(['success' => false, 'message' => 'Invalid email format']);
+    exit;
+}
+
+if (!validatePassword($password)) {
+    echo json_encode(['success' => false, 'message' => 'Password must be at least 8 characters with letters and numbers']);
+    exit;
+}
 
 // Check if email already exists
 $stmt = $pdo->prepare("SELECT user_id FROM users WHERE email = ?");

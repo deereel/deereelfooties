@@ -271,11 +271,9 @@ class DashboardOrdersManager {
       
       <div class="row">
         <div class="col-md-6">
-          ${order.payment_proof ? `
           <h6>Payment Information</h6>
           <p><strong>Payment Method:</strong> ${order.payment_method || 'Bank Transfer'}</p>
-          <p><strong>Payment Status:</strong> ${order.payment_status || 'Pending'}</p>
-          ` : ''}
+          <p><strong>Payment Status:</strong> ${this.getPaymentStatusBadge(order.payment_confirmed, order.payment_proof)}</p>
         </div>
         <div class="col-md-6">
           <h6>Order Summary</h6>
@@ -309,6 +307,16 @@ class DashboardOrdersManager {
     if (order.state) parts.push(order.state);
     if (order.country) parts.push(order.country);
     return parts.length > 0 ? parts.join(', ') : 'Not provided';
+  }
+
+  getPaymentStatusBadge(paymentConfirmed, paymentProof) {
+    if (paymentConfirmed == 1) {
+      return '<span class="badge bg-success">Confirmed</span>';
+    } else if (paymentProof) {
+      return '<span class="badge bg-warning">Uploaded</span>';
+    } else {
+      return '<span class="badge bg-secondary">Pending</span>';
+    }
   }
 
   async cancelOrder(orderId) {

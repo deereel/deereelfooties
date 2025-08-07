@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
+
 // Create color_mappings table if it doesn't exist
 if (!function_exists('createColorMappingsTable')) {
     function createColorMappingsTable($pdo) {
@@ -12,20 +14,15 @@ if (!function_exists('createColorMappingsTable')) {
     }
 }
 
-// Get color hex code using comprehensive color sheet
+// Ensure table exists
+createColorMappingsTable($pdo);
+
+// Get color hex code with API fallback
 if (!function_exists('getColorHex')) {
     function getColorHex($colorName, $pdo) {
         $colorLower = strtolower(trim($colorName));
         
-        // Load comprehensive color sheet
-        $colorSheet = include $_SERVER['DOCUMENT_ROOT'] . '/config/colors.php';
-        
-        // Check color sheet first
-        if (isset($colorSheet[$colorLower])) {
-            return $colorSheet[$colorLower];
-        }
-        
-        // Check database for custom colors
+        // Check database first
         try {
             $stmt = $pdo->prepare("SELECT hex_code FROM color_mappings WHERE color_name = ?");
             $stmt->execute([$colorLower]);
@@ -36,7 +33,37 @@ if (!function_exists('getColorHex')) {
             }
         } catch (Exception $e) {}
         
+        // Try API lookup for new colors
+        $apiHex = lookupColorFromAPI($colorName);
+        if ($apiHex) {
+            // Save to database for future use
+            try {
+                $stmt = $pdo->prepare("INSERT IGNORE INTO color_mappings (color_name, hex_code) VALUES (?, ?)");
+                $stmt->execute([$colorLower, $apiHex]);
+            } catch (Exception $e) {}
+            return $apiHex;
+        }
+        
         return '#666666'; // Default fallback
+    }
+}
+
+// API lookup function
+if (!function_exists('lookupColorFromAPI')) {
+    function lookupColorFromAPI($colorName) {
+        try {
+            $url = "https://www.thecolorapi.com/id?name=" . urlencode($colorName);
+            $response = @file_get_contents($url);
+            
+            if ($response) {
+                $data = json_decode($response, true);
+                if (isset($data['hex']['value'])) {
+                    return $data['hex']['value'];
+                }
+            }
+        } catch (Exception $e) {}
+        
+        return null;
     }
 }
 ?>
