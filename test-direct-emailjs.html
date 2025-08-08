@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct EmailJS Test</title>
+</head>
+<body>
+    <h2>Direct EmailJS Test</h2>
+    <button onclick="sendTestEmail()">Send Test Email</button>
+    <div id="result"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        emailjs.init("QTreaie3I9i7MDS1C");
+
+        async function sendTestEmail() {
+            try {
+                const result = await emailjs.send('service_wur0urq', 'template_daog74s', {
+                    email: 'biodunoladayo@gmail.com',
+                    message: 'Direct test from EmailJS - if you receive this, EmailJS is working!'
+                });
+                
+                document.getElementById('result').innerHTML = '✅ Email sent: ' + JSON.stringify(result);
+                console.log('Success:', result);
+            } catch (error) {
+                document.getElementById('result').innerHTML = '❌ Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

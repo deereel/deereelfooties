@@ -44,7 +44,23 @@ require_once 'auth/security.php';
                 method: 'POST',
                 body: formData
             });
-            const data = await response.json();
+            
+            console.log('Response status:', response.status);
+            console.log('Response headers:', response.headers);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
+            const responseText = await response.text();
+            console.log('Raw response:', responseText);
+            
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                throw new Error('Invalid JSON response: ' + responseText.substring(0, 200));
+            }
             
             const messageDiv = document.getElementById('message');
             if (data.success) {
@@ -53,7 +69,8 @@ require_once 'auth/security.php';
                 messageDiv.innerHTML = '<div class="alert alert-danger">' + data.message + '</div>';
             }
         } catch (error) {
-            document.getElementById('message').innerHTML = '<div class="alert alert-danger">Network error. Please try again.</div>';
+            console.error('Fetch error:', error);
+            document.getElementById('message').innerHTML = '<div class="alert alert-danger">Error: ' + error.message + '</div>';
         }
     });
     </script>

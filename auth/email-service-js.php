@@ -1,7 +1,9 @@
 <?php
 // EmailJS integration - sends emails via JavaScript
 function sendEmail($to, $subject, $body, $type = 'generic', $data = []) {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $_SESSION['pending_email'] = [
         'to' => $to,
         'subject' => $subject,
@@ -32,7 +34,9 @@ function sendOrderConfirmationEmail($to, $customerName, $orderId, $total, $items
 }
 
 function getPendingEmail() {
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $email = $_SESSION['pending_email'] ?? null;
     unset($_SESSION['pending_email']);
     session_write_close();

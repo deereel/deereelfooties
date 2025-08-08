@@ -1,7 +1,18 @@
-/* Admin Dashboard Styles */
+/* Admin Dashboard Styles - DeeReel Footies Theme */
 
 body {
   font-size: .875rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Brand Colors */
+:root {
+  --primary-color: #000;
+  --secondary-color: #333;
+  --accent-color: #007bff;
+  --success-color: #28a745;
+  --warning-color: #ffc107;
+  --danger-color: #dc3545;
 }
 
 /* Sidebar */
@@ -31,11 +42,15 @@ body {
 }
 
 .sidebar .nav-link.active {
-  color: #2470dc;
+  color: var(--primary-color);
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
 }
 
 .sidebar .nav-link:hover {
-  color: #007bff;
+  color: var(--primary-color);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 0.25rem;
 }
 
 .sidebar-heading {
@@ -95,7 +110,7 @@ body {
   display: inline-block;
   position: absolute;
   border-radius: 50%;
-  border: 2px solid #2470dc;
+  border: 2px solid var(--primary-color);
   left: -0.7rem;
   width: 14px;
   height: 14px;
@@ -123,11 +138,32 @@ body {
 .card {
   margin-bottom: 1.5rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  border-radius: 0.5rem;
 }
 
 .card-header {
-  background-color: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border-bottom: none;
+  border-radius: 0.5rem 0.5rem 0 0 !important;
+  font-weight: 600;
+}
+
+/* Inventory specific styles */
+.stock-badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.low-stock-alert {
+  border-left: 4px solid var(--warning-color);
+  background-color: #fff3cd;
+}
+
+.out-of-stock-alert {
+  border-left: 4px solid var(--danger-color);
+  background-color: #f8d7da;
 }
 
 /* Login page */

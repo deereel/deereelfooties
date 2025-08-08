@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: application/json');
 session_start();
 require_once 'db.php';
 require_once 'security.php';
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         echo json_encode(['success' => true, 'message' => 'If email exists, reset link sent']);
     } catch (Exception $e) {
-        echo json_encode(['success' => false, 'message' => 'Server error']);
+        echo json_encode(['success' => false, 'message' => 'Server error: ' . $e->getMessage()]);
     }
 }
 ?>

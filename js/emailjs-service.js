@@ -21,10 +21,9 @@ async function sendPendingEmail() {
             // Determine email type and set parameters
             if (emailData.type === 'password_reset') {
                 templateId = EMAIL_TEMPLATES.password_reset;
-                const resetMessage = `Password reset link: ${emailData.reset_link}`;
                 templateParams = {
                     email: emailData.to,
-                    message: resetMessage
+                    message: `Password reset link: ${emailData.reset_link}`
                 };
             } else if (emailData.type === 'order_confirmation') {
                 templateId = EMAIL_TEMPLATES.order_confirmation;
