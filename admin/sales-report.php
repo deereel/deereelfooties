@@ -28,7 +28,9 @@ function getSalesData($pdo, $period, $year, $month) {
         'total_sales' => 0,
         'total_orders' => 0,
         'avg_order_value' => 0,
-        'completed_orders' => 0
+        'completed_orders' => 0,
+        'conversion_rate' => 0,
+        'growth_rate' => 0
     ];
     
     // Build date filter based on period
@@ -67,6 +69,40 @@ function getSalesData($pdo, $period, $year, $month) {
         $data['total_sales'] = (float)$result['total_sales'];
         $data['avg_order_value'] = (float)$result['avg_order_value'];
         $data['completed_orders'] = (int)$result['completed_orders'];
+        $data['conversion_rate'] = $data['total_orders'] > 0 ? ($data['completed_orders'] / $data['total_orders']) * 100 : 0;
+    }
+    
+    // Calculate growth rate compared to previous period
+    $prevParams = [];
+    $prevDateFilter = '';
+    
+    switch ($period) {
+        case 'weekly':
+            $prevStart = date('Y-m-d', strtotime('monday last week'));
+            $prevEnd = date('Y-m-d', strtotime('sunday last week'));
+            $prevDateFilter = "DATE(created_at) BETWEEN ? AND ?";
+            $prevParams = [$prevStart, $prevEnd];
+            break;
+        case 'monthly':
+            $prevMonth = $month == 1 ? 12 : $month - 1;
+            $prevYear = $month == 1 ? $year - 1 : $year;
+            $prevDateFilter = "YEAR(created_at) = ? AND MONTH(created_at) = ?";
+            $prevParams = [$prevYear, $prevMonth];
+            break;
+        case 'yearly':
+            $prevDateFilter = "YEAR(created_at) = ?";
+            $prevParams = [$year - 1];
+            break;
+    }
+    
+    if ($prevDateFilter) {
+        $prevStmt = $pdo->prepare("SELECT SUM(subtotal) as prev_sales FROM orders WHERE $prevDateFilter");
+        $prevStmt->execute($prevParams);
+        $prevSales = (float)$prevStmt->fetchColumn();
+        
+        if ($prevSales > 0) {
+            $data['growth_rate'] = (($data['total_sales'] - $prevSales) / $prevSales) * 100;
+        }
     }
     
     return $data;
@@ -199,6 +235,12 @@ function getChartData($pdo, $period, $year, $month) {
                                     <div>
                                         <h4 class="card-title">₦<?php echo number_format($salesData['total_sales'], 2); ?></h4>
                                         <p class="card-text">Total Sales</p>
+                                        <?php if ($salesData['growth_rate'] != 0): ?>
+                                        <small class="<?php echo $salesData['growth_rate'] > 0 ? 'text-success' : 'text-danger'; ?>">
+                                            <i class="bi bi-<?php echo $salesData['growth_rate'] > 0 ? 'arrow-up' : 'arrow-down'; ?>"></i>
+                                            <?php echo abs(round($salesData['growth_rate'], 1)); ?>%
+                                        </small>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="align-self-center">
                                         <i class="bi bi-currency-dollar fs-1"></i>
@@ -242,8 +284,9 @@ function getChartData($pdo, $period, $year, $month) {
                             <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4 class="card-title"><?php echo $salesData['completed_orders']; ?></h4>
-                                        <p class="card-text">Completed Orders</p>
+                                        <h4 class="card-title"><?php echo round($salesData['conversion_rate'], 1); ?>%</h4>
+                                        <p class="card-text">Conversion Rate</p>
+                                        <small>Completed/Total Orders</small>
                                     </div>
                                     <div class="align-self-center">
                                         <i class="bi bi-check-circle fs-1"></i>

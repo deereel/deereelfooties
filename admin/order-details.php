@@ -51,9 +51,9 @@ if (isset($_POST['update_status'])) {
         $updateStmt = $pdo->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
         $updateStmt->execute([$newStatus, $orderId]);
         
-        // Add progress update
-        $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
-        $progressStmt->execute([$orderId, $statusNote]);
+        // Add status history
+        $progressStmt = $pdo->prepare("INSERT INTO order_status_history (order_id, status) VALUES (?, ?)");
+        $progressStmt->execute([$orderId, $newStatus]);
         
         $message = 'Order status updated successfully';
         $messageType = 'success';
@@ -128,9 +128,9 @@ try {
         $paymentProof = null;
     }
     
-    // Get order progress updates
+    // Get order status history
     try {
-        $progressStmt = $pdo->prepare("SELECT * FROM order_progress WHERE order_id = ? ORDER BY updated_at DESC");
+        $progressStmt = $pdo->prepare("SELECT * FROM order_status_history WHERE order_id = ? ORDER BY created_at DESC");
         $progressStmt->execute([$orderId]);
         $progressUpdates = $progressStmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -163,7 +163,7 @@ try {
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Order #<?php echo $orderId; ?></h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
-                        <a href="index.php" class="btn btn-sm btn-outline-secondary">
+                        <a href="orders.php" class="btn btn-sm btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i> Back to Orders
                         </a>
                     </div>
@@ -471,10 +471,10 @@ try {
                                         <?php foreach ($progressUpdates as $update): ?>
                                             <li class="timeline-item">
                                                 <span class="timeline-date">
-                                                    <?php echo date('M d, H:i', strtotime($update['updated_at'])); ?>
+                                                    <?php echo date('M d, H:i', strtotime($update['created_at'])); ?>
                                                 </span>
                                                 <p class="timeline-content">
-                                                    <?php echo htmlspecialchars($update['status_update']); ?>
+                                                    Status changed to: <?php echo htmlspecialchars($update['status']); ?>
                                                 </p>
                                             </li>
                                         <?php endforeach; ?>

@@ -2,6 +2,17 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/session_config.php');
 require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php');
 
+// Handle non-POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    if (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
+        header('Content-Type: application/json');
+        echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+    } else {
+        header('Location: /login.php');
+    }
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';

@@ -151,9 +151,16 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
                                             ?>
                                         </td>
                                         <td>
-                                            <a href="order-details.php?id=<?php echo $order['order_id']; ?>" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-eye"></i> View
-                                            </a>
+                                            <div class="btn-group" role="group">
+                                                <a href="order-details.php?id=<?php echo $order['order_id']; ?>" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-eye"></i> View
+                                                </a>
+                                                <?php if (strtolower($order['status']) === 'pending'): ?>
+                                                <button class="btn btn-sm btn-success process-order-btn" data-order-id="<?php echo $order['order_id']; ?>">
+                                                    <i class="bi bi-play-circle"></i> Process
+                                                </button>
+                                                <?php endif; ?>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -196,5 +203,31 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/admin.js"></script>
+    <script>
+    document.querySelectorAll('.process-order-btn').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            const orderId = this.dataset.orderId;
+            if (!confirm('Process this order? This will update inventory and send confirmation.')) return;
+            
+            try {
+                const response = await fetch('../api/process-order.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `order_id=${orderId}&action=process`
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Order processed successfully!');
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+            }
+        });
+    });
+    </script>
 </body>
 </html>

@@ -175,9 +175,6 @@ try {
                                                 <a href="edit-product.php?id=<?php echo $product['product_id'] ?? $product['id']; ?>" class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil"></i> Edit
                                                 </a>
-                                                <a href="../product.php?id=<?php echo $product['product_id'] ?? $product['id']; ?>" class="btn btn-sm btn-outline-secondary" target="_blank">
-                                                    <i class="bi bi-eye"></i> View
-                                                </a>
                                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(<?php echo $product['product_id'] ?? $product['id']; ?>)">
                                                     <i class="bi bi-trash"></i>
                                                 </button>

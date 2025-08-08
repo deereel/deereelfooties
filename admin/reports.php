@@ -42,6 +42,21 @@ try {
     $topCustomersStmt = $pdo->prepare("SELECT customer_name, COUNT(*) as order_count, SUM(COALESCE(subtotal, total, 0)) as total_spent FROM orders WHERE DATE(created_at) BETWEEN ? AND ? GROUP BY customer_name ORDER BY total_spent DESC LIMIT 10");
     $topCustomersStmt->execute([$startDate, $endDate]);
     $topCustomers = $topCustomersStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Get product performance
+    $productStmt = $pdo->prepare("SELECT oi.product_name, SUM(oi.quantity) as total_sold, SUM(oi.price * oi.quantity) as revenue FROM order_items oi JOIN orders o ON oi.order_id = o.order_id WHERE DATE(o.created_at) BETWEEN ? AND ? GROUP BY oi.product_name ORDER BY total_sold DESC LIMIT 10");
+    $productStmt->execute([$startDate, $endDate]);
+    $topProducts = $productStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Get daily sales trend
+    $trendStmt = $pdo->prepare("SELECT DATE(created_at) as date, COUNT(*) as orders, SUM(COALESCE(subtotal, total, 0)) as revenue FROM orders WHERE DATE(created_at) BETWEEN ? AND ? GROUP BY DATE(created_at) ORDER BY date");
+    $trendStmt->execute([$startDate, $endDate]);
+    $dailyTrend = $trendStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Get payment method breakdown
+    $paymentStmt = $pdo->prepare("SELECT payment_method, COUNT(*) as count, SUM(COALESCE(subtotal, total, 0)) as revenue FROM orders WHERE DATE(created_at) BETWEEN ? AND ? GROUP BY payment_method");
+    $paymentStmt->execute([$startDate, $endDate]);
+    $paymentMethods = $paymentStmt->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     $error = 'Error generating report: ' . $e->getMessage();
@@ -183,7 +198,7 @@ try {
             </div>
         </div>
 
-        <!-- Top Customers -->
+        <!-- Analytics Grid -->
         <div class="row mb-4">
             <div class="col-md-6">
                 <div class="card">
@@ -218,6 +233,38 @@ try {
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
+                        <h5 class="mb-0">Top Products by Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Sold</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($topProducts as $product): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($product['product_name']); ?></td>
+                                        <td><?php echo $product['total_sold']; ?></td>
+                                        <td>₦<?php echo number_format($product['revenue'], 2); ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
                         <h5 class="mb-0">Order Status Breakdown</h5>
                     </div>
                     <div class="card-body">
@@ -246,6 +293,50 @@ try {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Payment Methods</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Method</th>
+                                        <th>Orders</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($paymentMethods as $method): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($method['payment_method'] ?: 'N/A'); ?></td>
+                                        <td><?php echo $method['count']; ?></td>
+                                        <td>₦<?php echo number_format($method['revenue'], 2); ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Daily Sales Trend Chart -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Daily Sales Trend</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="trendChart" height="100"></canvas>
                     </div>
                 </div>
             </div>
@@ -308,15 +399,72 @@ try {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function generatePDF() {
-            // Use browser's print dialog with PDF option
             window.print();
         }
         
-        // Auto-focus on print-friendly layout
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add any additional print optimizations here
+        // Daily Sales Trend Chart
+        const trendData = <?php echo json_encode($dailyTrend); ?>;
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: trendData.map(item => new Date(item.date).toLocaleDateString()),
+                datasets: [{
+                    label: 'Revenue (₦)',
+                    data: trendData.map(item => parseFloat(item.revenue)),
+                    borderColor: '#0d6efd',
+                    backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Orders',
+                    data: trendData.map(item => parseInt(item.orders)),
+                    borderColor: '#198754',
+                    backgroundColor: 'rgba(25, 135, 84, 0.1)',
+                    tension: 0.4,
+                    yAxisID: 'y1'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: {
+                            callback: function(value) {
+                                return '₦' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 0) {
+                                    return 'Revenue: ₦' + context.parsed.y.toLocaleString();
+                                } else {
+                                    return 'Orders: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         });
     </script>
 </body>

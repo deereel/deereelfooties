@@ -127,8 +127,11 @@ $page = 'dashboard';
               <!-- Dashboard Tab -->
               <div id="dashboard-tab" class="tab-content active">
                   <div class="card">
-                      <div class="card-header">
+                      <div class="card-header d-flex justify-content-between align-items-center">
                           <h3 class="mb-0">Dashboard</h3>
+                          <a href="/customer/dashboard.php" class="btn btn-sm btn-outline-secondary">
+                              <i class="fas fa-exchange-alt me-1"></i> Simple View
+                          </a>
                       </div>
                       <div class="card-body">
                           <p>Welcome back, <strong><?php echo htmlspecialchars($user['name']); ?></strong>!</p>
@@ -186,12 +189,57 @@ $page = 'dashboard';
                           <h3 class="mb-0">My Orders</h3>
                       </div>
                       <div class="card-body">
-                          <div id="orders-container">
-                              <div class="text-center py-4">
-                                  <div class="spinner-border text-primary" role="status"></div>
-                                  <p class="mt-2">Loading your orders...</p>
+                          <?php
+                          try {
+                              $ordersStmt = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC");
+                              $ordersStmt->execute([$userId]);
+                              $orders = $ordersStmt->fetchAll(PDO::FETCH_ASSOC);
+                              
+                              if (!empty($orders)):
+                          ?>
+                              <?php foreach ($orders as $order): ?>
+                                  <?php
+                                  // Get item count for this order
+                                  $itemCountStmt = $pdo->prepare("SELECT COUNT(*) as item_count FROM order_items WHERE order_id = ?");
+                                  $itemCountStmt->execute([$order['order_id']]);
+                                  $itemCount = $itemCountStmt->fetchColumn();
+                                  ?>
+                                  <div class="card mb-3">
+                                      <div class="card-body">
+                                          <div class="row align-items-center">
+                                              <div class="col-md-3">
+                                                  <strong>Order #<?= $order['order_id'] ?></strong>
+                                                  <br><small class="text-muted"><?= date('M d, Y', strtotime($order['created_at'])) ?></small>
+                                              </div>
+                                              <div class="col-md-2">
+                                                  <span class="badge bg-<?= $order['status'] === 'Completed' ? 'success' : ($order['status'] === 'Processing' ? 'primary' : 'warning') ?>">
+                                                      <?= $order['status'] ?>
+                                                  </span>
+                                              </div>
+                                              <div class="col-md-2">
+                                                  <small class="text-muted"><?= $itemCount ?> item<?= $itemCount != 1 ? 's' : '' ?></small>
+                                              </div>
+                                              <div class="col-md-3">
+                                                  <strong>₦<?= number_format($order['total'] ?? $order['subtotal'] ?? 0, 2) ?></strong>
+                                              </div>
+                                              <div class="col-md-2 text-end">
+                                                  <button class="btn btn-outline-primary btn-sm" onclick="showOrderDetails(<?= $order['order_id'] ?>)">View Details</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              <?php endforeach; ?>
+                          <?php else: ?>
+                              <div class="text-center py-5">
+                                  <i class="fas fa-box text-muted" style="font-size: 4rem;"></i>
+                                  <h4 class="mt-3">No Orders Found</h4>
+                                  <p class="text-muted">You haven't placed any orders yet.</p>
+                                  <a href="/products.php" class="btn btn-primary">Start Shopping</a>
                               </div>
-                          </div>
+                          <?php endif; ?>
+                          <?php } catch (PDOException $e) { ?>
+                              <div class="alert alert-danger">Error loading orders: <?= $e->getMessage() ?></div>
+                          <?php } ?>
                       </div>
                   </div>
               </div>
@@ -378,6 +426,8 @@ $page = 'dashboard';
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/address-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/order-details-modal.php'); ?>  
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/search-modal.php'); ?>  
+  
+  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/order-details-modal-customer.php'); ?>
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
   
   <!-- Dashboard Scripts -->
@@ -387,6 +437,193 @@ $page = 'dashboard';
   <script src="/js/dashboard-wishlist.js"></script>
   <script src="/components/dashboard-address.js"></script>
   <script src="/js/dashboard-designs.js"></script>
+  
+  <script>
+  function showOrderDetails(orderId) {
+      const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+      const content = document.getElementById('orderDetailsContent');
+      
+      content.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2">Loading order details...</p></div>';
+      modal.show();
+      
+      fetch(`/api/get-order-details.php?order_id=${orderId}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  const order = data.order;
+                  const items = data.items;
+                  const history = data.history;
+                  
+                  let itemsHtml = '';
+                  if (items && items.length > 0) {
+                      items.forEach(item => {
+                          const imageUrl = item.image || item.product_image || '/images/placeholder.jpg';
+                          const color = item.color || item.selected_color || 'N/A';
+                          const size = item.size || item.selected_size || 'N/A';
+                          
+                          itemsHtml += `
+                              <div class="row align-items-center mb-3 pb-3 border-bottom">
+                                  <div class="col-md-2">
+                                      <img src="${imageUrl}" alt="${item.product_name || 'Product'}" class="img-fluid rounded" style="max-height: 80px; object-fit: cover;">
+                                  </div>
+                                  <div class="col-md-6">
+                                      <h6 class="mb-1">${item.product_name || 'Product'}</h6>
+                                      <div class="text-muted small">
+                                          <div>Color: ${color}</div>
+                                          <div>Size: ${size}</div>
+                                          <div>Qty: ${item.quantity || 1}</div>
+                                      </div>
+                                  </div>
+                                  <div class="col-md-2 text-center">
+                                      <div class="fw-bold">₦${parseFloat(item.price || 0).toLocaleString()}</div>
+                                      <small class="text-muted">each</small>
+                                  </div>
+                                  <div class="col-md-2 text-end">
+                                      <div class="fw-bold">₦${(parseFloat(item.price || 0) * parseInt(item.quantity || 1)).toLocaleString()}</div>
+                                      <small class="text-muted">total</small>
+                                  </div>
+                              </div>
+                          `;
+                      });
+                  } else {
+                      itemsHtml = '<p class="text-muted">No items found for this order.</p>';
+                  }
+                  
+                  let historyHtml = '';
+                  if (history && history.length > 0) {
+                      history.forEach(status => {
+                          historyHtml += `
+                              <div class="d-flex mb-3">
+                                  <div class="me-3"><i class="bi bi-circle-fill text-primary"></i></div>
+                                  <div>
+                                      <strong>${status.status}</strong><br>
+                                      <small class="text-muted">${new Date(status.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</small>
+                                  </div>
+                              </div>
+                          `;
+                      });
+                  } else {
+                      // If no history, show current order status
+                      historyHtml = `
+                          <div class="d-flex mb-3">
+                              <div class="me-3"><i class="bi bi-circle-fill text-primary"></i></div>
+                              <div>
+                                  <strong>${order.status}</strong><br>
+                                  <small class="text-muted">${new Date(order.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</small>
+                              </div>
+                          </div>
+                      `;
+                  }
+                  
+                  let paymentStatus = 'Pending';
+                  let paymentBadge = 'secondary';
+                  if (order.payment_confirmed) {
+                      paymentStatus = 'Confirmed';
+                      paymentBadge = 'success';
+                  }
+                  
+                  content.innerHTML = `
+                      <div class="row mb-4">
+                          <div class="col-md-6">
+                              <div class="card">
+                                  <div class="card-header"><h5>Order Information</h5></div>
+                                  <div class="card-body">
+                                      <table class="table table-borderless">
+                                          <tr><th>Order ID:</th><td>#${order.order_id}</td></tr>
+                                          <tr><th>Date:</th><td>${new Date(order.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</td></tr>
+                                          <tr><th>Status:</th><td><span class="badge bg-${order.status === 'Completed' ? 'success' : (order.status === 'Processing' ? 'primary' : (order.status === 'Cancelled' ? 'danger' : 'warning'))}">${order.status}</span></td></tr>
+                                          <tr><th>Payment:</th><td><span class="badge bg-${paymentBadge}">${paymentStatus}</span></td></tr>
+                                          <tr><th>Total:</th><td>₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</td></tr>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="card">
+                                  <div class="card-header"><h5>Customer Information</h5></div>
+                                  <div class="card-body">
+                                      <table class="table table-borderless">
+                                          <tr><th>Name:</th><td>${order.customer_name || order.name || 'N/A'}</td></tr>
+                                          <tr><th>Email:</th><td>${order.customer_email || order.email || 'N/A'}</td></tr>
+                                          <tr><th>Phone:</th><td>${data.user && data.user.phone ? data.user.phone : 'N/A'}</td></tr>
+                                      </table>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row mb-4">
+                          <div class="col-md-12">
+                              <div class="card">
+                                  <div class="card-header"><h5>Shipping Information</h5></div>
+                                  <div class="card-body">
+                                      <div class="row">
+                                          <div class="col-md-6">
+                                              <strong>Shipping Address:</strong><br>
+                                              ${data.shipping_address && data.shipping_address.name ? `${data.shipping_address.name}<br>` : ''}
+                                              ${data.shipping_address && data.shipping_address.phone ? `${data.shipping_address.phone}<br>` : ''}
+                                              ${data.shipping_address && data.shipping_address.street ? 
+                                                  `${data.shipping_address.street}<br>
+                                                   ${data.shipping_address.city || ''}, ${data.shipping_address.state || ''} ${data.shipping_address.zip || ''}<br>
+                                                   ${data.shipping_address.country || ''}` : 
+                                                  'No address provided'}
+                                          </div>
+                                          <div class="col-md-6">
+                                              <strong>Shipping Method:</strong><br>
+                                              ${data.shipping_method || order.shipping_method || 'Standard Shipping'}<br><br>
+                                              <strong>Tracking Number:</strong><br>
+                                              ${data.tracking_number || order.tracking_number || 'Not available'}
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                          <div class="col-md-8">
+                              <div class="card mb-4">
+                                  <div class="card-header"><h5>Order Items</h5></div>
+                                  <div class="card-body">${itemsHtml}</div>
+                              </div>
+                              <div class="card">
+                                  <div class="card-header"><h5>Order Status History</h5></div>
+                                  <div class="card-body">${historyHtml}</div>
+                              </div>
+                          </div>
+                          <div class="col-md-4">
+                              <div class="card">
+                                  <div class="card-header"><h5>Order Summary</h5></div>
+                                  <div class="card-body">
+                                      <div class="d-flex justify-content-between mb-2">
+                                          <span>Items:</span>
+                                          <span>${items ? items.length : 0} item${items && items.length !== 1 ? 's' : ''}</span>
+                                      </div>
+                                      <div class="d-flex justify-content-between mb-2">
+                                          <span>Subtotal:</span>
+                                          <span>₦${parseFloat(order.subtotal || order.total || 0).toLocaleString()}</span>
+                                      </div>
+                                      <div class="d-flex justify-content-between mb-2">
+                                          <span>Shipping:</span>
+                                          <span>₦${parseFloat(order.shipping_cost || 0).toLocaleString()}</span>
+                                      </div>
+                                      <hr>
+                                      <div class="d-flex justify-content-between">
+                                          <strong>Total:</strong>
+                                          <strong>₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</strong>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  `;
+              } else {
+                  content.innerHTML = `<div class="alert alert-danger">${data.error || 'Failed to load order details'}</div>`;
+              }
+          })
+          .catch(error => {
+              content.innerHTML = '<div class="alert alert-danger">Error loading order details</div>';
+          });
+  }
+  </script>
   
 </body>
 </html>
