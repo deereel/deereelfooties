@@ -1,29 +1,43 @@
 <?php
-// Download PHPMailer manually from: https://github.com/PHPMailer/PHPMailer/releases
-// Extract to /vendor/phpmailer/ folder
-
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/src/PHPMailer.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/src/SMTP.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/src/Exception.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-
 function sendEmail($to, $subject, $body) {
-    $mail = new PHPMailer(true);
+    // Try PHPMailer first if available
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/PHPMailer-master/src/PHPMailer.php')) {
+        return sendEmailPHPMailer($to, $subject, $body);
+    }
+    
+    // Fallback to basic mail function
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: DeeReel Footies <noreply@deereelfooties.com>' . "\r\n";
+    
+    return mail($to, $subject, $body, $headers);
+}
+
+function sendEmailPHPMailer($to, $subject, $body) {
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/PHPMailer-master/src/PHPMailer.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/PHPMailer-master/src/SMTP.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/phpmailer/PHPMailer-master/src/Exception.php';
     
     try {
-        // Gmail SMTP settings
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'your-email@gmail.com'; // Your Gmail
-        $mail->Password = 'your-app-password';    // Gmail App Password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Username = 'deereelfooties@gmail.com';
+        $mail->Password = 'kzwm txpz ivpr ictk';
+        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
         
-        // Email settings
-        $mail->setFrom('your-email@gmail.com', 'DeeReel Footies');
+        // XAMPP SSL fix
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+        
+        $mail->setFrom('deereelfooties@gmail.com', 'DeeReel Footies');
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = $subject;
@@ -32,8 +46,10 @@ function sendEmail($to, $subject, $body) {
         $mail->send();
         return true;
     } catch (Exception $e) {
-        error_log("Email error: " . $mail->ErrorInfo);
+        echo "PHPMailer error: " . $e->getMessage();
+        error_log("PHPMailer error: " . $e->getMessage());
         return false;
     }
 }
-?>
+
+

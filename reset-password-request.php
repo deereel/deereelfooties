@@ -57,5 +57,9 @@ require_once 'auth/security.php';
         }
     });
     </script>
+    
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="/js/emailjs-service.js"></script>
 </body>
 </html>

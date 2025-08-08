@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$user['user_id'], $token, $expires, $token, $expires]);
             
             // Send verification email
-            require_once 'email-service.php';
+            require_once 'email-service-dev.php';
             $verifyLink = "https://yoursite.com/verify-email.php?token=" . $token;
             $emailBody = "<p>Welcome to DeeReel Footies! Click the link below to verify your email:</p><p><a href='$verifyLink'>Verify Email</a></p>";
             sendEmail($email, "Verify Your Email - DeeReel Footies", $emailBody);

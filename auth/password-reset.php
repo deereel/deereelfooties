@@ -33,11 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE token = ?, expires_at = ?");
             $stmt->execute([$user['user_id'], $token, $expires, $token, $expires]);
             
-            // Send email
-            require_once 'email-service.php';
-            $resetLink = "https://yoursite.com/reset-password.php?token=" . $token;
-            $emailBody = "<p>Click the link below to reset your password:</p><p><a href='$resetLink'>Reset Password</a></p><p>This link expires in 1 hour.</p>";
-            sendEmail($email, "Password Reset - DeeReel Footies", $emailBody);
+            // Send password reset email
+            require_once 'email-service-js.php';
+            $resetLink = "http://localhost/drf/reset-password.php?token=" . $token;
+            sendPasswordResetEmail($email, $resetLink);
         }
         
         echo json_encode(['success' => true, 'message' => 'If email exists, reset link sent']);
