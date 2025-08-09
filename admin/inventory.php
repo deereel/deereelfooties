@@ -110,7 +110,12 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <?= $product['stock_quantity'] ?>
                                     </span>
                                 </td>
-                                <td><?= $product['low_stock_threshold'] ?></td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm threshold-input" 
+                                           value="<?= $product['low_stock_threshold'] ?>" 
+                                           data-product-id="<?= $product['product_id'] ?>" 
+                                           min="0" max="100" style="width: 80px;">
+                                </td>
                                 <td>
                                     <?php if ($product['stock_quantity'] <= $product['low_stock_threshold']): ?>
                                         <span class="badge bg-warning">Low Stock</span>
@@ -193,6 +198,43 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (error) {
             alert('Network error: ' + error.message);
         }
+    });
+    
+    // Handle threshold updates
+    document.querySelectorAll('.threshold-input').forEach(input => {
+        input.addEventListener('change', async function() {
+            const productId = this.dataset.productId;
+            const threshold = this.value;
+            
+            try {
+                const response = await fetch('../api/update-threshold.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId,
+                        threshold: threshold
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    this.style.borderColor = '#28a745';
+                    setTimeout(() => {
+                        this.style.borderColor = '';
+                        location.reload();
+                    }, 1000);
+                } else {
+                    alert('Error updating threshold: ' + data.message);
+                    this.style.borderColor = '#dc3545';
+                }
+            } catch (error) {
+                alert('Network error: ' + error.message);
+                this.style.borderColor = '#dc3545';
+            }
+        });
     });
     </script>
 </body>

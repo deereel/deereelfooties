@@ -232,6 +232,19 @@ footer a:hover {
   border-top: 1px solid var(--border);
 }
 
+/* Force dark text in modals */
+.modal * {
+  color: #212529 !important;
+}
+
+.modal .text-muted {
+  color: #6c757d !important;
+}
+
+.modal .badge {
+  color: white !important;
+}
+
 /* Breadcrumbs */
 .breadcrumb-item a {
   color: var(--primary);

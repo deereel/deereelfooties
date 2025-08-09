@@ -74,32 +74,60 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
             </div>
           </div>
           
-          <!-- Payment Instructions -->
+          <!-- Payment Options -->
           <div class="card p-4 mb-4">
-            <h4 class="mb-3">Payment Instructions</h4>
-            <div class="alert alert-info">
-              <p><strong>Please make payment to any of the following bank accounts:</strong></p>
-              <div class="row mt-3">
-                <div class="col-md-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title">Opay Digital Bank</h5>
-                      <p class="card-text mb-1"><strong>Account Number:</strong> 8134235110</p>
-                      <p class="card-text mb-0"><strong>Account Name:</strong> Oladayo Quadri</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <div class="card h-100">
-                    <div class="card-body">
-                      <h5 class="card-title">Stanbic IBTC Bank</h5>
-                      <p class="card-text mb-1"><strong>Account Number:</strong> 0050379869</p>
-                      <p class="card-text mb-0"><strong>Account Name:</strong> Oladayo Quadri</p>
-                    </div>
+            <h4 class="mb-3">Payment Options</h4>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card border-primary">
+                  <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Pay Online</h5>
+                    <p class="card-text">Pay securely with your card or bank account</p>
+                    <button id="pay-online-btn" class="btn btn-primary w-100" disabled>
+                      <i class="fas fa-credit-card me-2"></i>Pay Now
+                    </button>
                   </div>
                 </div>
               </div>
-              <p class="mt-3 mb-0">After making payment, please upload your payment proof below.</p>
+              <div class="col-md-6 mb-3">
+                <div class="card">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">Bank Transfer</h5>
+                    <p class="card-text">Transfer to our bank account and upload proof</p>
+                    <button id="bank-transfer-btn" class="btn btn-outline-primary w-100">
+                      <i class="fas fa-university me-2"></i>Bank Transfer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Bank Transfer Details (hidden by default) -->
+            <div id="bank-transfer-details" class="mt-4" style="display: none;">
+              <div class="alert alert-info">
+                <p><strong>Please make payment to any of the following bank accounts:</strong></p>
+                <div class="row mt-3">
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5 class="card-title">Opay Digital Bank</h5>
+                        <p class="card-text mb-1"><strong>Account Number:</strong> 8134235110</p>
+                        <p class="card-text mb-0"><strong>Account Name:</strong> Oladayo Quadri</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                      <div class="card-body">
+                        <h5 class="card-title">Stanbic IBTC Bank</h5>
+                        <p class="card-text mb-1"><strong>Account Number:</strong> 0050379869</p>
+                        <p class="card-text mb-0"><strong>Account Name:</strong> Oladayo Quadri</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="mt-3 mb-0">After making payment, please upload your payment proof below.</p>
+              </div>
             </div>
           </div>
           
@@ -135,7 +163,7 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
             <h4>Order Total</h4>
             <hr>
             <p class="mb-1">Subtotal: <span class="fw-bold">₦<span id="checkout-subtotal">0.00</span></span></p>
-            <p class="mb-1">Shipping: <span class="fw-bold" id="checkout-shipping-text">Calculating...</span></p>
+            <p class="mb-1">Shipping: <span id="checkout-shipping-text">Calculating...</span></p>
             <hr>
             <h5>Total: <span class="fw-bold">₦<span id="checkout-total">0.00</span></span></h5>
             
@@ -143,7 +171,7 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
             <div class="mt-3" id="shipping-status">
               <div class="mb-2">
                 <small id="shipping-progress-text" class="text-muted">
-                  Calculating shipping...
+                  Loading shipping information...
                 </small>
               </div>
               <div class="progress mb-2" style="height: 8px;">
@@ -166,6 +194,8 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/account-modal.php'); ?>
   
   <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="/js/payment.js"></script>
 
   <!-- Checkout Page Script -->
   <script>
@@ -293,13 +323,13 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
         // Calculate shipping
         const { shipping, isFreeShipping } = calculateShipping(subtotal, country, state);
         
-        // Update shipping text
+        // Update shipping text - match cart page logic
         if (isFreeShipping) {
           shippingText.textContent = 'Free';
-          shippingText.classList.add('text-success');
+          shippingText.className = 'text-success fw-bold';
         } else {
-          shippingText.textContent = `₦${shipping.toLocaleString()}`;
-          shippingText.classList.remove('text-success');
+          shippingText.textContent = 'Depends on location';
+          shippingText.className = 'fw-bold';
         }
         
         // Update total
@@ -1071,8 +1101,9 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
             // Show success message
             alert('Order placed successfully! Please upload your payment proof to complete your order.');
             
-            // Disable place order button
+            // Disable place order button and enable online payment
             document.getElementById('place-order-btn').disabled = true;
+            document.getElementById('pay-online-btn').disabled = false;
             
             // Scroll to payment proof section
             document.querySelector('.card:nth-child(4)').scrollIntoView({ behavior: 'smooth' });
@@ -1214,6 +1245,22 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
       // Add event listeners
       document.getElementById('place-order-btn').addEventListener('click', handlePlaceOrder);
       document.getElementById('payment-proof-form').addEventListener('submit', handlePaymentProofSubmit);
+      
+      // Payment option handlers
+      document.getElementById('pay-online-btn').addEventListener('click', function() {
+        if (orderId) {
+          const customerInfo = getCustomerInfo();
+          const total = parseFloat(document.getElementById('checkout-total').textContent.replace(/,/g, ''));
+          paymentHandler.payWithPaystack(customerInfo.email, total, orderId);
+        } else {
+          alert('Please place your order first.');
+        }
+      });
+      
+      document.getElementById('bank-transfer-btn').addEventListener('click', function() {
+        const details = document.getElementById('bank-transfer-details');
+        details.style.display = details.style.display === 'none' ? 'block' : 'none';
+      });
     });
   </script>
 </body>

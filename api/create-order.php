@@ -133,6 +133,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Commit transaction
         $pdo->commit();
         
+        // Send order confirmation email
+        if (!empty($data['email'])) {
+            try {
+                require_once '../auth/email-service-js.php';
+                
+                // Format items for email
+                $itemsList = '';
+                foreach ($data['items'] as $item) {
+                    $itemName = $item['product_name'] ?? $item['name'] ?? 'Product';
+                    $itemPrice = number_format($item['price'] ?? 0, 2);
+                    $itemQty = $item['quantity'] ?? 1;
+                    $itemsList .= "- {$itemName} (₦{$itemPrice} x {$itemQty})\n";
+                }
+                
+                $shippingAddress = $data['address'] . ', ' . $data['city'] . ', ' . $data['state'] . ', ' . $data['country'];
+                
+                sendOrderConfirmationEmail(
+                    $data['email'],
+                    $data['customer_name'],
+                    $orderId,
+                    number_format($data['total'], 2),
+                    $itemsList,
+                    $shippingAddress
+                );
+            } catch (Exception $e) {
+                // Log email error but don't fail the order
+                error_log("Order confirmation email failed: " . $e->getMessage());
+            }
+        }
+        
         echo json_encode([
             'success' => true,
             'message' => 'Order created successfully',

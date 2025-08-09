@@ -217,51 +217,51 @@ class DashboardOrdersManager {
     const statusBadge = this.getStatusBadge(order.status);
     
     content.innerHTML = `
-      <div class="row mb-4">
+      <div class="row mb-4 text-dark">
         <div class="col-md-6">
-          <h6>Order Information</h6>
-          <p><strong>Order ID:</strong> #${order.order_id}</p>
-          <p><strong>Date:</strong> ${orderDate}</p>
-          <p><strong>Status:</strong> ${statusBadge}</p>
+          <h6 class="text-dark">Order Information</h6>
+          <p class="text-dark"><strong>Order ID:</strong> #${order.order_id}</p>
+          <p class="text-dark"><strong>Date:</strong> ${orderDate}</p>
+          <p class="text-dark"><strong>Status:</strong> ${statusBadge}</p>
         </div>
         <div class="col-md-6">
-          <h6>Shipping Address</h6>
-          <p>${this.formatShippingAddress(order)}</p>
+          <h6 class="text-dark">Shipping Address</h6>
+          <p class="text-dark">${this.formatShippingAddress(order)}</p>
         </div>
       </div>
       
       <div class="mb-4">
-        <h6>Order Items</h6>
+        <h6 class="text-dark">Order Items</h6>
         <div class="table-responsive">
-          <table class="table table-sm">
+          <table class="table table-sm text-dark">
             <thead>
               <tr>
-                <th>Product</th>
-                <th>Details</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Total</th>
+                <th class="text-dark">Product</th>
+                <th class="text-dark">Details</th>
+                <th class="text-dark">Price</th>
+                <th class="text-dark">Qty</th>
+                <th class="text-dark">Total</th>
               </tr>
             </thead>
             <tbody>
               ${(order.items || []).map(item => `
                 <tr>
-                  <td>
+                  <td class="text-dark">
                     <div class="d-flex align-items-center">
                       <img src="${item.image || '/images/product-placeholder.jpg'}" class="me-2" style="width: 40px; height: 40px; object-fit: cover;" alt="${item.product_name}">
-                      <span>${item.product_name}</span>
+                      <span class="text-dark">${item.product_name}</span>
                     </div>
                   </td>
-                  <td>
-                    <small>
+                  <td class="text-dark">
+                    <small class="text-dark">
                       ${item.color ? `Color: ${item.color}<br>` : ''}
                       ${item.size ? `Size: ${item.size}<br>` : ''}
                       ${item.width ? `Width: ${item.width}` : ''}
                     </small>
                   </td>
-                  <td>₦${parseFloat(item.price).toFixed(2)}</td>
-                  <td>${item.quantity}</td>
-                  <td>₦${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
+                  <td class="text-dark">₦${parseFloat(item.price).toFixed(2)}</td>
+                  <td class="text-dark">${item.quantity}</td>
+                  <td class="text-dark">₦${(parseFloat(item.price) * parseInt(item.quantity)).toFixed(2)}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -269,19 +269,22 @@ class DashboardOrdersManager {
         </div>
       </div>
       
-      <div class="row">
+      <div class="row text-dark">
         <div class="col-md-6">
-          <h6>Payment Information</h6>
-          <p><strong>Payment Method:</strong> ${order.payment_method || 'Bank Transfer'}</p>
-          <p><strong>Payment Status:</strong> ${this.getPaymentStatusBadge(order.payment_confirmed, order.payment_proof)}</p>
+          <h6 class="text-dark">Payment Information</h6>
+          <p class="text-dark"><strong>Payment Method:</strong> ${order.payment_method || 'Bank Transfer'}</p>
+          <p class="text-dark"><strong>Payment Status:</strong> ${this.getPaymentStatusBadge(order.payment_confirmed, order.payment_proof)}</p>
+          <div class="mt-3">
+            <button class="btn btn-sm btn-warning" onclick="showPaymentUpload('${order.order_id}')">Upload Payment Proof</button>
+          </div>
         </div>
         <div class="col-md-6">
-          <h6>Order Summary</h6>
-          <div class="d-flex justify-content-between mb-2">
+          <h6 class="text-dark">Order Summary</h6>
+          <div class="d-flex justify-content-between mb-2 text-dark">
             <span>Subtotal:</span>
             <span>₦${parseFloat(order.subtotal).toFixed(2)}</span>
           </div>
-          <div class="d-flex justify-content-between mb-2">
+          <div class="d-flex justify-content-between mb-2 text-dark">
             <span>Shipping:</span>
             <span>₦${parseFloat(order.shipping).toFixed(2)}</span>
           </div>
@@ -291,7 +294,7 @@ class DashboardOrdersManager {
             <span>-₦${parseFloat(order.discount).toFixed(2)}</span>
           </div>` : ''}
           <hr>
-          <div class="d-flex justify-content-between fw-bold">
+          <div class="d-flex justify-content-between fw-bold text-dark">
             <span>Total:</span>
             <span>₦${parseFloat(order.total).toFixed(2)}</span>
           </div>
@@ -370,3 +373,53 @@ document.addEventListener('DOMContentLoaded', function() {
     window.dashboardOrdersManager = new DashboardOrdersManager();
   }
 });
+
+// Payment proof upload function
+function showPaymentUpload(orderId) {
+  const modal = document.getElementById('orderDetailsModal');
+  const content = document.getElementById('orderDetailsContent');
+  
+  content.innerHTML = `
+    <div class="text-dark">
+      <h5 class="mb-3">Upload Payment Proof</h5>
+      <form id="payment-proof-form" enctype="multipart/form-data">
+        <input type="hidden" name="order_id" value="${orderId}">
+        <div class="mb-3">
+          <label for="proof_image" class="form-label">Payment Proof</label>
+          <input type="file" class="form-control" name="proof_image" accept="image/*,application/pdf" required>
+          <div class="form-text">Accepted formats: JPG, PNG, PDF</div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Upload Proof</button>
+          <button type="button" class="btn btn-secondary" onclick="dashboardOrdersManager.viewOrderDetails('${orderId}')">Back</button>
+        </div>
+      </form>
+    </div>
+  `;
+  
+  // Handle form submission
+  document.getElementById('payment-proof-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    try {
+      const response = await fetch('/api/payment_proof.php', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('Payment proof uploaded successfully!');
+        dashboardOrdersManager.viewOrderDetails(orderId);
+        dashboardOrdersManager.loadOrders();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      alert('Upload failed. Please try again.');
+    }
+  });
+}

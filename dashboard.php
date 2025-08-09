@@ -462,12 +462,12 @@ $page = 'dashboard';
                           const size = item.size || item.selected_size || 'N/A';
                           
                           itemsHtml += `
-                              <div class="row align-items-center mb-3 pb-3 border-bottom">
+                              <div class="row align-items-center mb-3 pb-3 border-bottom text-dark">
                                   <div class="col-md-2">
                                       <img src="${imageUrl}" alt="${item.product_name || 'Product'}" class="img-fluid rounded" style="max-height: 80px; object-fit: cover;">
                                   </div>
                                   <div class="col-md-6">
-                                      <h6 class="mb-1">${item.product_name || 'Product'}</h6>
+                                      <h6 class="mb-1 text-dark">${item.product_name || 'Product'}</h6>
                                       <div class="text-muted small">
                                           <div>Color: ${color}</div>
                                           <div>Size: ${size}</div>
@@ -475,11 +475,11 @@ $page = 'dashboard';
                                       </div>
                                   </div>
                                   <div class="col-md-2 text-center">
-                                      <div class="fw-bold">₦${parseFloat(item.price || 0).toLocaleString()}</div>
+                                      <div class="fw-bold text-dark">₦${parseFloat(item.price || 0).toLocaleString()}</div>
                                       <small class="text-muted">each</small>
                                   </div>
                                   <div class="col-md-2 text-end">
-                                      <div class="fw-bold">₦${(parseFloat(item.price || 0) * parseInt(item.quantity || 1)).toLocaleString()}</div>
+                                      <div class="fw-bold text-dark">₦${(parseFloat(item.price || 0) * parseInt(item.quantity || 1)).toLocaleString()}</div>
                                       <small class="text-muted">total</small>
                                   </div>
                               </div>
@@ -496,7 +496,7 @@ $page = 'dashboard';
                               <div class="d-flex mb-3">
                                   <div class="me-3"><i class="bi bi-circle-fill text-primary"></i></div>
                                   <div>
-                                      <strong>${status.status}</strong><br>
+                                      <strong class="text-dark">${status.status}</strong><br>
                                       <small class="text-muted">${new Date(status.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</small>
                                   </div>
                               </div>
@@ -508,7 +508,7 @@ $page = 'dashboard';
                           <div class="d-flex mb-3">
                               <div class="me-3"><i class="bi bi-circle-fill text-primary"></i></div>
                               <div>
-                                  <strong>${order.status}</strong><br>
+                                  <strong class="text-dark">${order.status}</strong><br>
                                   <small class="text-muted">${new Date(order.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</small>
                               </div>
                           </div>
@@ -523,29 +523,29 @@ $page = 'dashboard';
                   }
                   
                   content.innerHTML = `
-                      <div class="row mb-4">
+                      <div class="row mb-4 text-dark">
                           <div class="col-md-6">
                               <div class="card">
-                                  <div class="card-header"><h5>Order Information</h5></div>
+                                  <div class="card-header"><h5 class="text-dark">Order Information</h5></div>
                                   <div class="card-body">
-                                      <table class="table table-borderless">
-                                          <tr><th>Order ID:</th><td>#${order.order_id}</td></tr>
-                                          <tr><th>Date:</th><td>${new Date(order.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</td></tr>
-                                          <tr><th>Status:</th><td><span class="badge bg-${order.status === 'Completed' ? 'success' : (order.status === 'Processing' ? 'primary' : (order.status === 'Cancelled' ? 'danger' : 'warning'))}">${order.status}</span></td></tr>
-                                          <tr><th>Payment:</th><td><span class="badge bg-${paymentBadge}">${paymentStatus}</span></td></tr>
-                                          <tr><th>Total:</th><td>₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</td></tr>
+                                      <table class="table table-borderless text-dark">
+                                          <tr><th class="text-dark">Order ID:</th><td class="text-dark">#${order.order_id}</td></tr>
+                                          <tr><th class="text-dark">Date:</th><td class="text-dark">${new Date(order.created_at).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'})}</td></tr>
+                                          <tr><th class="text-dark">Status:</th><td class="text-dark"><span class="badge bg-${order.status === 'Completed' ? 'success' : (order.status === 'Processing' ? 'primary' : (order.status === 'Cancelled' ? 'danger' : 'warning'))}">${order.status}</span></td></tr>
+                                          <tr><th class="text-dark">Payment:</th><td class="text-dark"><span class="badge bg-${paymentBadge}">${paymentStatus}</span></td></tr>
+                                          <tr><th class="text-dark">Total:</th><td class="text-dark">₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</td></tr>
                                       </table>
                                   </div>
                               </div>
                           </div>
                           <div class="col-md-6">
                               <div class="card">
-                                  <div class="card-header"><h5>Customer Information</h5></div>
+                                  <div class="card-header"><h5 class="text-dark">Customer Information</h5></div>
                                   <div class="card-body">
-                                      <table class="table table-borderless">
-                                          <tr><th>Name:</th><td>${order.customer_name || order.name || 'N/A'}</td></tr>
-                                          <tr><th>Email:</th><td>${order.customer_email || order.email || 'N/A'}</td></tr>
-                                          <tr><th>Phone:</th><td>${data.user && data.user.phone ? data.user.phone : 'N/A'}</td></tr>
+                                      <table class="table table-borderless text-dark">
+                                          <tr><th class="text-dark">Name:</th><td class="text-dark">${order.customer_name || order.name || 'N/A'}</td></tr>
+                                          <tr><th class="text-dark">Email:</th><td class="text-dark">${order.customer_email || order.email || 'N/A'}</td></tr>
+                                          <tr><th class="text-dark">Phone:</th><td class="text-dark">${data.user && data.user.phone ? data.user.phone : 'N/A'}</td></tr>
                                       </table>
                                   </div>
                               </div>
@@ -554,11 +554,12 @@ $page = 'dashboard';
                       <div class="row mb-4">
                           <div class="col-md-12">
                               <div class="card">
-                                  <div class="card-header"><h5>Shipping Information</h5></div>
-                                  <div class="card-body">
+                                  <div class="card-header"><h5 class="text-dark">Shipping Information</h5></div>
+                                  <div class="card-body text-dark">
                                       <div class="row">
                                           <div class="col-md-6">
-                                              <strong>Shipping Address:</strong><br>
+                                              <strong class="text-dark">Shipping Address:</strong><br>
+                                              <span class="text-dark">
                                               ${data.shipping_address && data.shipping_address.name ? `${data.shipping_address.name}<br>` : ''}
                                               ${data.shipping_address && data.shipping_address.phone ? `${data.shipping_address.phone}<br>` : ''}
                                               ${data.shipping_address && data.shipping_address.street ? 
@@ -566,12 +567,13 @@ $page = 'dashboard';
                                                    ${data.shipping_address.city || ''}, ${data.shipping_address.state || ''} ${data.shipping_address.zip || ''}<br>
                                                    ${data.shipping_address.country || ''}` : 
                                                   'No address provided'}
+                                              </span>
                                           </div>
                                           <div class="col-md-6">
-                                              <strong>Shipping Method:</strong><br>
-                                              ${data.shipping_method || order.shipping_method || 'Standard Shipping'}<br><br>
-                                              <strong>Tracking Number:</strong><br>
-                                              ${data.tracking_number || order.tracking_number || 'Not available'}
+                                              <strong class="text-dark">Shipping Method:</strong><br>
+                                              <span class="text-dark">${data.shipping_method || order.shipping_method || 'Standard Shipping'}</span><br><br>
+                                              <strong class="text-dark">Tracking Number:</strong><br>
+                                              <span class="text-dark">${data.tracking_number || order.tracking_number || 'Not available'}</span>
                                           </div>
                                       </div>
                                   </div>
@@ -581,35 +583,40 @@ $page = 'dashboard';
                       <div class="row">
                           <div class="col-md-8">
                               <div class="card mb-4">
-                                  <div class="card-header"><h5>Order Items</h5></div>
-                                  <div class="card-body">${itemsHtml}</div>
+                                  <div class="card-header"><h5 class="text-dark">Order Items</h5></div>
+                                  <div class="card-body text-dark">${itemsHtml}</div>
                               </div>
                               <div class="card">
-                                  <div class="card-header"><h5>Order Status History</h5></div>
-                                  <div class="card-body">${historyHtml}</div>
+                                  <div class="card-header"><h5 class="text-dark">Order Status History</h5></div>
+                                  <div class="card-body text-dark">${historyHtml}</div>
                               </div>
                           </div>
                           <div class="col-md-4">
                               <div class="card">
-                                  <div class="card-header"><h5>Order Summary</h5></div>
-                                  <div class="card-body">
+                                  <div class="card-header"><h5 class="text-dark">Order Summary</h5></div>
+                                  <div class="card-body text-dark">
                                       <div class="d-flex justify-content-between mb-2">
-                                          <span>Items:</span>
-                                          <span>${items ? items.length : 0} item${items && items.length !== 1 ? 's' : ''}</span>
+                                          <span class="text-dark">Items:</span>
+                                          <span class="text-dark">${items ? items.length : 0} item${items && items.length !== 1 ? 's' : ''}</span>
                                       </div>
                                       <div class="d-flex justify-content-between mb-2">
-                                          <span>Subtotal:</span>
-                                          <span>₦${parseFloat(order.subtotal || order.total || 0).toLocaleString()}</span>
+                                          <span class="text-dark">Subtotal:</span>
+                                          <span class="text-dark">₦${parseFloat(order.subtotal || order.total || 0).toLocaleString()}</span>
                                       </div>
                                       <div class="d-flex justify-content-between mb-2">
-                                          <span>Shipping:</span>
-                                          <span>₦${parseFloat(order.shipping_cost || 0).toLocaleString()}</span>
+                                          <span class="text-dark">Shipping:</span>
+                                          <span class="text-dark">₦${parseFloat(order.shipping_cost || 0).toLocaleString()}</span>
                                       </div>
                                       <hr>
                                       <div class="d-flex justify-content-between">
-                                          <strong>Total:</strong>
-                                          <strong>₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</strong>
+                                          <strong class="text-dark">Total:</strong>
+                                          <strong class="text-dark">₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</strong>
                                       </div>
+                                      ${(order.status === 'Pending' || order.status === 'pending') && (!order.payment_confirmed || order.payment_confirmed == 0) ? `
+                                        <div class="mt-3">
+                                          <button class="btn btn-sm btn-warning w-100" onclick="showPaymentUpload('${order.order_id}')">Upload Payment Proof</button>
+                                        </div>
+                                      ` : ''}
                                   </div>
                               </div>
                           </div>
@@ -622,6 +629,55 @@ $page = 'dashboard';
           .catch(error => {
               content.innerHTML = '<div class="alert alert-danger">Error loading order details</div>';
           });
+  }
+  
+  // Payment proof upload function
+  function showPaymentUpload(orderId) {
+    const modal = document.getElementById('orderDetailsModal');
+    const content = document.getElementById('orderDetailsContent');
+    
+    content.innerHTML = `
+      <div class="text-dark">
+        <h5 class="mb-3">Upload Payment Proof</h5>
+        <form id="payment-proof-form" enctype="multipart/form-data">
+          <input type="hidden" name="order_id" value="${orderId}">
+          <div class="mb-3">
+            <label for="proof_image" class="form-label">Payment Proof</label>
+            <input type="file" class="form-control" name="proof_image" accept="image/*,application/pdf" required>
+            <div class="form-text">Accepted formats: JPG, PNG, PDF</div>
+          </div>
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Upload Proof</button>
+            <button type="button" class="btn btn-secondary" onclick="showOrderDetails('${orderId}')">Back</button>
+          </div>
+        </form>
+      </div>
+    `;
+    
+    // Handle form submission
+    document.getElementById('payment-proof-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      
+      try {
+        const response = await fetch('/api/payment_proof.php', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert('Payment proof uploaded successfully!');
+          showOrderDetails(orderId);
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        alert('Upload failed. Please try again.');
+      }
+    });
   }
   </script>
   

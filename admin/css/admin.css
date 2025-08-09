@@ -5,6 +5,45 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Fix white text issue */
+* {
+  color: #212529 !important;
+}
+
+.text-white, .text-white *, .badge, .btn {
+  color: white !important;
+}
+
+/* Force dark text in all modals */
+.modal * {
+  color: #212529 !important;
+}
+
+.modal .text-muted {
+  color: #6c757d !important;
+}
+
+/* Modal text color fixes */
+.modal-body {
+  color: #212529 !important;
+}
+
+.modal-body *, .modal-body p, .modal-body span, .modal-body div, .modal-body h1, .modal-body h2, .modal-body h3, .modal-body h4, .modal-body h5, .modal-body h6, .modal-body strong, .modal-body td, .modal-body th {
+  color: #212529 !important;
+}
+
+.modal-body .text-muted {
+  color: #6c757d !important;
+}
+
+#orderDetailsModal .modal-body * {
+  color: #212529 !important;
+}
+
+#orderDetailsContent * {
+  color: #212529 !important;
+}
+
 /* Brand Colors */
 :root {
   --primary-color: #000;
@@ -127,6 +166,15 @@ body {
 
 .timeline-content {
   margin: 0;
+  color: #212529 !important;
+}
+
+.timeline-item {
+  color: #212529 !important;
+}
+
+.timeline-item * {
+  color: #212529 !important;
 }
 
 /* Tables */

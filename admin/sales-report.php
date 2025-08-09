@@ -14,16 +14,17 @@ require_once '../auth/db.php';
 $period = isset($_GET['period']) ? $_GET['period'] : 'monthly';
 $year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
 $month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
+$week = isset($_GET['week']) ? (int)$_GET['week'] : (int)date('W');
 
 // Get sales data
 try {
-    $salesData = getSalesData($pdo, $period, $year, $month);
-    $chartData = getChartData($pdo, $period, $year, $month);
+    $salesData = getSalesData($pdo, $period, $year, $month, $week);
+    $chartData = getChartData($pdo, $period, $year, $month, $week);
 } catch (PDOException $e) {
     $error = 'Error retrieving sales data: ' . $e->getMessage();
 }
 
-function getSalesData($pdo, $period, $year, $month) {
+function getSalesData($pdo, $period, $year, $month, $week) {
     $data = [
         'total_sales' => 0,
         'total_orders' => 0,
@@ -39,8 +40,9 @@ function getSalesData($pdo, $period, $year, $month) {
     
     switch ($period) {
         case 'weekly':
-            $startDate = date('Y-m-d', strtotime('monday this week'));
-            $endDate = date('Y-m-d', strtotime('sunday this week'));
+            // Calculate start and end dates for the selected week
+            $startDate = date('Y-m-d', strtotime($year . 'W' . sprintf('%02d', $week) . '1'));
+            $endDate = date('Y-m-d', strtotime($year . 'W' . sprintf('%02d', $week) . '7'));
             $dateFilter = "DATE(created_at) BETWEEN ? AND ?";
             $params = [$startDate, $endDate];
             break;
@@ -78,8 +80,10 @@ function getSalesData($pdo, $period, $year, $month) {
     
     switch ($period) {
         case 'weekly':
-            $prevStart = date('Y-m-d', strtotime('monday last week'));
-            $prevEnd = date('Y-m-d', strtotime('sunday last week'));
+            $prevWeek = $week == 1 ? 52 : $week - 1;
+            $prevYear = $week == 1 ? $year - 1 : $year;
+            $prevStart = date('Y-m-d', strtotime($prevYear . 'W' . sprintf('%02d', $prevWeek) . '1'));
+            $prevEnd = date('Y-m-d', strtotime($prevYear . 'W' . sprintf('%02d', $prevWeek) . '7'));
             $prevDateFilter = "DATE(created_at) BETWEEN ? AND ?";
             $prevParams = [$prevStart, $prevEnd];
             break;
@@ -108,14 +112,14 @@ function getSalesData($pdo, $period, $year, $month) {
     return $data;
 }
 
-function getChartData($pdo, $period, $year, $month) {
+function getChartData($pdo, $period, $year, $month, $week) {
     $chartData = [];
     
     switch ($period) {
         case 'weekly':
-            // Get data for each day of the current week
-            for ($i = 0; $i < 7; $i++) {
-                $date = date('Y-m-d', strtotime('monday this week +' . $i . ' days'));
+            // Get data for each day of the selected week
+            for ($i = 1; $i <= 7; $i++) {
+                $date = date('Y-m-d', strtotime($year . 'W' . sprintf('%02d', $week) . $i));
                 $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE DATE(created_at) = ?");
                 $stmt->execute([$date]);
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -179,7 +183,7 @@ function getChartData($pdo, $period, $year, $month) {
                     <h1 class="h2">Sales Report</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <a href="?period=weekly" class="btn btn-sm btn-outline-secondary <?php echo $period === 'weekly' ? 'active' : ''; ?>">Weekly</a>
+                            <a href="?period=weekly&year=<?php echo $year; ?>&week=<?php echo $week; ?>" class="btn btn-sm btn-outline-secondary <?php echo $period === 'weekly' ? 'active' : ''; ?>">Weekly</a>
                             <a href="?period=monthly&year=<?php echo $year; ?>&month=<?php echo $month; ?>" class="btn btn-sm btn-outline-secondary <?php echo $period === 'monthly' ? 'active' : ''; ?>">Monthly</a>
                             <a href="?period=yearly&year=<?php echo $year; ?>" class="btn btn-sm btn-outline-secondary <?php echo $period === 'yearly' ? 'active' : ''; ?>">Yearly</a>
                         </div>
@@ -196,12 +200,23 @@ function getChartData($pdo, $period, $year, $month) {
                         <form method="GET" class="row g-3">
                             <input type="hidden" name="period" value="<?php echo $period; ?>">
                             
-                            <?php if ($period === 'monthly' || $period === 'yearly'): ?>
+                            <?php if ($period === 'weekly' || $period === 'monthly' || $period === 'yearly'): ?>
                             <div class="col-md-3">
                                 <label for="year" class="form-label">Year</label>
                                 <select name="year" id="year" class="form-select">
                                     <?php for ($y = date('Y'); $y >= 2020; $y--): ?>
                                         <option value="<?php echo $y; ?>" <?php echo $y === $year ? 'selected' : ''; ?>><?php echo $y; ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                            <?php endif; ?>
+                            
+                            <?php if ($period === 'weekly'): ?>
+                            <div class="col-md-3">
+                                <label for="week" class="form-label">Week</label>
+                                <select name="week" id="week" class="form-select">
+                                    <?php for ($w = 1; $w <= 53; $w++): ?>
+                                        <option value="<?php echo $w; ?>" <?php echo $w === $week ? 'selected' : ''; ?>>Week <?php echo $w; ?></option>
                                     <?php endfor; ?>
                                 </select>
                             </div>
