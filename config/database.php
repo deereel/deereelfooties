@@ -1,7 +1,7 @@
 <?php
 // Database configuration
 $host = 'localhost';
-$dbname = 'deereelfooties'; // Change this to your actual database name
+$dbname = 'drf_database'; // Change this to your actual database name
 $username = 'root'; // Change if you have a different username
 $password = ''; // Change if you have a password set
 

@@ -31,6 +31,12 @@
                     Customers
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'social-media.php' ? 'active' : ''; ?>" href="social-media.php">
+                    <i class="bi bi-camera me-1"></i>
+                    Social Media
+                </a>
+            </li>
         </ul>
         
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
