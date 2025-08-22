@@ -22,6 +22,22 @@ if ($orderId <= 0) {
 $message = '';
 $messageType = '';
 
+// Get order details first (needed for all operations)
+$order = null;
+try {
+    $orderStmt = $pdo->prepare("SELECT * FROM orders WHERE order_id = ?");
+    $orderStmt->execute([$orderId]);
+    $order = $orderStmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$order) {
+        header('Location: index.php');
+        exit;
+    }
+} catch (PDOException $e) {
+    header('Location: index.php');
+    exit;
+}
+
 // Handle payment confirmation
 if (isset($_POST['confirm_payment'])) {
     try {
@@ -36,41 +52,25 @@ if (isset($_POST['confirm_payment'])) {
         $itemsStmt->execute([$orderId]);
         $orderItems = $itemsStmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Update inventory and log transactions
+        // Update inventory and log sales transactions
         $inventoryUpdated = 0;
         foreach ($orderItems as $item) {
             if ($item['product_id']) {
-                // Get current stock
-                $currentStockStmt = $pdo->prepare("SELECT stock_quantity, name FROM products WHERE product_id = ?");
-                $currentStockStmt->execute([$item['product_id']]);
-                $product = $currentStockStmt->fetch(PDO::FETCH_ASSOC);
+                // Get product info
+                $productStmt = $pdo->prepare("SELECT stock_quantity, name FROM products WHERE product_id = ?");
+                $productStmt->execute([$item['product_id']]);
+                $product = $productStmt->fetch(PDO::FETCH_ASSOC);
                 
-                if ($product && $order) {
+                if ($product) {
                     $previousStock = $product['stock_quantity'];
                     $newStock = $previousStock - $item['quantity'];
-                    $customerName = $order['customer_name'] ?? 'Unknown Customer';
                     
                     // Update stock
                     $stockStmt = $pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?");
                     $stockStmt->execute([$item['quantity'], $item['product_id']]);
                     
-                    // Log inventory transaction (check if table has customer columns)
+                    // Log inventory transaction
                     try {
-                        $logStmt = $pdo->prepare("INSERT INTO inventory_transactions 
-                            (product_id, product_name, transaction_type, quantity, previous_stock, new_stock, reason, order_id, customer_name) 
-                            VALUES (?, ?, 'sale', ?, ?, ?, ?, ?, ?)");
-                        $logStmt->execute([
-                            $item['product_id'],
-                            $product['name'],
-                            $item['quantity'],
-                            $previousStock,
-                            $newStock,
-                            "Sold to {$customerName} (Order #{$orderId})",
-                            $orderId,
-                            $customerName
-                        ]);
-                    } catch (PDOException $e) {
-                        // Fallback for tables without customer columns
                         $logStmt = $pdo->prepare("INSERT INTO inventory_transactions 
                             (product_id, transaction_type, quantity, previous_stock, new_stock, reason) 
                             VALUES (?, 'sale', ?, ?, ?, ?)");
@@ -79,8 +79,10 @@ if (isset($_POST['confirm_payment'])) {
                             $item['quantity'],
                             $previousStock,
                             $newStock,
-                            "Sold to {$customerName} (Order #{$orderId})"
+                            "Sale to {$order['customer_name']} (Order #{$orderId})"
                         ]);
+                    } catch (PDOException $e) {
+                        // Continue if logging fails
                     }
                     
                     $inventoryUpdated++;
@@ -103,22 +105,6 @@ if (isset($_POST['confirm_payment'])) {
         $message = 'Error confirming payment: ' . $e->getMessage();
         $messageType = 'danger';
     }
-}
-
-// Get order details first (needed for status updates)
-$order = null;
-try {
-    $orderStmt = $pdo->prepare("SELECT * FROM orders WHERE order_id = ?");
-    $orderStmt->execute([$orderId]);
-    $order = $orderStmt->fetch(PDO::FETCH_ASSOC);
-    
-    if (!$order) {
-        header('Location: index.php');
-        exit;
-    }
-} catch (PDOException $e) {
-    header('Location: index.php');
-    exit;
 }
 
 // Handle status update
