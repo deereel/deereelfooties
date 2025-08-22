@@ -70,7 +70,16 @@ try {
     <title>Business Report - DeeReel Footies</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin.css">
     <style>
+        .admin-layout .admin-sidebar {
+            position: absolute !important;
+            overflow-y: auto !important;
+            height: 400px !important;
+            max-height: 400px !important;
+            min-height: 400px !important;
+        }
+        
         @media print {
             .no-print { display: none !important; }
             .print-break { page-break-before: always; }
@@ -101,11 +110,11 @@ try {
     <div class="no-print">
         <?php include 'includes/header.php'; ?>
         
-        <div class="container-fluid">
-            <div class="row">
-                <?php include 'includes/sidebar.php'; ?>
-                
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+        <div class="admin-layout">
+            <?php include 'includes/sidebar.php'; ?>
+            
+            <div class="admin-content">
+                <main>
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h1 class="h2">Business Reports</h1>
                         <div class="btn-group">

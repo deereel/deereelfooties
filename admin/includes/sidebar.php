@@ -1,5 +1,5 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-    <div class="position-sticky pt-3">
+<nav id="sidebarMenu" class="admin-sidebar">
+    <div class="p-3">
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'index.php' ? 'active' : ''; ?>" href="index.php">
@@ -35,6 +35,12 @@
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'social-media.php' ? 'active' : ''; ?>" href="social-media.php">
                     <i class="bi bi-camera me-1"></i>
                     Social Media
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'slide-generator.php' ? 'active' : ''; ?>" href="slide-generator.php">
+                    <i class="bi bi-images me-1"></i>
+                    Slide Generator
                 </a>
             </li>
         </ul>

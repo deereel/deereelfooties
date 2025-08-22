@@ -1,7 +1,4 @@
 <?php
-require_once '../auth/db.php';
-
-// Set headers for JSON response
 header('Content-Type: application/json');
 
 // Handle POST request for creating an order
@@ -14,56 +11,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
+    // Enhanced validation
+    $required_fields = ['customer_name', 'address', 'city', 'state', 'country', 'items', 'subtotal', 'total'];
+    foreach ($required_fields as $field) {
+        if (!isset($data[$field]) || (is_string($data[$field]) && trim($data[$field]) === '')) {
+            echo json_encode(['success' => false, 'message' => "Missing required field: {$field}"]);
+            exit;
+        }
+    }
+    
+    // Validate items array
+    if (!is_array($data['items']) || empty($data['items'])) {
+        echo json_encode(['success' => false, 'message' => 'Order must contain at least one item']);
+        exit;
+    }
+    
+    // Validate numeric fields
+    if (!is_numeric($data['subtotal']) || !is_numeric($data['total'])) {
+        echo json_encode(['success' => false, 'message' => 'Invalid numeric values for subtotal or total']);
+        exit;
+    }
+    
     try {
+        require_once '../auth/db.php';
+        
+        // Set default order status
+        $orderStatus = 'Pending';
+        
         // Start transaction
         $pdo->beginTransaction();
-        
-        // Check if orders table exists, if not create it
-        try {
-            $checkTableStmt = $pdo->prepare("DESCRIBE orders");
-            $checkTableStmt->execute();
-        } catch (PDOException $e) {
-            // Create orders table
-            $createTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS orders (
-                order_id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT NULL,
-                customer_name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NULL,
-                phone VARCHAR(50) NULL,
-                address TEXT NOT NULL,
-                city VARCHAR(100) NOT NULL,
-                state VARCHAR(100) NOT NULL,
-                country VARCHAR(100) NOT NULL,
-                subtotal DECIMAL(10,2) NOT NULL,
-                shipping DECIMAL(10,2) NOT NULL,
-                total DECIMAL(10,2) NOT NULL,
-                payment_method VARCHAR(50) NOT NULL,
-                status VARCHAR(50) DEFAULT 'Pending',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )");
-            $createTableStmt->execute();
-            
-            // Create order_items table
-            $createItemsTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS order_items (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                order_id INT NOT NULL,
-                product_id VARCHAR(50) NOT NULL,
-                product_name VARCHAR(255) NOT NULL,
-                price DECIMAL(10,2) NOT NULL,
-                quantity INT NOT NULL,
-                color VARCHAR(50) NULL,
-                size VARCHAR(20) NULL,
-                width VARCHAR(20) NULL,
-                image VARCHAR(255) NULL
-            )");
-            $createItemsTableStmt->execute();
-        }
         
         // Insert order
         $stmt = $pdo->prepare("INSERT INTO orders (
             user_id, customer_name, email, phone, address, city, state, country,
-            subtotal, shipping, total, payment_method
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            subtotal, shipping, total, payment_method, status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         $stmt->execute([
             $data['user_id'] ?? null,
@@ -75,107 +57,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data['state'],
             $data['country'],
             $data['subtotal'],
-            $data['shipping'],
+            $data['shipping'] ?? 0,
             $data['total'],
-            $data['payment_method']
+            $data['payment_method'] ?? 'bank_transfer',
+            $orderStatus
         ]);
         
         $orderId = $pdo->lastInsertId();
         
-        // Insert order items
+        // Insert order items and update inventory
         $itemStmt = $pdo->prepare("INSERT INTO order_items (
             order_id, product_id, product_name, price, quantity, color, size, width, image
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
         foreach ($data['items'] as $item) {
-            // Normalize item data
             $productId = $item['product_id'] ?? $item['id'] ?? '';
-            $productName = $item['product_name'] ?? $item['name'] ?? 'Unknown Product';
-            $price = floatval($item['price'] ?? 0);
             $quantity = intval($item['quantity'] ?? 1);
-            $color = $item['color'] ?? '';
-            $size = $item['size'] ?? '';
-            $width = $item['width'] ?? '';
-            $image = $item['image'] ?? '';
             
             $itemStmt->execute([
                 $orderId,
                 $productId,
-                $productName,
-                $price,
+                $item['product_name'] ?? $item['name'] ?? 'Unknown Product',
+                floatval($item['price'] ?? 0),
                 $quantity,
-                $color,
-                $size,
-                $width,
-                $image
+                $item['color'] ?? '',
+                $item['size'] ?? '',
+                $item['width'] ?? '',
+                $item['image'] ?? ''
             ]);
+            
+            // Note: Inventory will be updated when payment is confirmed, not at order placement
         }
         
-        // Create order progress entry
+        // Add initial order status tracking
         try {
-            $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
-            $progressStmt->execute([$orderId, 'Order created']);
-        } catch (PDOException $e) {
-            // Create order_progress table if it doesn't exist
-            $createProgressTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS order_progress (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                order_id INT NOT NULL,
-                status_update VARCHAR(255) NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )");
-            $createProgressTableStmt->execute();
-            
-            // Try again
-            $progressStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
-            $progressStmt->execute([$orderId, 'Order created']);
+            $statusStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
+            $statusStmt->execute([$orderId, 'Order created and pending payment']);
+        } catch (Exception $statusError) {
+            // Create table if it doesn't exist
+            try {
+                $createTableStmt = $pdo->prepare("CREATE TABLE IF NOT EXISTS order_progress (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    order_id INT NOT NULL,
+                    status_update VARCHAR(255) NOT NULL,
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )");
+                $createTableStmt->execute();
+                
+                // Try again
+                $statusStmt = $pdo->prepare("INSERT INTO order_progress (order_id, status_update) VALUES (?, ?)");
+                $statusStmt->execute([$orderId, 'Order created and pending payment']);
+            } catch (Exception $createError) {
+                // Log error but don't fail the order
+                error_log("Order progress tracking error: " . $createError->getMessage());
+            }
         }
         
         // Commit transaction
         $pdo->commit();
         
-        // Send order confirmation email
+        // Send basic email notification (non-blocking)
         if (!empty($data['email'])) {
             try {
-                require_once '../auth/email-service-js.php';
+                $to = $data['email'];
+                $subject = "Order Confirmation - Order #{$orderId}";
+                $message = "Dear {$data['customer_name']},\n\n";
+                $message .= "Thank you for your order! Your order #{$orderId} has been received.\n\n";
+                $message .= "Order Total: ₦" . number_format($data['total'], 2) . "\n\n";
+                $message .= "We will process your order once payment is confirmed.\n\n";
+                $message .= "Best regards,\nDeeReel Footies Team";
                 
-                // Format items for email
-                $itemsList = '';
-                foreach ($data['items'] as $item) {
-                    $itemName = $item['product_name'] ?? $item['name'] ?? 'Product';
-                    $itemPrice = number_format($item['price'] ?? 0, 2);
-                    $itemQty = $item['quantity'] ?? 1;
-                    $itemsList .= "- {$itemName} (₦{$itemPrice} x {$itemQty})\n";
-                }
+                $headers = "From: noreply@deereelfooties.com\r\n";
+                $headers .= "Reply-To: support@deereelfooties.com\r\n";
                 
-                $shippingAddress = $data['address'] . ', ' . $data['city'] . ', ' . $data['state'] . ', ' . $data['country'];
-                
-                sendOrderConfirmationEmail(
-                    $data['email'],
-                    $data['customer_name'],
-                    $orderId,
-                    number_format($data['total'], 2),
-                    $itemsList,
-                    $shippingAddress
-                );
-            } catch (Exception $e) {
-                // Log email error but don't fail the order
-                error_log("Order confirmation email failed: " . $e->getMessage());
+                // Send email (non-blocking - don't fail if email fails)
+                @mail($to, $subject, $message, $headers);
+            } catch (Exception $emailError) {
+                // Log error but don't fail the order
+                error_log("Email notification error: " . $emailError->getMessage());
+            }
+        }
+        
+        // Clear user's cart after successful order
+        if (!empty($data['user_id'])) {
+            try {
+                $clearCartStmt = $pdo->prepare("DELETE FROM cart WHERE user_id = ?");
+                $clearCartStmt->execute([$data['user_id']]);
+            } catch (Exception $cartError) {
+                // Log error but don't fail the order
+                error_log("Cart clearing error: " . $cartError->getMessage());
             }
         }
         
         echo json_encode([
             'success' => true,
             'message' => 'Order created successfully',
-            'order_id' => $orderId
+            'order_id' => $orderId,
+            'status' => $orderStatus
         ]);
         
-    } catch (PDOException $e) {
-        // Rollback transaction on error
-        $pdo->rollBack();
+    } catch (Exception $e) {
+        if (isset($pdo)) {
+            $pdo->rollBack();
+        }
         echo json_encode([
             'success' => false,
-            'message' => 'Error creating order',
-            'error' => $e->getMessage()
+            'message' => 'Error creating order: ' . $e->getMessage()
         ]);
     }
 } else {

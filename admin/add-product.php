@@ -1,9 +1,22 @@
-<?php include($_SERVER['DOCUMENT_ROOT'] . '/components/header.php'); ?>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?><body class="bg-background" data-page="product-admin">
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/navbar.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - DeeReel Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
+<?php include('includes/header.php'); ?>
 
-  <!-- Main Content -->
-  <div class="container py-5">
+<div class="admin-layout">
+  <?php include('includes/sidebar.php'); ?>
+  
+  <div class="admin-content">
+    <div class="container-fluid py-4">
     <h1 class="mb-4">Product Management</h1>
     
     <!-- Tab Navigation -->
@@ -292,10 +305,11 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
+</div>
 
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/footer.php'); ?>
-  <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {

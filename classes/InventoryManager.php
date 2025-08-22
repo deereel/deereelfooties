@@ -91,11 +91,31 @@ class InventoryManager {
     
     // Get inventory transactions
     public function getTransactions($productId = null, $limit = 50) {
-        $sql = "SELECT t.*, p.name as product_name 
-            FROM inventory_transactions t 
-            JOIN products p ON t.product_id = p.product_id";
-        $params = [];
+        // First check if customer_name column exists
+        try {
+            $checkStmt = $this->pdo->prepare("SHOW COLUMNS FROM inventory_transactions LIKE 'customer_name'");
+            $checkStmt->execute();
+            $hasCustomerColumn = $checkStmt->rowCount() > 0;
+        } catch (Exception $e) {
+            $hasCustomerColumn = false;
+        }
         
+        if ($hasCustomerColumn) {
+            $sql = "SELECT t.*, p.name as product_name,
+                    CASE 
+                        WHEN t.transaction_type = 'sale' AND t.customer_name IS NOT NULL 
+                        THEN CONCAT(t.reason, ' - Customer: ', t.customer_name)
+                        ELSE t.reason
+                    END as display_reason
+                FROM inventory_transactions t 
+                JOIN products p ON t.product_id = p.product_id";
+        } else {
+            $sql = "SELECT t.*, p.name as product_name, t.reason as display_reason
+                FROM inventory_transactions t 
+                JOIN products p ON t.product_id = p.product_id";
+        }
+        
+        $params = [];
         if ($productId) {
             $sql .= " WHERE t.product_id = ?";
             $params[] = $productId;

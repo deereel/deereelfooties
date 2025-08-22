@@ -332,15 +332,15 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
           shippingText.className = 'fw-bold';
         }
         
-        // Update total
-        const total = subtotal + (isFreeShipping ? 0 : shipping);
+        // Update total - only add shipping if not free
+        const total = isFreeShipping ? subtotal : subtotal + shipping;
         totalElement.textContent = total.toLocaleString();
         
         // Update shipping progress
         updateShippingProgress(subtotal, country, state);
       }
       
-      // Calculate shipping based on subtotal and location
+      // Calculate shipping based on subtotal and location - matches cart.php logic
       function calculateShipping(subtotal, country, state) {
         const AFRICAN_COUNTRIES = [
           'Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina Faso', 'Burundi', 'Cameroon', 
@@ -354,27 +354,22 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
         ];
         
         let threshold = 150000; // Default for Lagos
-        let shipping = 5000; // Default shipping cost
         
         if (country === 'Nigeria') {
           if (state === 'Lagos') {
             threshold = 150000;
-            shipping = 5000;
           } else {
             threshold = 250000;
-            shipping = 10000;
           }
         } else if (AFRICAN_COUNTRIES.includes(country)) {
           threshold = 600000;
-          shipping = 30000;
         } else {
           threshold = 800000;
-          shipping = 50000;
         }
         
         const isFreeShipping = subtotal >= threshold;
         
-        return { shipping, isFreeShipping, threshold };
+        return { shipping: 0, isFreeShipping, threshold };
       }
       
       function getShippingProgressColor(percentage) {
@@ -1043,7 +1038,7 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
         }
         
         const { shipping, isFreeShipping } = calculateShipping(subtotal, customerInfo.country, customerInfo.state);
-        const total = subtotal + (isFreeShipping ? 0 : shipping);
+        const total = isFreeShipping ? subtotal : subtotal + shipping;
         
         // Validate customer info
         console.log('Validating customer info:', customerInfo);
@@ -1074,7 +1069,7 @@ file_put_contents('checkout_debug.log', date('Y-m-d H:i:s') . ' - ' . json_encod
           items: cartItems,
           subtotal: subtotal,
           shipping: isFreeShipping ? 0 : shipping,
-          total: total,
+          total: isFreeShipping ? subtotal : subtotal + shipping,
           payment_method: 'bank_transfer',
           user_id: cartHandler.isLoggedIn ? cartHandler.userId : null
         };

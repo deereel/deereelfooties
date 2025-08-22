@@ -15,16 +15,17 @@ $period = isset($_GET['period']) ? $_GET['period'] : 'monthly';
 $year = isset($_GET['year']) ? (int)$_GET['year'] : date('Y');
 $month = isset($_GET['month']) ? (int)$_GET['month'] : date('n');
 $week = isset($_GET['week']) ? (int)$_GET['week'] : (int)date('W');
+$customerIds = isset($_GET['customer_ids']) ? (is_array($_GET['customer_ids']) ? $_GET['customer_ids'] : array_filter(explode(',', $_GET['customer_ids']))) : [];
 
 // Get sales data
 try {
-    $salesData = getSalesData($pdo, $period, $year, $month, $week);
-    $chartData = getChartData($pdo, $period, $year, $month, $week);
+    $salesData = getSalesData($pdo, $period, $year, $month, $week, $customerIds);
+    $chartData = getChartData($pdo, $period, $year, $month, $week, $customerIds);
 } catch (PDOException $e) {
     $error = 'Error retrieving sales data: ' . $e->getMessage();
 }
 
-function getSalesData($pdo, $period, $year, $month, $week) {
+function getSalesData($pdo, $period, $year, $month, $week, $customerIds = []) {
     $data = [
         'total_sales' => 0,
         'total_orders' => 0,
@@ -37,6 +38,13 @@ function getSalesData($pdo, $period, $year, $month, $week) {
     // Build date filter based on period
     $dateFilter = '';
     $params = [];
+    $customerFilter = '';
+    
+    // Add customer filter if specified
+    if (!empty($customerIds)) {
+        $placeholders = str_repeat('?,', count($customerIds) - 1) . '?';
+        $customerFilter = " AND user_id IN ($placeholders)";
+    }
     
     switch ($period) {
         case 'weekly':
@@ -56,13 +64,18 @@ function getSalesData($pdo, $period, $year, $month, $week) {
             break;
     }
     
+    // Add customer IDs to params if specified
+    if (!empty($customerIds)) {
+        $params = array_merge($params, $customerIds);
+    }
+    
     // Get total sales and orders
     $stmt = $pdo->prepare("SELECT 
         COUNT(*) as total_orders,
         SUM(subtotal) as total_sales,
         AVG(subtotal) as avg_order_value,
         SUM(CASE WHEN status = 'Completed' THEN 1 ELSE 0 END) as completed_orders
-        FROM orders WHERE $dateFilter");
+        FROM orders WHERE $dateFilter$customerFilter");
     $stmt->execute($params);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -112,16 +125,25 @@ function getSalesData($pdo, $period, $year, $month, $week) {
     return $data;
 }
 
-function getChartData($pdo, $period, $year, $month, $week) {
+function getChartData($pdo, $period, $year, $month, $week, $customerIds = []) {
     $chartData = [];
+    $customerFilter = '';
+    if (!empty($customerIds)) {
+        $placeholders = str_repeat('?,', count($customerIds) - 1) . '?';
+        $customerFilter = " AND user_id IN ($placeholders)";
+    }
     
     switch ($period) {
         case 'weekly':
             // Get data for each day of the selected week
             for ($i = 1; $i <= 7; $i++) {
                 $date = date('Y-m-d', strtotime($year . 'W' . sprintf('%02d', $week) . $i));
-                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE DATE(created_at) = ?");
-                $stmt->execute([$date]);
+                $params = [$date];
+                if (!empty($customerIds)) {
+                    $params = array_merge($params, $customerIds);
+                }
+                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE DATE(created_at) = ?$customerFilter");
+                $stmt->execute($params);
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 $chartData[] = [
                     'label' => date('D', strtotime($date)),
@@ -134,8 +156,12 @@ function getChartData($pdo, $period, $year, $month, $week) {
             $daysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
             for ($day = 1; $day <= $daysInMonth; $day++) {
                 $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
-                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE DATE(created_at) = ?");
-                $stmt->execute([$date]);
+                $params = [$date];
+                if (!empty($customerIds)) {
+                    $params = array_merge($params, $customerIds);
+                }
+                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE DATE(created_at) = ?$customerFilter");
+                $stmt->execute($params);
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 $chartData[] = [
                     'label' => $day,
@@ -146,8 +172,12 @@ function getChartData($pdo, $period, $year, $month, $week) {
         case 'yearly':
             // Get data for each month of the year
             for ($m = 1; $m <= 12; $m++) {
-                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE YEAR(created_at) = ? AND MONTH(created_at) = ?");
-                $stmt->execute([$year, $m]);
+                $params = [$year, $m];
+                if (!empty($customerIds)) {
+                    $params = array_merge($params, $customerIds);
+                }
+                $stmt = $pdo->prepare("SELECT COALESCE(SUM(subtotal), 0) as sales FROM orders WHERE YEAR(created_at) = ? AND MONTH(created_at) = ?$customerFilter");
+                $stmt->execute($params);
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
                 $chartData[] = [
                     'label' => date('M', mktime(0, 0, 0, $m, 1)),
@@ -174,11 +204,11 @@ function getChartData($pdo, $period, $year, $month, $week) {
 <body>
     <?php include 'includes/header.php'; ?>
     
-    <div class="container-fluid">
-        <div class="row">
-            <?php include 'includes/sidebar.php'; ?>
-            
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
+    <div class="admin-layout">
+        <?php include 'includes/sidebar.php'; ?>
+        
+        <div class="admin-content">
+            <main>
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Sales Report</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
@@ -199,6 +229,20 @@ function getChartData($pdo, $period, $year, $month, $week) {
                     <div class="card-body">
                         <form method="GET" class="row g-3">
                             <input type="hidden" name="period" value="<?php echo $period; ?>">
+                            
+                            <div class="col-md-4">
+                                <label for="customer_ids" class="form-label">Filter by Customers (Optional)</label>
+                                <select name="customer_ids[]" id="customer_ids" class="form-select" multiple>
+                                    <?php
+                                    $customerStmt = $pdo->query("SELECT user_id, name FROM users ORDER BY name");
+                                    while ($customer = $customerStmt->fetch(PDO::FETCH_ASSOC)) {
+                                        $selected = in_array($customer['user_id'], $customerIds) ? 'selected' : '';
+                                        echo "<option value='{$customer['user_id']}' $selected>{$customer['name']} (#{$customer['user_id']})</option>";
+                                    }
+                                    ?>
+                                </select>
+                                <small class="text-muted">Hold Ctrl/Cmd to select multiple customers</small>
+                            </div>
                             
                             <?php if ($period === 'weekly' || $period === 'monthly' || $period === 'yearly'): ?>
                             <div class="col-md-3">
