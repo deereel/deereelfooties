@@ -612,11 +612,12 @@ $page = 'dashboard';
                                           <strong class="text-dark">Total:</strong>
                                           <strong class="text-dark">₦${parseFloat(order.total || order.subtotal || 0).toLocaleString()}</strong>
                                       </div>
-                                      ${(order.status === 'Pending' || order.status === 'pending') && (!order.payment_confirmed || order.payment_confirmed == 0) ? `
-                                        <div class="mt-3">
-                                          <button class="btn btn-sm btn-warning w-100" onclick="showPaymentUpload('${order.order_id}')">Upload Payment Proof</button>
-                                        </div>
-                                      ` : ''}
+                                      <div class="mt-3">
+                                        ${(order.status === 'Pending' || order.status === 'pending') && (!order.payment_confirmed || order.payment_confirmed == 0) ? `
+                                          <button class="btn btn-sm btn-warning w-100 mb-2" onclick="showPaymentUpload('${order.order_id}')">Upload Payment Proof</button>
+                                        ` : ''}
+                                        <button class="btn btn-sm btn-success w-100" onclick="reorderItems('${order.order_id}')">Reorder Items</button>
+                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -629,6 +630,27 @@ $page = 'dashboard';
           .catch(error => {
               content.innerHTML = '<div class="alert alert-danger">Error loading order details</div>';
           });
+  }
+  
+  // Reorder function
+  function reorderItems(orderId) {
+    if (confirm('Add all items from this order to your cart?')) {
+      fetch(`/api/reorder.php?order_id=${orderId}`, {
+        method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Items added to cart successfully!');
+          window.location.href = '/checkout.php';
+        } else {
+          alert('Error: ' + (data.message || 'Failed to add items to cart'));
+        }
+      })
+      .catch(error => {
+        alert('Error adding items to cart. Please try again.');
+      });
+    }
   }
   
   // Payment proof upload function

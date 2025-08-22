@@ -14,6 +14,33 @@ $currentUser = [
 ];
 }
 
+// Handle reorder items if they exist
+if (isset($_SESSION['reorder_items']) && $currentUser) {
+  $userId = $currentUser['id'] ?? $_SESSION['user_id'];
+  
+  foreach ($_SESSION['reorder_items'] as $item) {
+    try {
+      // Insert into cart table
+      $stmt = $pdo->prepare("INSERT INTO cart (user_id, product_id, product_name, price, quantity, color, size, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      $stmt->execute([
+        $userId,
+        $item['product_id'],
+        $item['product_name'],
+        $item['price'],
+        $item['quantity'],
+        $item['color'],
+        $item['size'],
+        $item['image']
+      ]);
+    } catch (PDOException $e) {
+      // Continue if insert fails
+    }
+  }
+  
+  // Clear reorder items from session
+  unset($_SESSION['reorder_items']);
+}
+
 ?>
 
 

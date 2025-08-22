@@ -157,7 +157,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?= date('M j, H:i', strtotime($transaction['created_at'])) ?></td>
                                 <td><?= $transaction['product_name'] ?></td>
                                 <td>
-                                    <span class="badge bg-<?= $transaction['transaction_type'] === 'in' ? 'success' : ($transaction['transaction_type'] === 'out' ? 'danger' : 'info') ?>">
+                                    <span class="badge bg-<?= $transaction['transaction_type'] === 'in' ? 'success' : ($transaction['transaction_type'] === 'out' ? 'danger' : ($transaction['transaction_type'] === 'sale' ? 'warning' : 'info')) ?>">
                                         <?= ucfirst($transaction['transaction_type']) ?>
                                     </span>
                                 </td>

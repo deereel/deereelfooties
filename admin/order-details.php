@@ -79,7 +79,7 @@ if (isset($_POST['confirm_payment'])) {
                             $item['quantity'],
                             $previousStock,
                             $newStock,
-                            "Sale to {$order['customer_name']} (Order #{$orderId})"
+                            "Sold to {$order['customer_name']} (Order #{$orderId})"
                         ]);
                     } catch (PDOException $e) {
                         // Continue if logging fails

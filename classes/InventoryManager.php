@@ -24,7 +24,7 @@ class InventoryManager {
             $newStock = $currentStock;
             if ($type === 'in') {
                 $newStock += $quantity;
-            } elseif ($type === 'out') {
+            } elseif ($type === 'out' || $type === 'sale') {
                 $newStock -= $quantity;
             } else { // adjustment
                 $newStock = $quantity;
