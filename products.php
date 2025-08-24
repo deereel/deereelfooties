@@ -132,75 +132,92 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
             <div id="active-filters" class="mb-4 flex flex-wrap gap-2 text-sm"></div>
     
             <!-- Product Grid -->
-            <div class="swiper product-swiper">
-              <div class="swiper-wrapper">
-                <?php
-                try {
-                  $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
-                  $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                  $chunks = array_chunk($products, 20);
-                  foreach ($chunks as $chunk):
-                ?>
-                <div class="swiper-slide grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  <?php foreach ($chunk as $product): ?>
-                <?php
-                  // Get second image from gallery or additional_images
-                  $gallery = [];
-                  if (!empty($product['gallery'])) {
-                    $gallery = explode(',', $product['gallery']);
-                  } elseif (!empty($product['additional_images'])) {
-                    $gallery = explode(',', $product['additional_images']);
-                  }
-                  // Get second image, skip main image if it's first in gallery
-                  $secondImage = $product['main_image'];
-                  foreach($gallery as $img) {
-                    $img = trim($img);
-                    if ($img !== $product['main_image']) {
-                      $secondImage = $img;
-                      break;
+            <div class="relative">
+              <div class="swiper product-swiper">
+                <div class="swiper-wrapper">
+                  <?php
+                  try {
+                    $stmt = $pdo->query("SELECT * FROM products ORDER BY created_at DESC");
+                    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $chunks = array_chunk($products, 20);
+                    foreach ($chunks as $chunk):
+                  ?>
+                  <div class="swiper-slide grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    <?php foreach ($chunk as $product): ?>
+                  <?php
+                    // Get second image from gallery or additional_images
+                    $gallery = [];
+                    if (!empty($product['gallery'])) {
+                      $gallery = explode(',', $product['gallery']);
+                    } elseif (!empty($product['additional_images'])) {
+                      $gallery = explode(',', $product['additional_images']);
                     }
-                  }
-                ?>
-                <div class="group product-card relative"
-                    data-price="<?= $product['price'] ?>"
-                    data-size="<?= $product['sizes'] ?>"
-                    data-color="<?= $product['colors'] ?>"
-                    data-type="<?= $product['type'] ?>"
-                    data-gender="<?= $product['gender'] ?>"
-                    data-created="<?= strtotime($product['created_at']) ?>"
-                    data-name="<?= $product['name'] ?>"
-                    data-description="<?= $product['short_description'] ?>">
-                    <!-- Add wishlist button -->
-                    <div class="absolute top-2 right-2 z-10">
-                      <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
-                              data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
-                              data-product-name="<?= $product['name'] ?>"
-                              data-product-price="<?= $product['price'] ?>"
-                              data-product-image="<?= $product['main_image'] ?>">
-                        <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
-                      </button>
-                    </div>
-                    <a href="product.php?slug=<?= $product['slug'] ?>">
-                      <div class="relative aspect-[3/4] overflow-hidden mb-4">
-                        <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
-                            class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
-                            data-main="<?= $product['main_image'] ?>"
-                            data-hover="<?= $secondImage ?>">
+                    // Get second image, skip main image if it's first in gallery
+                    $secondImage = $product['main_image'];
+                    foreach($gallery as $img) {
+                      $img = trim($img);
+                      if ($img !== $product['main_image']) {
+                        $secondImage = $img;
+                        break;
+                      }
+                    }
+                  ?>
+                  <div class="group product-card relative"
+                      data-price="<?= $product['price'] ?>"
+                      data-size="<?= $product['sizes'] ?>"
+                      data-color="<?= $product['colors'] ?>"
+                      data-type="<?= $product['type'] ?>"
+                      data-gender="<?= $product['gender'] ?>"
+                      data-created="<?= strtotime($product['created_at']) ?>"
+                      data-name="<?= $product['name'] ?>"
+                      data-description="<?= $product['short_description'] ?>">
+                      <!-- Add wishlist button -->
+                      <div class="absolute top-2 right-2 z-10">
+                        <button class="add-to-wishlist-icon bg-white rounded-full p-2 shadow-sm hover:shadow-md transition" 
+                                data-product-id="<?= $product['product_id'] ?? $product['slug'] ?>"
+                                data-product-name="<?= $product['name'] ?>"
+                                data-product-price="<?= $product['price'] ?>"
+                                data-product-image="<?= $product['main_image'] ?>">
+                          <i class="far fa-heart text-gray-600 hover:text-red-500"></i>
+                        </button>
                       </div>
-                      <h3 class="text-lg"><?= $product['name'] ?></h3>
-                      <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
-                    </a>
+      <a href="product.php?slug=<?= $product['slug'] ?>" onclick="storeCurrentSlide();">
+                        <div class="relative aspect-[3/4] overflow-hidden mb-4">
+                          <img src="<?= $product['main_image'] ?>" alt="<?= $product['name'] ?>"
+                              class="product-main-image object-cover w-full h-full group-hover:scale-105 transition duration-500"
+                              data-main="<?= $product['main_image'] ?>"
+                              data-hover="<?= $secondImage ?>">
+                        </div>
+                        <h3 class="text-lg"><?= $product['name'] ?></h3>
+                        <p class="text-gray-500">₦<?= number_format($product['price']) ?></p>
+                      </a>
+                    </div>
+                    <?php endforeach; ?>
                   </div>
                   <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
               </div>
-            <!-- Add Pagination -->
-            <div class="swiper-pagination mt-6 flex justify-center"></div>
-            <!-- Add Navigation -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-          </div>
+              
+              <!-- Navigation and Pagination Container -->
+              <div class="flex items-center justify-center mt-8 space-x-4">
+                <!-- Previous Button -->
+                <div class="swiper-button-prev-custom bg-white border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition">
+                  <i class="fas fa-chevron-left text-gray-600"></i>
+                </div>
+                
+                <!-- Pagination with Counter -->
+                <div class="flex items-center space-x-2">
+                  <div class="swiper-pagination-custom text-sm font-medium text-gray-700"></div>
+                  <span class="text-gray-500">of</span>
+                  <div class="swiper-total text-sm font-medium text-gray-700"><?= count($chunks) ?></div>
+                </div>
+                
+                <!-- Next Button -->
+                <div class="swiper-button-next-custom bg-white border border-gray-300 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-gray-50 transition">
+                  <i class="fas fa-chevron-right text-gray-600"></i>
+                </div>
+              </div>
+            </div>
             <?php } catch (Exception $e) { echo "<div class='text-red-500'>Error loading products: " . htmlspecialchars($e->getMessage()) . "</div>"; } ?>
     
             <!-- Pagination -->
@@ -226,22 +243,88 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
     <?php include($_SERVER['DOCUMENT_ROOT'] . '/components/scripts.php'); ?>
     
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <style>
+      .product-swiper {
+        overflow: hidden;
+      }
+      .product-swiper .swiper-wrapper {
+        display: flex;
+      }
+      .product-swiper .swiper-slide {
+        width: 100%;
+        flex-shrink: 0;
+        height: auto;
+        min-height: auto !important;
+      }
+      .product-card {
+        height: fit-content;
+      }
+    </style>
   <script>
+    let currentSlideIndex = 0;
+    
+    // Function to store current slide index
+    function storeCurrentSlide() {
+      sessionStorage.setItem('currentSlide', currentSlideIndex);
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
-      // Initialize Swiper
+      // Initialize Swiper with custom navigation
       let swiper = new Swiper('.product-swiper', {
         slidesPerView: 1,
         spaceBetween: 20,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
+          nextEl: '.swiper-button-next-custom',
+          prevEl: '.swiper-button-prev-custom',
         },
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
           type: 'fraction',
         },
+        on: {
+          init: function() {
+            updateCustomPagination(this);
+          },
+          slideChange: function() {
+            updateCustomPagination(this);
+            // Update the current slide index
+            currentSlideIndex = this.activeIndex;
+          }
+        }
       });
+
+      // Update custom pagination display
+      function updateCustomPagination(swiperInstance) {
+        const currentElement = document.querySelector('.swiper-pagination-custom');
+        const totalElement = document.querySelector('.swiper-total');
+        
+        if (currentElement) {
+          currentElement.textContent = (swiperInstance.activeIndex + 1);
+        }
+        if (totalElement && swiperInstance.slides) {
+          totalElement.textContent = swiperInstance.slides.length;
+        }
+      }
+
+      // Custom navigation button handlers
+      document.querySelector('.swiper-button-prev-custom').addEventListener('click', function() {
+        swiper.slidePrev();
+      });
+
+      document.querySelector('.swiper-button-next-custom').addEventListener('click', function() {
+        swiper.slideNext();
+      });
+
+      // Initialize pagination on load
+      updateCustomPagination(swiper);
+
+      // Restore slide position if returning from product detail
+      const savedSlide = sessionStorage.getItem('currentSlide');
+      if (savedSlide !== null) {
+        swiper.slideTo(parseInt(savedSlide), 0);
+        sessionStorage.removeItem('currentSlide');
+      }
 
       // Type filtering
       const typeFilters = document.querySelectorAll('.type-filter');
@@ -583,15 +666,35 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
           slidesPerView: 1,
           spaceBetween: 20,
           navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.swiper-button-next-custom',
+            prevEl: '.swiper-button-prev-custom',
           },
           pagination: {
             el: '.swiper-pagination',
             clickable: true,
             type: 'fraction',
           },
+          on: {
+            init: function() {
+              updateCustomPagination(this);
+            },
+            slideChange: function() {
+              updateCustomPagination(this);
+            }
+          }
         });
+        
+        // Reinitialize custom navigation
+        document.querySelector('.swiper-button-prev-custom').addEventListener('click', function() {
+          swiper.slidePrev();
+        });
+        
+        document.querySelector('.swiper-button-next-custom').addEventListener('click', function() {
+          swiper.slideNext();
+        });
+        
+        // Initialize pagination
+        updateCustomPagination(swiper);
         
         // Reinitialize image hover after sorting
         initImageHover();

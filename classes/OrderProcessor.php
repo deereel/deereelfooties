@@ -35,6 +35,10 @@ class OrderProcessor {
     
     // Update inventory for order items
     private function updateInventoryForOrder($orderId) {
+        // Get order details to access customer name
+        $order = $this->getOrder($orderId);
+        $customerName = $order['customer_name'] ?? 'Customer';
+        
         $stmt = $this->pdo->prepare("SELECT product_id, quantity FROM order_items WHERE order_id = ?");
         $stmt->execute([$orderId]);
         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -44,15 +48,16 @@ class OrderProcessor {
             $stmt = $this->pdo->prepare("UPDATE products SET stock_quantity = stock_quantity - ? WHERE product_id = ?");
             $stmt->execute([$item['quantity'], $item['product_id']]);
             
-            // Log inventory transaction
-            $stmt = $this->pdo->prepare("INSERT INTO inventory_transactions (product_id, transaction_type, quantity, reason, reference_id) VALUES (?, 'out', ?, 'Order sale', ?)");
-            $stmt->execute([$item['product_id'], $item['quantity'], "ORDER-$orderId"]);
+            // Log inventory transaction with customer name and order number
+            $reason = "Sold to $customerName (Order #$orderId)";
+            $stmt = $this->pdo->prepare("INSERT INTO inventory_transactions (product_id, transaction_type, quantity, reason, reference_id) VALUES (?, 'sale', ?, ?, ?)");
+            $stmt->execute([$item['product_id'], $item['quantity'], $reason, "ORDER-$orderId"]);
         }
     }
     
     // Update order status
     public function updateOrderStatus($orderId, $status) {
-        $stmt = $this->pdo->prepare("UPDATE orders SET status = ?, updated_at = NOW() WHERE order_id = ?");
+        $stmt = $this->pdo->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
         $stmt->execute([$status, $orderId]);
         
         // Log status change
