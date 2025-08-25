@@ -113,7 +113,26 @@
 
                 <div class="mb-3">
                     <label for="details_care" class="form-label">Details & Care</label>
-                    <textarea class="form-control" id="details_care" name="details_care" rows="5"></textarea>
+                    <textarea class="form-control" id="details_care" name="details_care" rows="5"><p>Product Details:</p>
+<ul>
+<li>Upper Material: Premium-grade leather.</li>
+<li>Insole: Soft cushioned PU padding.</li>
+<li>Outsole: Durable non-slip rubber sole.</li>
+<li>Color: Rich Tan Brown.</li>
+<li>Lacing: 5-eyelet closed lace-up system.</li>
+<li>Sizes Available: EU 39–46.</li>
+<li>Fit: True to size.</li>
+</ul>
+
+<p>Care Instructions:</p>
+<ul>
+<li>Wipe clean with a soft damp cloth after wear.</li>
+<li>Avoid Harsh Chemicals: Use only leather-safe products if needed.</li>
+<li>Air Dry Only: Let the footwear dry naturally. Never use direct heat.</li>
+<li>Store with shoe trees to preserve shape.</li>
+<li>Store Properly: Keep in a cool, dry place. Use a shoe bag or box to avoid dust.</li>
+<li>Polish Occasionally: A dab of neutral leather polish can help maintain the leather's shine and suppleness.</li>
+</ul></textarea>
                     <small class="text-muted">HTML is supported. Use <ul> and <li> tags for bullet points.</small>
                 </div>
               
