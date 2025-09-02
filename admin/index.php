@@ -7,8 +7,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     exit;
 }
 
-// Include database connection
+// Include database connection and middleware
 require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
+
+// Check if user has permission to view dashboard
+$permissionMiddleware = new PermissionMiddleware('view_dashboard');
+$permissionMiddleware->handle();
 
 // Get orders with pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

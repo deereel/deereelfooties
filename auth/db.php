@@ -59,6 +59,54 @@ function fetchData($table, $conditions = [], $columns = '*', $orderBy = '', $lim
 }
 
 /**
+ * Check if a user has a specific permission
+ * 
+ * @param int $userId User ID
+ * @param string $permissionName Permission name
+ * @return bool True if user has permission, false otherwise
+ */
+function userHasPermission($userId, $permissionName) {
+  global $pdo;
+  
+  $sql = "SELECT COUNT(*) FROM users u
+          JOIN roles r ON u.role_id = r.id
+          JOIN role_permissions rp ON r.id = rp.role_id
+          JOIN permissions p ON rp.permission_id = p.id
+          WHERE u.user_id = :userId AND p.name = :permissionName";
+  
+  try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':userId' => $userId, ':permissionName' => $permissionName]);
+    $count = $stmt->fetchColumn();
+    return $count > 0;
+  } catch (\PDOException $e) {
+    return false;
+  }
+}
+
+/**
+ * Get user role by user ID
+ * 
+ * @param int $userId User ID
+ * @return array|null Role data or null if not found
+ */
+function getUserRole($userId) {
+  global $pdo;
+  
+  $sql = "SELECT r.* FROM users u
+          JOIN roles r ON u.role_id = r.id
+          WHERE u.user_id = :userId";
+  
+  try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':userId' => $userId]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (\PDOException $e) {
+    return null;
+  }
+}
+
+/**
  * Insert data into database
  * 
  * @param string $table Table name

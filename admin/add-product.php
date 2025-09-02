@@ -1,3 +1,21 @@
+<?php
+session_start();
+
+// Check if admin is logged in
+if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// Include database connection and middleware
+require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
+
+// Check if user has permission to manage products
+$permissionMiddleware = new PermissionMiddleware('manage_products');
+$permissionMiddleware->handle();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +27,6 @@
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body>
-<?php require_once($_SERVER['DOCUMENT_ROOT'] . '/auth/db.php'); ?>
 <?php include('includes/header.php'); ?>
 
 <div class="admin-layout">
