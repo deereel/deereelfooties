@@ -1,17 +1,25 @@
 <?php
-session_start();
-
 require_once __DIR__ . '/../auth/db.php';
 
 class PermissionMiddleware {
     private $userId;
     private $requiredPermission;
+    private $isAdmin;
 
     public function __construct($requiredPermission) {
-        if (!isset($_SESSION['user_id'])) {
+        // Check if admin user is logged in
+        if (isset($_SESSION['admin_user_id'])) {
+            $this->userId = $_SESSION['admin_user_id'];
+            $this->isAdmin = true;
+        }
+        // Check if regular user is logged in (for backward compatibility)
+        elseif (isset($_SESSION['user_id'])) {
+            $this->userId = $_SESSION['user_id'];
+            $this->isAdmin = false;
+        }
+        else {
             $this->denyAccess();
         }
-        $this->userId = $_SESSION['user_id'];
         $this->requiredPermission = $requiredPermission;
     }
 
@@ -22,7 +30,12 @@ class PermissionMiddleware {
     }
 
     private function checkPermission() {
-        return userHasPermission($this->userId, $this->requiredPermission);
+        if ($this->isAdmin) {
+            // Use userHasPermission which checks admin_users table
+            return userHasPermission($this->userId, $this->requiredPermission);
+        } else {
+            return userHasPermission($this->userId, $this->requiredPermission);
+        }
     }
 
     private function denyAccess() {

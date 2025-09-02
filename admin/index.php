@@ -2,7 +2,14 @@
 session_start();
 
 // Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['admin_user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Handle logout
+if (isset($_GET['logout'])) {
+    session_destroy();
     header('Location: login.php');
     exit;
 }
@@ -78,7 +85,10 @@ $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
                     <h1 class="h2">Dashboard</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group me-2">
-                            <span class="badge bg-primary fs-6">Welcome back, Admin!</span>
+                            <span class="badge bg-primary fs-6">Welcome back, <?php echo htmlspecialchars($_SESSION['admin_name']); ?>!</span>
+                            <a href="?logout=1" class="btn btn-sm btn-outline-danger ms-2">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -59,21 +59,21 @@ function fetchData($table, $conditions = [], $columns = '*', $orderBy = '', $lim
 }
 
 /**
- * Check if a user has a specific permission
- * 
- * @param int $userId User ID
+ * Check if an admin user has a specific permission
+ *
+ * @param int $userId Admin user ID
  * @param string $permissionName Permission name
  * @return bool True if user has permission, false otherwise
  */
 function userHasPermission($userId, $permissionName) {
   global $pdo;
-  
-  $sql = "SELECT COUNT(*) FROM users u
-          JOIN roles r ON u.role_id = r.id
+
+  $sql = "SELECT COUNT(*) FROM admin_users au
+          JOIN roles r ON au.role_id = r.id
           JOIN role_permissions rp ON r.id = rp.role_id
           JOIN permissions p ON rp.permission_id = p.id
-          WHERE u.user_id = :userId AND p.name = :permissionName";
-  
+          WHERE au.id = :userId AND p.name = :permissionName AND au.is_active = 1";
+
   try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':userId' => $userId, ':permissionName' => $permissionName]);
@@ -85,18 +85,18 @@ function userHasPermission($userId, $permissionName) {
 }
 
 /**
- * Get user role by user ID
- * 
- * @param int $userId User ID
+ * Get admin user role by user ID
+ *
+ * @param int $userId Admin user ID
  * @return array|null Role data or null if not found
  */
 function getUserRole($userId) {
   global $pdo;
-  
-  $sql = "SELECT r.* FROM users u
-          JOIN roles r ON u.role_id = r.id
-          WHERE u.user_id = :userId";
-  
+
+  $sql = "SELECT r.* FROM admin_users au
+          JOIN roles r ON au.role_id = r.id
+          WHERE au.id = :userId AND au.is_active = 1";
+
   try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':userId' => $userId]);
@@ -104,6 +104,39 @@ function getUserRole($userId) {
   } catch (\PDOException $e) {
     return null;
   }
+}
+
+/**
+ * Get admin user by username for authentication
+ *
+ * @param string $username Username
+ * @return array|null User data or null if not found
+ */
+function getAdminUserByUsername($username) {
+  global $pdo;
+
+  $sql = "SELECT au.*, r.name as role_name FROM admin_users au
+          JOIN roles r ON au.role_id = r.id
+          WHERE au.username = :username AND au.is_active = 1";
+
+  try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':username' => $username]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (\PDOException $e) {
+    return null;
+  }
+}
+
+/**
+ * Verify admin user password
+ *
+ * @param string $password Plain text password
+ * @param string $hashedPassword Hashed password from database
+ * @return bool True if password matches
+ */
+function verifyAdminPassword($password, $hashedPassword) {
+  return password_verify($password, $hashedPassword);
 }
 
 /**

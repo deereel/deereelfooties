@@ -43,8 +43,14 @@
                     Slide Generator
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'settings.php' ? 'active' : ''; ?>" href="settings.php">
+                    <i class="bi bi-gear me-1"></i>
+                    Settings
+                </a>
+            </li>
         </ul>
-        
+
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Reports</span>
         </h6>

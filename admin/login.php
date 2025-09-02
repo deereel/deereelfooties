@@ -1,73 +1,112 @@
 <?php
 session_start();
+require_once '../auth/db.php';
 
-// Check if already logged in
-if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+// Redirect if already logged in
+if (isset($_SESSION['admin_user_id'])) {
     header('Location: index.php');
     exit;
 }
 
-// Handle login form submission
 $error = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // In a real application, these would be stored securely in a database
-    // This is just a simple example - replace with proper authentication
-    $admin_username = 'admin';
-    $admin_password = 'admin123'; // In production, use password_hash() and password_verify()
-    
-    $username = $_POST['username'] ?? '';
+    $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
-    
-    if ($username === $admin_username && $password === $admin_password) {
-        $_SESSION['admin_logged_in'] = true;
-        $_SESSION['admin_username'] = $username;
-        header('Location: index.php');
-        exit;
+
+    if (empty($username) || empty($password)) {
+        $error = 'Please enter both username and password.';
     } else {
-        $error = 'Invalid username or password';
+        // Get admin user by username
+        $user = getAdminUserByUsername($username);
+
+        if ($user && verifyAdminPassword($password, $user['password'])) {
+            // Login successful
+            $_SESSION['admin_user_id'] = $user['id'];
+            $_SESSION['admin_username'] = $user['username'];
+            $_SESSION['admin_role'] = $user['role_name'];
+            $_SESSION['admin_name'] = $user['first_name'] . ' ' . $user['last_name'];
+
+            // Update last login
+            updateData('admin_users', ['last_login' => date('Y-m-d H:i:s')], ['id' => $user['id']]);
+
+            header('Location: index.php');
+            exit;
+        } else {
+            $error = 'Invalid username or password.';
+        }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - DRF</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/admin.css">
+    <title>Admin Login - DeeReel Footies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-light">
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow">
-                    <div class="card-body p-4">
-                        <h2 class="text-center mb-4">DRF Admin</h2>
-                        
-                        <?php if ($error): ?>
-                            <div class="alert alert-danger"><?php echo $error; ?></div>
-                        <?php endif; ?>
-                        
-                        <form method="post" action="">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full bg-white rounded-lg shadow-md p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Admin Login</h1>
+            <p class="text-gray-600 mt-2">DeeReel Footies Admin Panel</p>
+        </div>
+
+        <?php if ($error): ?>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                <?php echo htmlspecialchars($error); ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-user mr-2"></i>Username
+                </label>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       placeholder="Enter your username"
+                       value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-lock mr-2"></i>Password
+                </label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       required
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                       placeholder="Enter your password">
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">
+                <i class="fas fa-sign-in-alt mr-2"></i>Login
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            <p>Demo Accounts:</p>
+            <div class="mt-2 space-y-1">
+                <p><strong>Super Admin:</strong> oladayo / admin123</p>
+                <p><strong>Admin:</strong> temmy / admin123</p>
             </div>
         </div>
+
+        <div class="mt-6 text-center">
+            <a href="../index.php" class="text-blue-600 hover:text-blue-800 text-sm">
+                <i class="fas fa-arrow-left mr-1"></i>Back to Website
+            </a>
+        </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
