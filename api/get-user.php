@@ -4,7 +4,7 @@ require_once '../auth/db.php';
 
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['admin_user_id'])) {
     echo json_encode(['error' => 'Unauthorized']);
     exit;
 }
@@ -17,7 +17,7 @@ if (!isset($_GET['id'])) {
 $userId = (int)$_GET['id'];
 
 try {
-    $stmt = $pdo->prepare("SELECT user_id, name, email, role_id FROM users WHERE user_id = ?");
+    $stmt = $pdo->prepare("SELECT id, username, email, role_id FROM admin_users WHERE id = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
