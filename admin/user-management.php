@@ -1,177 +1,99 @@
 <?php
 session_start();
+require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+// Check if user is logged in
+if (!isset($_SESSION['admin_user_id'])) {
     header('Location: login.php');
     exit;
 }
 
-// Include database connection and middleware
-require_once '../auth/db.php';
-require_once '../middleware/PermissionMiddleware.php';
+// Check if user has settings permissions
+$settingsMiddleware = new PermissionMiddleware('view_settings');
+$settingsMiddleware->handle();
 
-// Check if user has permission to manage users
-$permissionMiddleware = new PermissionMiddleware('manage_users');
-$permissionMiddleware->handle();
+// Get current user info
+$userId = $_SESSION['admin_user_id'];
+$userRole = getUserRole($userId);
+$isSuperAdmin = ($userRole && $userRole['name'] === 'Super Admin');
 
-// Handle form submissions
-$message = '';
-$messageType = '';
+// Fetch all users
+$allUsers = fetchData('admin_users', [], '*', 'username ASC');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action'])) {
-        switch ($_POST['action']) {
-            case 'create':
-                $result = createUser($_POST);
-                break;
-            case 'update':
-                $result = updateUser($_POST);
-                break;
-            case 'delete':
-                $result = deleteUser($_POST['user_id']);
-                break;
-        }
+// Fetch all roles
+$allRoles = fetchData('roles', [], '*', 'name ASC');
 
-        if (isset($result['success'])) {
-            $message = $result['success'];
-            $messageType = 'success';
-        } elseif (isset($result['error'])) {
-            $message = $result['error'];
-            $messageType = 'danger';
-        }
-    }
-}
+// Fetch all permissions
+$allPermissions = fetchData('permissions', [], '*', 'name ASC');
 
-// Get all users with their roles
-$users = fetchData('users u', [], 'u.*, r.name as role_name, r.description as role_description',
-    'u.created_at DESC', 0, 'LEFT JOIN roles r ON u.role_id = r.id');
-
-// Get all roles for dropdown
-$roles = fetchData('roles', [], '*', 'name ASC');
-
-function createUser($data) {
-    global $pdo;
-
-    try {
-        $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-
-        $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role_id, created_at) VALUES (?, ?, ?, ?, NOW())");
-        $stmt->execute([$data['name'], $data['email'], $hashedPassword, $data['role_id']]);
-
-        return ['success' => 'User created successfully'];
-    } catch (PDOException $e) {
-        return ['error' => 'Error creating user: ' . $e->getMessage()];
-    }
-}
-
-function updateUser($data) {
-    global $pdo;
-
-    try {
-        $sql = "UPDATE users SET name = ?, email = ?, role_id = ?";
-        $params = [$data['name'], $data['email'], $data['role_id']];
-
-        if (!empty($data['password'])) {
-            $hashedPassword = password_hash($data['password'], PASSWORD_DEFAULT);
-            $sql .= ", password = ?";
-            $params[] = $hashedPassword;
-        }
-
-        $sql .= " WHERE user_id = ?";
-        $params[] = $data['user_id'];
-
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($params);
-
-        return ['success' => 'User updated successfully'];
-    } catch (PDOException $e) {
-        return ['error' => 'Error updating user: ' . $e->getMessage()];
-    }
-}
-
-function deleteUser($userId) {
-    global $pdo;
-
-    try {
-        $stmt = $pdo->prepare("DELETE FROM users WHERE user_id = ?");
-        $stmt->execute([$userId]);
-
-        return ['success' => 'User deleted successfully'];
-    } catch (PDOException $e) {
-        return ['error' => 'Error deleting user: ' . $e->getMessage()];
-    }
-}
+$pageTitle = "User Management";
+include 'includes/header.php';
+include 'includes/sidebar.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management - DRF Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/admin.css">
-</head>
-<body>
-    <?php include 'includes/header.php'; ?>
-
-    <div class="admin-layout">
-        <?php include 'includes/sidebar.php'; ?>
-
-        <div class="admin-content">
-            <main>
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">User Management</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createUserModal">
-                            <i class="bi bi-person-plus"></i> Add New User
-                        </button>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="h3 mb-0">
+                        <i class="bi bi-people me-2"></i>
+                        User Management
+                    </h1>
+                    <div class="badge bg-primary fs-6">
+                        <i class="bi bi-shield-check me-1"></i>
+                        Super Admin Access
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <?php if ($message): ?>
-                    <div class="alert alert-<?php echo $messageType; ?> alert-dismissible fade show" role="alert">
-                        <?php echo $message; ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Users Table -->
+        <!-- Users List -->
+        <div class="row">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Admin Users</h5>
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-list me-2"></i>
+                            Admin Users
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
+                                        <th>Username</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Status</th>
                                         <th>Created</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($users as $user): ?>
+                                    <?php foreach ($allUsers as $user): ?>
+                                        <?php
+                                        $userRole = getUserRole($user['id']);
+                                        $roleName = $userRole ? $userRole['name'] : 'No Role';
+                                        ?>
                                         <tr>
-                                            <td><?php echo $user['user_id']; ?></td>
-                                            <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                            <td><?php echo $user['id']; ?></td>
+                                            <td><?php echo htmlspecialchars($user['username']); ?></td>
                                             <td><?php echo htmlspecialchars($user['email']); ?></td>
                                             <td>
-                                                <span class="badge bg-primary"><?php echo htmlspecialchars($user['role_name'] ?? 'No Role'); ?></span>
+                                                <span class="badge bg-secondary"><?php echo htmlspecialchars($roleName); ?></span>
                                             </td>
-                                            <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
                                             <td>
-                                                <button class="btn btn-sm btn-outline-primary" onclick="editUser(<?php echo $user['user_id']; ?>)">
-                                                    <i class="bi bi-pencil"></i> Edit
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(<?php echo $user['user_id']; ?>)">
-                                                    <i class="bi bi-trash"></i> Delete
+                                                <span class="badge bg-success">Active</span>
+                                            </td>
+                                            <td><?php echo date('Y-m-d', strtotime($user['created_at'])); ?></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="editUser(<?php echo $user['id']; ?>)">
+                                                    <i class="bi bi-pencil me-1"></i>
+                                                    Edit
                                                 </button>
                                             </td>
                                         </tr>
@@ -181,140 +103,190 @@ function deleteUser($userId) {
                         </div>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     </div>
+</div>
 
-    <!-- Create User Modal -->
-    <div class="modal fade" id="createUserModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create New User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="create">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" required>
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm">
+                    <input type="hidden" id="editUserId" name="user_id">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="editUsername" name="username" required>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="role_id" class="form-label">Role</label>
-                            <select class="form-select" id="role_id" name="role_id" required>
-                                <option value="">Select Role</option>
-                                <?php foreach ($roles as $role): ?>
-                                    <option value="<?php echo $role['id']; ?>"><?php echo htmlspecialchars($role['name']); ?> - <?php echo htmlspecialchars($role['description']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Create User</button>
+
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <select class="form-control" id="editRole" name="role_id" required>
+                            <option value="">Select Role</option>
+                            <?php foreach ($allRoles as $role): ?>
+                                <option value="<?php echo $role['id']; ?>"><?php echo htmlspecialchars($role['name']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Permissions (Role-based)</label>
+                        <div id="permissionsList">
+                            <?php foreach ($allPermissions as $permission): ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="perm_<?php echo $permission['id']; ?>" value="<?php echo $permission['id']; ?>" disabled>
+                                    <label class="form-check-label" for="perm_<?php echo $permission['id']; ?>">
+                                        <?php echo htmlspecialchars($permission['name']); ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <small class="form-text text-muted">Permissions are automatically assigned based on the selected role.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Changes</label>
+                        <textarea class="form-control" id="editReason" name="reason" rows="3" placeholder="Please provide a reason for these changes..." required></textarea>
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-
-    <!-- Edit User Modal -->
-    <div class="modal fade" id="editUserModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="update">
-                        <input type="hidden" id="edit_user_id" name="user_id">
-                        <div class="mb-3">
-                            <label for="edit_name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="edit_name" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="edit_email" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_password" class="form-label">Password (leave blank to keep current)</label>
-                            <input type="password" class="form-control" id="edit_password" name="password">
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_role_id" class="form-label">Role</label>
-                            <select class="form-select" id="edit_role_id" name="role_id" required>
-                                <option value="">Select Role</option>
-                                <?php foreach ($roles as $role): ?>
-                                    <option value="<?php echo $role['id']; ?>"><?php echo htmlspecialchars($role['name']); ?> - <?php echo htmlspecialchars($role['description']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update User</button>
-                    </div>
-                </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveUserChanges()">Save Changes</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteUserModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this user? This action cannot be undone.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <form method="POST" style="display: inline;">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" id="delete_user_id" name="user_id">
-                        <button type="submit" class="btn btn-danger">Delete User</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<script>
+function editUser(userId) {
+    // Fetch user data
+    fetch(`api/get-user.php?id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const user = data.user;
+                document.getElementById('editUserId').value = user.id;
+                document.getElementById('editUsername').value = user.username;
+                document.getElementById('editEmail').value = user.email;
+                document.getElementById('editRole').value = user.role_id || '';
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function editUser(userId) {
-            // Fetch user data and populate edit modal
-            fetch(`../api/get-user.php?id=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const user = data.user;
-                        document.getElementById('edit_user_id').value = user.user_id;
-                        document.getElementById('edit_name').value = user.name;
-                        document.getElementById('edit_email').value = user.email;
-                        document.getElementById('edit_role_id').value = user.role_id;
-                        new bootstrap.Modal(document.getElementById('editUserModal')).show();
+                // Load user permissions
+                loadUserPermissions(userId);
+
+                new bootstrap.Modal(document.getElementById('editUserModal')).show();
+            } else {
+                alert('Error loading user data: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while loading user data.');
+        });
+}
+
+function loadUserPermissions(userId) {
+    fetch(`api/get-user-permissions.php?user_id=${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Reset all checkboxes
+                document.querySelectorAll('#permissionsList input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+
+                // Check permissions that the user has
+                data.permissions.forEach(perm => {
+                    const checkbox = document.getElementById(`perm_${perm.id}`);
+                    if (checkbox) {
+                        checkbox.checked = true;
                     }
                 });
-        }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading permissions:', error);
+        });
+}
 
-        function deleteUser(userId) {
-            document.getElementById('delete_user_id').value = userId;
-            new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
+function saveUserChanges() {
+    const form = document.getElementById('editUserForm');
+    const formData = new FormData(form);
+
+    const userData = {
+        user_id: formData.get('user_id'),
+        username: formData.get('username'),
+        email: formData.get('email'),
+        role_id: formData.get('role_id'),
+        reason: formData.get('reason')
+    };
+
+    // Validate
+    if (!userData.username || !userData.email || !userData.role_id) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    if (!userData.reason.trim()) {
+        alert('Please provide a reason for the changes.');
+        return;
+    }
+
+    // Send update request
+    fetch('api/update-user.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('User updated successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+            location.reload();
+        } else {
+            alert('Error updating user: ' + (data.message || 'Unknown error'));
         }
-    </script>
-</body>
-</html>
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the user.');
+    });
+}
+</script>
+
+<style>
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+}
+</style>
+
+<?php include 'includes/footer.php'; ?>

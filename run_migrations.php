@@ -11,7 +11,7 @@ $migrationFiles = [
     'migrations/create_roles_table.sql',
     'migrations/create_permissions_table.sql',
     'migrations/create_role_permissions_table.sql',
-    'migrations/update_users_table_add_role.sql'
+    'migrations/create_admin_users_table.sql'
 ];
 
 foreach ($migrationFiles as $file) {
