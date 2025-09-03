@@ -4,7 +4,7 @@ require_once '../auth/db.php';
 
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['admin_user_id'])) {
     echo json_encode(['error' => 'Unauthorized']);
     exit;
 }

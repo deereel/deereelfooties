@@ -52,6 +52,72 @@
         </ul>
 
         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>User Management</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'admin-users.php' ? 'active' : ''; ?>" href="admin-users.php">
+                    <i class="bi bi-person-badge me-1"></i>
+                    Admin Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'user-management.php' ? 'active' : ''; ?>" href="user-management.php">
+                    <i class="bi bi-people-fill me-1"></i>
+                    User Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'role-management.php' ? 'active' : ''; ?>" href="role-management.php">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Role Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'change-password.php' ? 'active' : ''; ?>" href="change-password.php">
+                    <i class="bi bi-key-fill me-1"></i>
+                    Change Password
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Product Management</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'add-product.php' ? 'active' : ''; ?>" href="add-product.php">
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Add Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'edit-product.php' ? 'active' : ''; ?>" href="edit-product.php">
+                    <i class="bi bi-pencil-square me-1"></i>
+                    Edit Product
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'delete-product.php' ? 'active' : ''; ?>" href="delete-product.php">
+                    <i class="bi bi-trash me-1"></i>
+                    Delete Product
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Customer Management</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'customer-details.php' ? 'active' : ''; ?>" href="customer-details.php">
+                    <i class="bi bi-person-lines-fill me-1"></i>
+                    Customer Details
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Reports</span>
         </h6>
         <ul class="nav flex-column mb-2">
@@ -65,6 +131,36 @@
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'sales-report.php' ? 'active' : ''; ?>" href="sales-report.php">
                     <i class="bi bi-graph-up me-1"></i>
                     Sales Report
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Tools & Setup</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'setup-tables.php' ? 'active' : ''; ?>" href="setup-tables.php">
+                    <i class="bi bi-tools me-1"></i>
+                    Setup Tables
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'setup-order-automation.php' ? 'active' : ''; ?>" href="setup-order-automation.php">
+                    <i class="bi bi-robot me-1"></i>
+                    Order Automation
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'check-database-structure.php' ? 'active' : ''; ?>" href="check-database-structure.php">
+                    <i class="bi bi-database-check me-1"></i>
+                    DB Structure
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'test-db-connection.php' ? 'active' : ''; ?>" href="test-db-connection.php">
+                    <i class="bi bi-plug me-1"></i>
+                    Test DB Connection
                 </a>
             </li>
         </ul>
