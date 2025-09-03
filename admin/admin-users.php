@@ -183,7 +183,21 @@ $roles = fetchData('roles');
 
                             <div class="col-md-6">
                                 <label for="password" class="form-label">Password *</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password" required minlength="8">
+                                <div class="form-text" id="passwordHelp">
+                                    Password must be at least 8 characters long
+                                </div>
+                                <div class="progress mt-1" style="height: 5px;">
+                                    <div class="progress-bar" id="passwordStrength" role="progressbar" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="confirm_password" class="form-label">Confirm Password *</label>
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <div class="invalid-feedback" id="confirmPasswordFeedback">
+                                    Passwords do not match
+                                </div>
                             </div>
 
                             <div class="col-md-6">
@@ -197,8 +211,11 @@ $roles = fetchData('roles');
                             </div>
 
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" id="submitBtn">
                                     <i class="bi bi-person-plus"></i> Create Admin User
+                                </button>
+                                <button type="button" class="btn btn-secondary ms-2" onclick="resetForm()">
+                                    <i class="bi bi-arrow-counterclockwise"></i> Reset Form
                                 </button>
                             </div>
                         </form>
@@ -355,6 +372,117 @@ $roles = fetchData('roles');
     <script src="js/admin.js"></script>
 
     <script>
+    // Password strength checker
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let feedback = [];
+
+        if (password.length >= 8) strength++;
+        else feedback.push('At least 8 characters');
+
+        if (/[a-z]/.test(password)) strength++;
+        else feedback.push('Lowercase letter');
+
+        if (/[A-Z]/.test(password)) strength++;
+        else feedback.push('Uppercase letter');
+
+        if (/[0-9]/.test(password)) strength++;
+        else feedback.push('Number');
+
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        else feedback.push('Special character');
+
+        return { strength, feedback };
+    }
+
+    // Update password strength indicator
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        const strengthBar = document.getElementById('passwordStrength');
+        const helpText = document.getElementById('passwordHelp');
+
+        if (password.length === 0) {
+            strengthBar.style.width = '0%';
+            strengthBar.className = 'progress-bar';
+            helpText.textContent = 'Password must be at least 8 characters long';
+            return;
+        }
+
+        const { strength, feedback } = checkPasswordStrength(password);
+        const percentage = (strength / 5) * 100;
+
+        strengthBar.style.width = percentage + '%';
+
+        if (strength <= 2) {
+            strengthBar.className = 'progress-bar bg-danger';
+            helpText.textContent = 'Weak password: ' + feedback.join(', ');
+        } else if (strength <= 3) {
+            strengthBar.className = 'progress-bar bg-warning';
+            helpText.textContent = 'Fair password: ' + feedback.join(', ');
+        } else if (strength <= 4) {
+            strengthBar.className = 'progress-bar bg-info';
+            helpText.textContent = 'Good password: ' + feedback.join(', ');
+        } else {
+            strengthBar.className = 'progress-bar bg-success';
+            helpText.textContent = 'Strong password!';
+        }
+    });
+
+    // Password confirmation validation
+    document.getElementById('confirm_password').addEventListener('input', function() {
+        const password = document.getElementById('password').value;
+        const confirmPassword = this.value;
+        const feedback = document.getElementById('confirmPasswordFeedback');
+
+        if (confirmPassword.length > 0) {
+            if (password !== confirmPassword) {
+                this.classList.add('is-invalid');
+                feedback.style.display = 'block';
+            } else {
+                this.classList.remove('is-invalid');
+                feedback.style.display = 'none';
+            }
+        }
+    });
+
+    // Form validation before submission
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Check password match
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Passwords do not match!');
+            return false;
+        }
+
+        // Check password strength
+        const { strength } = checkPasswordStrength(password);
+        if (strength < 3) {
+            e.preventDefault();
+            alert('Password is too weak. Please choose a stronger password.');
+            return false;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Creating User...';
+    });
+
+    // Reset form function
+    function resetForm() {
+        document.querySelector('form').reset();
+        document.getElementById('passwordStrength').style.width = '0%';
+        document.getElementById('passwordStrength').className = 'progress-bar';
+        document.getElementById('passwordHelp').textContent = 'Password must be at least 8 characters long';
+        document.getElementById('confirm_password').classList.remove('is-invalid');
+        document.getElementById('confirmPasswordFeedback').style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+        document.getElementById('submitBtn').innerHTML = '<i class="bi bi-person-plus"></i> Create Admin User';
+    }
+
     // Edit user functionality
     async function editUser(userId) {
         try {

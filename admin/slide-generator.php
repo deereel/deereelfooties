@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/database.php';
 
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
+if (!isset($_SESSION['admin_user_id'])) {
     header('Location: login.php');
     exit();
 }

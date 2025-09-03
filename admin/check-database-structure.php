@@ -2,256 +2,73 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/auth/db.php';
 
 try {
-    $pdo = getDBConnection();
+    // $pdo is already available globally from auth/db.php
     echo "<h2>Database Structure Check</h2>";
-    
-    // Check users table structure
-    echo "<h3>Users Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE users");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ Users table error: " . $e->getMessage() . "<br>";
-    }
-    
-    // Check user_addresses table structure
-    echo "<h3>User Addresses Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE user_addresses");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ User addresses table error: " . $e->getMessage() . "<br>";
-    }
+    echo "<p><strong>Generated on:</strong> " . date('Y-m-d H:i:s') . "</p>";
 
-    // Cart items table has been removed
-    
-    // Check user_addresses table structure
-    echo "<h3>Measurements Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE measurements");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ Measurements table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>order items Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE order_items");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ order items table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>order progress Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE order_progress");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ order progress table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>orders Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE orders");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ orders table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>payment proofs Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE payment_proofs");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ payment proofs table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>products Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE products");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ products  table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>saved designs Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE saved_designs");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ saved designs table error: " . $e->getMessage() . "<br>";
-    }
-
-    echo "<h3>wishlist items Table Structure:</h3>";
-    try {
-        $stmt = $pdo->query("DESCRIBE wishlist_items");
-        $columns = $stmt->fetchAll();
-        if ($columns) {
-            echo "<table border='1'>";
-            echo "<tr><th>Field</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th></tr>";
-            foreach ($columns as $column) {
-                echo "<tr>";
-                echo "<td>" . $column['Field'] . "</td>";
-                echo "<td>" . $column['Type'] . "</td>";
-                echo "<td>" . $column['Null'] . "</td>";
-                echo "<td>" . $column['Key'] . "</td>";
-                echo "<td>" . $column['Default'] . "</td>";
-                echo "<td>" . $column['Extra'] . "</td>";
-                echo "</tr>";
-            }
-            echo "</table>";
-        }
-    } catch (Exception $e) {
-        echo "❌ wishlist items  table error: " . $e->getMessage() . "<br>";
-    }
-
-    
-
-
-    // Show all tables
-    echo "<h3>All Tables in Database:</h3>";
+    // Get all tables in the database
     $stmt = $pdo->query("SHOW TABLES");
-    $tables = $stmt->fetchAll();
-    foreach ($tables as $table) {
-        echo "- " . array_values($table)[0] . "<br>";
+    $tables = $stmt->fetchAll(PDO::FETCH_NUM);
+
+    if (empty($tables)) {
+        echo "<p>No tables found in the database.</p>";
+    } else {
+        echo "<h3>All Tables in Database (" . count($tables) . " tables found):</h3>";
+        echo "<ul>";
+        foreach ($tables as $table) {
+            echo "<li><strong>" . $table[0] . "</strong></li>";
+        }
+        echo "</ul>";
+
+        // Display structure for each table
+        echo "<h3>Table Structures:</h3>";
+        foreach ($tables as $table) {
+            $tableName = $table[0];
+            echo "<h4>{$tableName} Table Structure:</h4>";
+
+            try {
+                $stmt = $pdo->query("DESCRIBE `{$tableName}`");
+                $columns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                if ($columns) {
+                    echo "<div style='margin-bottom: 30px;'>";
+                    echo "<table border='1' style='border-collapse: collapse; width: 100%;'>";
+                    echo "<thead>";
+                    echo "<tr style='background-color: #f8f9fa;'>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Field</th>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Type</th>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Null</th>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Key</th>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Default</th>";
+                    echo "<th style='padding: 8px; text-align: left; border: 1px solid #ddd;'>Extra</th>";
+                    echo "</tr>";
+                    echo "</thead>";
+                    echo "<tbody>";
+
+                    foreach ($columns as $column) {
+                        echo "<tr>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Field']) . "</td>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Type']) . "</td>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Null']) . "</td>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Key']) . "</td>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Default'] ?? 'NULL') . "</td>";
+                        echo "<td style='padding: 8px; border: 1px solid #ddd;'>" . htmlspecialchars($column['Extra']) . "</td>";
+                        echo "</tr>";
+                    }
+                    echo "</tbody>";
+                    echo "</table>";
+                    echo "<p><em>Columns: " . count($columns) . "</em></p>";
+                    echo "</div>";
+                } else {
+                    echo "<p style='color: #dc3545;'>⚠️ No columns found for table '{$tableName}'</p>";
+                }
+            } catch (Exception $e) {
+                echo "<p style='color: #dc3545;'>❌ Error describing table '{$tableName}': " . htmlspecialchars($e->getMessage()) . "</p>";
+            }
+        }
     }
-    
+
 } catch (Exception $e) {
-    echo "❌ Database connection failed: " . $e->getMessage();
+    echo "<p style='color: #dc3545;'>❌ Database connection failed: " . htmlspecialchars($e->getMessage()) . "</p>";
 }
 ?>
