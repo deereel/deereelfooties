@@ -1,4 +1,4 @@
-i<?php
+<?php
 session_start();
 
 // Check if admin is logged in
@@ -260,6 +260,9 @@ $roles = fetchData('roles');
                                                         <button class="btn btn-sm btn-outline-primary" onclick="editUser(<?php echo $user['id']; ?>)">
                                                             <i class="bi bi-pencil"></i> Edit
                                                         </button>
+                                                        <a href="change-password.php?user_id=<?php echo $user['id']; ?>" class="btn btn-sm btn-outline-info">
+                                                            <i class="bi bi-key"></i> Password
+                                                        </a>
                                                         <form method="POST" class="d-inline">
                                                             <input type="hidden" name="action" value="toggle_status">
                                                             <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
