@@ -68,11 +68,15 @@ $permissionMiddleware->handle();
               </div>
               
               <div class="row mb-3">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                   <label for="price" class="form-label">Price (₦)*</label>
                   <input type="number" class="form-control" id="price" name="price" required>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
+                  <label for="stock_quantity" class="form-label">Stock Quantity*</label>
+                  <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" required min="0" value="0">
+                </div>
+                <div class="col-md-3 mb-3">
                   <label for="gender" class="form-label">Gender*</label>
                   <select class="form-control" id="gender" name="gender" required>
                     <option value="">Select Gender</option>
@@ -81,7 +85,7 @@ $permissionMiddleware->handle();
                     <option value="unisex">Unisex</option>
                   </select>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-3 mb-3">
                   <label for="category" class="form-label">Category*</label>
                   <select class="form-control" id="category" name="category" required>
                     <option value="">Select Category</option>
@@ -390,24 +394,25 @@ $permissionMiddleware->handle();
       addForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Collect form data
-        const formData = {
-          name: document.getElementById('name').value,
-          slug: document.getElementById('slug').value,
-          price: document.getElementById('price').value,
-          gender: document.getElementById('gender').value,
-          category: document.getElementById('category').value,
-          type: document.getElementById('type').value,
-          colors: document.getElementById('colors').value,
-          sizes: document.getElementById('sizes').value,
-          short_description: document.getElementById('short_description').value,
-          description: document.getElementById('description').value,
-          details_care: document.getElementById('details_care').value,
-          main_image: document.getElementById('main_image').value,
-          additional_images: document.getElementById('additional_images').value,
-          is_featured: document.getElementById('is_featured').checked ? 1 : 0,
-          is_new_collection: document.getElementById('is_new_collection').checked ? 1 : 0
-        };
+              // Collect form data
+              const formData = {
+                name: document.getElementById('name').value,
+                slug: document.getElementById('slug').value,
+                price: document.getElementById('price').value,
+                stock_quantity: parseInt(document.getElementById('stock_quantity').value) || 0,
+                gender: document.getElementById('gender').value,
+                category: document.getElementById('category').value,
+                type: document.getElementById('type').value,
+                colors: document.getElementById('colors').value,
+                sizes: document.getElementById('sizes').value,
+                short_description: document.getElementById('short_description').value,
+                description: document.getElementById('description').value,
+                details_care: document.getElementById('details_care').value,
+                main_image: document.getElementById('main_image').value,
+                additional_images: document.getElementById('additional_images').value,
+                is_featured: document.getElementById('is_featured').checked ? 1 : 0,
+                is_new_collection: document.getElementById('is_new_collection').checked ? 1 : 0
+              };
         
         // Convert features to JSON array
         const featuresText = document.getElementById('features').value;
@@ -439,6 +444,20 @@ $permissionMiddleware->handle();
         .then(response => response.json())
         .then(data => {
           if (data.success) {
+            // After product is added, update stock quantity in inventory
+            fetch('/api/inventory.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                product_id: data.product_id,
+                quantity: formData.stock_quantity,
+                type: 'adjustment',
+                reason: 'Initial stock quantity on product creation'
+              })
+            });
+
             alert('Product added successfully!');
             addForm.reset();
             // Refresh product dropdown
