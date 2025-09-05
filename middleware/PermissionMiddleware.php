@@ -39,9 +39,7 @@ class PermissionMiddleware {
     }
 
     private function denyAccess() {
-        header('HTTP/1.1 403 Forbidden');
-        echo "Access denied. You do not have permission to view this page.";
-        exit;
+        throw new Exception("Access denied. You do not have permission to view this page.");
     }
 }
 ?>

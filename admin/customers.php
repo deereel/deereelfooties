@@ -7,8 +7,18 @@ if (!isset($_SESSION['admin_user_id'])) {
     exit;
 }
 
-// Include database connection
+// Include database connection and middleware
 require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
+
+// Check if user has permission to view customers
+try {
+    $permissionMiddleware = new PermissionMiddleware('view_customers');
+    $permissionMiddleware->handle();
+} catch (Exception $e) {
+    header('Location: login.php');
+    exit;
+}
 
 // Get customers with pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

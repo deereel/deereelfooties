@@ -11,9 +11,14 @@ if (!isset($_SESSION['admin_user_id'])) {
 require_once '../auth/db.php';
 require_once '../middleware/PermissionMiddleware.php';
 
-// Check if user has permission to manage products
-$permissionMiddleware = new PermissionMiddleware('manage_products');
-$permissionMiddleware->handle();
+// Check if user has permission to add products
+try {
+    $permissionMiddleware = new PermissionMiddleware('add_products');
+    $permissionMiddleware->handle();
+} catch (Exception $e) {
+    header('Location: login.php');
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

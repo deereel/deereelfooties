@@ -8,8 +8,19 @@ if (!isset($_SESSION['admin_user_id'])) {
     exit;
 }
 
-// Include database connection
+// Include database connection and middleware
 require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
+
+// Check if user has permission to delete products
+try {
+    $permissionMiddleware = new PermissionMiddleware('delete_products');
+    $permissionMiddleware->handle();
+} catch (Exception $e) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Permission denied: You are not authorized to delete products.']);
+    exit;
+}
 
 // Set headers for JSON response
 header('Content-Type: application/json');
