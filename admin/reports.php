@@ -14,6 +14,9 @@ $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-01'); 
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d'); // Today
 $reportType = isset($_GET['type']) ? $_GET['type'] : 'summary';
 
+// Log report viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_reports', 'report', 'read', null, 'Viewed business reports for period: ' . $startDate . ' to ' . $endDate);
+
 try {
     // Get summary statistics
     $totalOrdersStmt = $pdo->prepare("SELECT COUNT(*) FROM orders WHERE DATE(created_at) BETWEEN ? AND ?");

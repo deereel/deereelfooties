@@ -96,11 +96,16 @@ switch ($method) {
                 $data['is_featured'] ?? 0,
                 $data['is_new_collection'] ?? 0
             ]);
-            
+
             $productId = $pdo->lastInsertId();
-            
+
+            // Log product creation
+            if (isset($_SESSION['admin_user_id'])) {
+                logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'create_product', 'product', 'create', $productId, $data['name']);
+            }
+
             echo json_encode([
-                'success' => true, 
+                'success' => true,
                 'message' => 'Product added successfully',
                 'product_id' => $productId
             ]);
@@ -146,6 +151,13 @@ switch ($method) {
             
             try {
                 $stmt->execute($params);
+
+                // Log product update
+                if (isset($_SESSION['admin_user_id'])) {
+                    $productId = $data['product_id'];
+                    logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'update_product', 'product', 'update', $productId, null);
+                }
+
                 echo json_encode(['success' => true, 'message' => 'Product updated successfully']);
             } catch (PDOException $e) {
                 echo json_encode(['success' => false, 'message' => 'Error updating product: ' . $e->getMessage()]);
@@ -167,6 +179,12 @@ switch ($method) {
         $stmt = $pdo->prepare("DELETE FROM products WHERE product_id = ?");
         try {
             $stmt->execute([$data['product_id']]);
+
+            // Log product deletion
+            if (isset($_SESSION['admin_user_id'])) {
+                logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'delete_product', 'product', 'delete', $data['product_id'], null);
+            }
+
             echo json_encode(['success' => true, 'message' => 'Product deleted successfully']);
         } catch (PDOException $e) {
             echo json_encode(['success' => false, 'message' => 'Error deleting product: ' . $e->getMessage()]);

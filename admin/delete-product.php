@@ -55,7 +55,10 @@ try {
     // Delete the product
     $deleteStmt = $pdo->prepare("DELETE FROM products WHERE product_id = ?");
     $deleteStmt->execute([$productId]);
-    
+
+    // Log the activity
+    logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'delete_product', 'products', 'product', $productId);
+
     echo json_encode(['success' => true, 'message' => 'Product deleted successfully']);
     
 } catch (PDOException $e) {

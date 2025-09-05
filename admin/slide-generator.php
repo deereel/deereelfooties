@@ -7,6 +7,9 @@ if (!isset($_SESSION['admin_user_id'])) {
     exit();
 }
 
+// Log slide generator viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_slide_generator', 'slide_generator', 'read', null, 'Viewed slide generator page');
+
 if ($_POST['action'] ?? '' === 'generate_slides') {
     $topic = $_POST['topic'] ?? 'Shoe Care Tips';
     $slides = $_POST['slides'] ?? 5;

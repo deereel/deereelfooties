@@ -60,6 +60,9 @@ $totalPages = ceil($totalOrders / $limit);
 $orderStmt = $pdo->prepare("SELECT * FROM orders" . $whereClause . " ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
 $orderStmt->execute($params);
 $orders = $orderStmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Log order viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_orders', 'order', 'read', null, 'Viewed orders list');
 ?>
 <!DOCTYPE html>
 <html lang="en">

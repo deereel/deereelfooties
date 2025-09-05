@@ -44,19 +44,22 @@ try {
     $totalPages = ceil($totalCustomers / $limit);
 
     // Get customers with pagination
-    $customerStmt = $pdo->prepare("SELECT 
+    $customerStmt = $pdo->prepare("SELECT
         u.*,
         COUNT(DISTINCT o.order_id) as total_orders,
         COALESCE(SUM(o.subtotal), SUM(o.total), 0) as total_spent,
         MAX(o.created_at) as last_order_date
-        FROM users u 
+        FROM users u
         LEFT JOIN orders o ON u.user_id = o.user_id
         " . $whereClause . "
         GROUP BY u.user_id
-        ORDER BY u.created_at DESC 
+        ORDER BY u.created_at DESC
         LIMIT $limit OFFSET $offset");
     $customerStmt->execute($params);
     $customers = $customerStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Log customer viewing activity
+    logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_customers', 'customer', 'read', null, 'Viewed customers list');
 } catch (PDOException $e) {
     $error = 'Error retrieving customers: ' . $e->getMessage();
     $customers = [];

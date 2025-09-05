@@ -10,23 +10,28 @@ class OrderProcessor {
     public function processOrder($orderId) {
         try {
             $this->pdo->beginTransaction();
-            
+
             // Get order details
             $order = $this->getOrder($orderId);
             if (!$order) throw new Exception("Order not found");
-            
+
             // Update inventory
             $this->updateInventoryForOrder($orderId);
-            
+
             // Update order status
             $this->updateOrderStatus($orderId, 'processing');
-            
+
             // Send confirmation email/WhatsApp
             $this->sendOrderConfirmation($order);
-            
+
+            // Log order processing
+            if (isset($_SESSION['admin_user_id'])) {
+                logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'process_order', 'order', 'update', $orderId, 'Order #' . $orderId);
+            }
+
             $this->pdo->commit();
             return true;
-            
+
         } catch (Exception $e) {
             $this->pdo->rollback();
             throw $e;
@@ -59,10 +64,15 @@ class OrderProcessor {
     public function updateOrderStatus($orderId, $status) {
         $stmt = $this->pdo->prepare("UPDATE orders SET status = ? WHERE order_id = ?");
         $stmt->execute([$status, $orderId]);
-        
+
         // Log status change
         $stmt = $this->pdo->prepare("INSERT INTO order_status_history (order_id, status, created_at) VALUES (?, ?, NOW())");
         $stmt->execute([$orderId, $status]);
+
+        // Log activity
+        if (isset($_SESSION['admin_user_id'])) {
+            logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'update_order_status', 'order', 'update', $orderId, 'Status: ' . $status);
+        }
     }
     
     // Get order details

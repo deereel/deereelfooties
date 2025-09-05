@@ -8,9 +8,12 @@ $lowStockProducts = $inventory->getLowStockProducts();
 $recentTransactions = $inventory->getTransactions();
 
 // Get all products with stock info
-$stmt = $pdo->query("SELECT product_id, name, stock_quantity, low_stock_threshold, sku, price 
+$stmt = $pdo->query("SELECT product_id, name, stock_quantity, low_stock_threshold, sku, price
     FROM products ORDER BY name");
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Log inventory viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_inventory', 'inventory', 'read', null, 'Viewed inventory management page');
 ?>
 <!DOCTYPE html>
 <html lang="en">

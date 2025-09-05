@@ -24,9 +24,12 @@ try {
 // Check if user has permission to delete products (for UI display)
 $canDeleteProducts = false;
 try {
-    $deletePermissionMiddleware = new PermissionMiddleware('delete_products');
-    $deletePermissionMiddleware->handle();
-    $canDeleteProducts = true;
+    // Only allow super admin to delete products
+    if (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'super_admin') {
+        $canDeleteProducts = true;
+    } else {
+        $canDeleteProducts = false;
+    }
 } catch (Exception $e) {
     $canDeleteProducts = false;
 }
@@ -70,6 +73,9 @@ try {
     $productStmt = $pdo->prepare("SELECT * FROM products" . $whereClause . " ORDER BY created_at DESC LIMIT $limit OFFSET $offset");
     $productStmt->execute($params);
     $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Log product viewing activity
+    logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_products', 'product', 'read', null, 'Viewed products list');
 
     // Get categories for filter
     $categoryStmt = $pdo->prepare("SELECT DISTINCT category FROM products WHERE category IS NOT NULL AND category != '' ORDER BY category");

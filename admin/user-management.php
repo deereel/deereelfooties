@@ -21,6 +21,9 @@ $isSuperAdmin = ($userRole && $userRole['name'] === 'Super Admin');
 // Fetch all users
 $allUsers = fetchData('admin_users', [], '*', 'username ASC');
 
+// Log user management viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_user_management', 'user', 'read', null, 'Viewed user management page');
+
 // Fetch all roles
 $allRoles = fetchData('roles', [], '*', 'name ASC');
 

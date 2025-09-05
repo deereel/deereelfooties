@@ -54,14 +54,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $features = !empty($_POST['features']) ? json_encode(array_filter(explode("\n", $_POST['features']))) : null;
         
         $updateStmt->execute([
-            $_POST['name'], $_POST['slug'], $_POST['price'], $_POST['gender'], 
-            $_POST['category'], $_POST['type'], $_POST['colors'], $_POST['sizes'], 
-            $_POST['short_description'], $_POST['description'], $features, 
-            $_POST['details_care'], $_POST['main_image'], $_POST['additional_images'], 
-            isset($_POST['is_featured']) ? 1 : 0, isset($_POST['is_new_collection']) ? 1 : 0, 
+            $_POST['name'], $_POST['slug'], $_POST['price'], $_POST['gender'],
+            $_POST['category'], $_POST['type'], $_POST['colors'], $_POST['sizes'],
+            $_POST['short_description'], $_POST['description'], $features,
+            $_POST['details_care'], $_POST['main_image'], $_POST['additional_images'],
+            isset($_POST['is_featured']) ? 1 : 0, isset($_POST['is_new_collection']) ? 1 : 0,
             $productId
         ]);
-        
+
+        // Log product update
+        logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'update_product', 'product', 'update', $productId, $_POST['name']);
+
         $success = 'Product updated successfully!';
         
         // Refresh product data

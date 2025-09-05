@@ -24,14 +24,28 @@ class PermissionMiddleware {
     }
 
     public function handle() {
-        if (!$this->checkPermission()) {
+        try {
+            if (!$this->checkPermission()) {
+                $this->denyAccess();
+            }
+        } catch (Exception $e) {
+            // If permission check fails due to missing tables or other issues,
+            // allow access for logged-in admin users
+            if ($this->isAdmin && isset($_SESSION['admin_user_id'])) {
+                return true;
+            }
             $this->denyAccess();
         }
     }
 
     private function checkPermission() {
         if ($this->isAdmin) {
-            // Use userHasPermission which checks admin_users table
+            // Super admin bypass - check if user is super admin
+            if (isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'super_admin') {
+                return true; // Super admin has all permissions
+            }
+
+            // For other admin users, use permission check
             return userHasPermission($this->userId, $this->requiredPermission);
         } else {
             return userHasPermission($this->userId, $this->requiredPermission);

@@ -16,24 +16,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($username) || empty($password)) {
         $error = 'Please enter both username and password.';
+        logLoginAttempt($username, 'failed', 'Missing credentials');
     } else {
-        // Get admin user by username
-        $user = getAdminUserByUsername($username);
+        // Check if account is locked
+        $lockoutInfo = checkAccountLockout($username);
 
-        if ($user && verifyAdminPassword($password, $user['password'])) {
-            // Login successful
-            $_SESSION['admin_user_id'] = $user['id'];
-            $_SESSION['admin_username'] = $user['username'];
-            $_SESSION['admin_role'] = $user['role_name'];
-            $_SESSION['admin_name'] = $user['first_name'] . ' ' . $user['last_name'];
-
-            // Update last login
-            updateData('admin_users', ['last_login' => date('Y-m-d H:i:s')], ['id' => $user['id']]);
-
-            header('Location: index.php');
-            exit;
+        if ($lockoutInfo['is_locked']) {
+            $error = "Account is temporarily locked due to too many failed login attempts. Please try again in {$lockoutInfo['remaining_time']} minutes.";
+            logLoginAttempt($username, 'locked', 'Account locked due to failed attempts');
         } else {
-            $error = 'Invalid username or password.';
+            // Get admin user by username
+            $user = getAdminUserByUsername($username);
+
+            if ($user && verifyAdminPassword($password, $user['password'])) {
+                // Login successful
+                $_SESSION['admin_user_id'] = $user['id'];
+                $_SESSION['admin_username'] = $user['username'];
+                $_SESSION['admin_role'] = $user['role_name'];
+                $_SESSION['admin_name'] = $user['first_name'] . ' ' . $user['last_name'];
+
+                // Update last login
+                updateData('admin_users', ['last_login' => date('Y-m-d H:i:s')], ['id' => $user['id']]);
+
+                // Log successful login
+                logLoginAttempt($username, 'success');
+
+                // Log activity
+                logActivity($user['id'], $user['username'], 'login_success', 'authentication');
+
+                header('Location: index.php');
+                exit;
+            } else {
+                $error = 'Invalid username or password.';
+                logLoginAttempt($username, 'failed', 'Invalid credentials');
+            }
         }
     }
 }

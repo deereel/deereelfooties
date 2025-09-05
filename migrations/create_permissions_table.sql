@@ -43,5 +43,15 @@ INSERT INTO permissions (name, description, module) VALUES
 
 -- Settings permissions
 ('manage_settings', 'Modify system settings', 'settings'),
-('view_settings', 'View system settings', 'settings')
+('view_settings', 'View system settings', 'settings'),
+
+-- Security permissions
+('view_login_monitoring', 'View login monitoring dashboard', 'security'),
+('manage_security', 'Manage security settings', 'security'),
+('view_activity_logs', 'View activity logs and audit trail', 'security'),
+
+-- System tools permissions
+('manage_backups', 'Create and manage database backups', 'system'),
+('view_system_health', 'View system health and monitoring', 'system'),
+('view_error_logs', 'View and analyze error logs', 'system')
 ON DUPLICATE KEY UPDATE description = VALUES(description), module = VALUES(module);
