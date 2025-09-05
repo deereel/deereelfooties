@@ -10,8 +10,58 @@ if (!isset($_SESSION['admin_user_id'])) {
 }
 
 // Check if user has settings permissions
-$settingsMiddleware = new PermissionMiddleware('view_settings');
-$settingsMiddleware->handle();
+try {
+    $settingsMiddleware = new PermissionMiddleware('view_settings');
+    $settingsMiddleware->handle();
+} catch (Exception $e) {
+    // Show access denied message before redirecting
+    echo '<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Access Denied - Admin Dashboard</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body { background-color: #f8f9fa; }
+            .access-denied { max-width: 500px; margin: 100px auto; text-align: center; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="access-denied">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <div class="mb-4">
+                            <i class="bi bi-shield-x text-danger" style="font-size: 4rem;"></i>
+                        </div>
+                        <h2 class="card-title text-danger mb-3">Access Denied</h2>
+                        <p class="card-text text-muted mb-4">
+                            You do not have permission to access the System Settings page.<br>
+                            Only Super Admin users can access this area.
+                        </p>
+                        <div class="d-grid gap-2">
+                            <a href="index.php" class="btn btn-primary">
+                                <i class="bi bi-house-door me-2"></i>Return to Dashboard
+                            </a>
+                            <a href="login.php" class="btn btn-outline-secondary">
+                                <i class="bi bi-box-arrow-right me-2"></i>Login as Different User
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Auto redirect after 5 seconds
+            setTimeout(function() {
+                window.location.href = "index.php";
+            }, 5000);
+        </script>
+    </body>
+    </html>';
+    exit;
+}
 
 // Get current user info
 $userId = $_SESSION['admin_user_id'];

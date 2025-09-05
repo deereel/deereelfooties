@@ -8,6 +8,16 @@ if (!isset($_SESSION['admin_user_id'])) {
 }
 
 require_once '../auth/db.php';
+require_once '../middleware/PermissionMiddleware.php';
+
+// Check if user has permission to edit products
+try {
+    $permissionMiddleware = new PermissionMiddleware('edit_products');
+    $permissionMiddleware->handle();
+} catch (Exception $e) {
+    header('Location: login.php');
+    exit;
+}
 
 // Get product ID from URL
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;

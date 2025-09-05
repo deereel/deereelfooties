@@ -11,9 +11,25 @@ if (!isset($_SESSION['admin_user_id'])) {
 require_once '../auth/db.php';
 require_once '../middleware/PermissionMiddleware.php';
 
-// Check if user has permission to manage products
-$permissionMiddleware = new PermissionMiddleware('manage_products');
-$permissionMiddleware->handle();
+// Check if user has permission to view products
+try {
+    $permissionMiddleware = new PermissionMiddleware('view_products');
+    $permissionMiddleware->handle();
+} catch (Exception $e) {
+    // Redirect to login or show error if no permission
+    header('Location: login.php');
+    exit;
+}
+
+// Check if user has permission to delete products (for UI display)
+$canDeleteProducts = false;
+try {
+    $deletePermissionMiddleware = new PermissionMiddleware('delete_products');
+    $deletePermissionMiddleware->handle();
+    $canDeleteProducts = true;
+} catch (Exception $e) {
+    $canDeleteProducts = false;
+}
 
 // Get products with pagination
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -180,9 +196,11 @@ try {
                                                 <a href="edit-product.php?id=<?php echo $product['product_id'] ?? $product['id']; ?>" class="btn btn-sm btn-outline-primary">
                                                     <i class="bi bi-pencil"></i> Edit
                                                 </a>
+                                                <?php if ($canDeleteProducts): ?>
                                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(<?php echo $product['product_id'] ?? $product['id']; ?>)">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </div>
