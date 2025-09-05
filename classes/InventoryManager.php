@@ -57,24 +57,31 @@ class InventoryManager {
         }
     }
     
-    // Check and create low stock alerts
+    // Check and create/resolve low stock alerts
     private function checkLowStock($productId) {
-        $stmt = $this->pdo->prepare("SELECT stock_quantity, low_stock_threshold, name 
+        $stmt = $this->pdo->prepare("SELECT stock_quantity, low_stock_threshold, name
             FROM products WHERE product_id = ?");
         $stmt->execute([$productId]);
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($product && $product['stock_quantity'] <= $product['low_stock_threshold']) {
-            // Check if alert already exists
-            $stmt = $this->pdo->prepare("SELECT id FROM low_stock_alerts 
-                WHERE product_id = ? AND status = 'active'");
-            $stmt->execute([$productId]);
-            
-            if (!$stmt->fetch()) {
-                // Create new alert
-                $stmt = $this->pdo->prepare("INSERT INTO low_stock_alerts 
-                    (product_id, current_stock, threshold) VALUES (?, ?, ?)");
-                $stmt->execute([$productId, $product['stock_quantity'], $product['low_stock_threshold']]);
+
+        if ($product) {
+            if ($product['stock_quantity'] <= $product['low_stock_threshold']) {
+                // Stock is low - check if alert already exists
+                $stmt = $this->pdo->prepare("SELECT id FROM low_stock_alerts
+                    WHERE product_id = ? AND status = 'active'");
+                $stmt->execute([$productId]);
+
+                if (!$stmt->fetch()) {
+                    // Create new alert
+                    $stmt = $this->pdo->prepare("INSERT INTO low_stock_alerts
+                        (product_id, current_stock, threshold) VALUES (?, ?, ?)");
+                    $stmt->execute([$productId, $product['stock_quantity'], $product['low_stock_threshold']]);
+                }
+            } else {
+                // Stock is above threshold - resolve any active alerts
+                $stmt = $this->pdo->prepare("UPDATE low_stock_alerts SET status = 'resolved', resolved_at = NOW()
+                    WHERE product_id = ? AND status = 'active'");
+                $stmt->execute([$productId]);
             }
         }
     }

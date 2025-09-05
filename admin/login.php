@@ -97,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="mt-6 text-center text-sm text-gray-600">
             <p>Demo Accounts:</p>
             <div class="mt-2 space-y-1">
-                <p><strong>Super Admin:</strong> oladayo / admin123</p>
-                <p><strong>Admin:</strong> temmy / admin123</p>
+                <p><strong>Super Admin:</strong> oladayo / admin333</p>
+                <p><strong>Admin:</strong> temmy / admin222</p>
             </div>
         </div>
 
