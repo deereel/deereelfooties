@@ -211,6 +211,15 @@ if (!function_exists('currentUserHasPermission')) {
                 </a>
             </li>
             <?php endif; ?>
+
+            <?php if (currentUserHasPermission('view_feedback')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'feedback.php' ? 'active' : ''; ?>" href="feedback.php">
+                    <i class="bi bi-chat-quote me-1"></i>
+                    Customer Feedback
+                </a>
+            </li>
+            <?php endif; ?>
         </ul>
     </div>
 </nav>
