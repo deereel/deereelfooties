@@ -249,6 +249,9 @@ body {
   left: 0;
   overflow-y: auto;
   z-index: 10;
+  /* Added to ensure sidebar is above other elements */
+  box-sizing: border-box;
+  padding-bottom: 56px; /* Added padding to prevent last menu item from being hidden behind taskbar */
 }
 
 .admin-content {
@@ -260,6 +263,10 @@ body {
   z-index: 1;
   background: white;
   min-height: calc(100vh - 56px);
+  /* Added to prevent content from being hidden behind fixed header */
+  box-sizing: border-box;
+  overflow-y: auto;
+  max-height: calc(100vh - 56px);
 }
 
 /* Responsive adjustments */

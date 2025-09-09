@@ -1,6 +1,8 @@
 <?php
 session_start();
 require_once '../config/database.php';
+require_once 'includes/admin-activity-logger.php';
+
 
 if (!isset($_SESSION['admin_user_id'])) {
     header('Location: login.php');

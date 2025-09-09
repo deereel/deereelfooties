@@ -1,14 +1,12 @@
 <?php
 require_once __DIR__ . '/../../auth/db.php';
 
-if (!function_exists('currentUserHasPermission')) {
-    // Function to check if current admin user has a permission
-    function currentUserHasPermission($permissionName) {
-        if (!isset($_SESSION['admin_user_id'])) {
-            return false;
-        }
-        return userHasPermission($_SESSION['admin_user_id'], $permissionName);
+// Function to check if current admin user has a permission
+function currentUserHasPermission($permissionName) {
+    if (!isset($_SESSION['admin_user_id'])) {
+        return false;
     }
+    return userHasPermission($_SESSION['admin_user_id'], $permissionName);
 }
 ?>
 
@@ -104,9 +102,9 @@ if (!function_exists('currentUserHasPermission')) {
             </li>
             <?php endif; ?>
 
-            <?php if (currentUserHasPermission('manage_security')): ?>
+            <?php if (currentUserHasPermission('view_order_automation')): ?>
             <li class="nav-item">
-                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'setup-order-automation.php' ? 'active' : ''; ?>" href="setup-order-automation.php">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'order-automation.php' ? 'active' : ''; ?>" href="order-automation.php">
                     <i class="bi bi-robot me-1"></i>
                     Order Automation
                 </a>
@@ -217,6 +215,14 @@ if (!function_exists('currentUserHasPermission')) {
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'feedback.php' ? 'active' : ''; ?>" href="feedback.php">
                     <i class="bi bi-chat-quote me-1"></i>
                     Customer Feedback
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php if (currentUserHasPermission('view_returns')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'returns.php' ? 'active' : ''; ?>" href="returns.php">
+                    <i class="bi bi-arrow-counterclockwise me-1"></i>
+                    Returns & Refunds
                 </a>
             </li>
             <?php endif; ?>

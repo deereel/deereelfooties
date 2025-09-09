@@ -19,13 +19,12 @@ try {
     exit;
 }
 
-// Log analytics dashboard viewing activity
-logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_analytics_dashboard', 'analytics', 'read', null, 'Viewed analytics dashboard for period: ' . $startDate . ' to ' . $endDate);
-
-// Get date range from URL parameters
 $period = isset($_GET['period']) ? $_GET['period'] : '30d';
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d', strtotime('-30 days'));
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : date('Y-m-d');
+
+// Log analytics dashboard viewing activity
+logActivity($_SESSION['admin_user_id'], $_SESSION['admin_username'], 'view_analytics_dashboard', 'analytics', 'read', null, 'Viewed analytics dashboard for period: ' . $startDate . ' to ' . $endDate);
 
 // Calculate date ranges for different periods
 switch ($period) {
