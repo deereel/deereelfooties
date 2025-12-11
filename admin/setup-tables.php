@@ -64,11 +64,98 @@ if (!$isSuperAdmin) {
     exit;
 }
 
+// Handle API table creation
+if (isset($_POST['create_api_tables'])) {
+    try {
+        // Create API Keys table
+        $pdo->exec("CREATE TABLE IF NOT EXISTS api_keys (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            key_name VARCHAR(255) NOT NULL,
+            api_key VARCHAR(255) UNIQUE NOT NULL,
+            permissions JSON,
+            is_active BOOLEAN DEFAULT TRUE,
+            created_by INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_api_key (api_key),
+            INDEX idx_active (is_active)
+        )");
+        
+        // Create API Usage table
+        $pdo->exec("CREATE TABLE IF NOT EXISTS api_usage (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            api_key_id INT,
+            endpoint VARCHAR(255),
+            method VARCHAR(10),
+            ip_address VARCHAR(45),
+            user_agent TEXT,
+            response_code INT,
+            response_time_ms INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (api_key_id) REFERENCES api_keys(id) ON DELETE CASCADE,
+            INDEX idx_api_key_id (api_key_id),
+            INDEX idx_created_at (created_at),
+            INDEX idx_endpoint (endpoint)
+        )");
+        
+        // Create Webhooks table
+        $pdo->exec("CREATE TABLE IF NOT EXISTS webhooks (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            url VARCHAR(500) NOT NULL,
+            events JSON,
+            secret VARCHAR(255),
+            is_active BOOLEAN DEFAULT TRUE,
+            created_by INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_active (is_active)
+        )");
+        
+        // Create Webhook Logs table
+        $pdo->exec("CREATE TABLE IF NOT EXISTS webhook_logs (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            webhook_id INT,
+            event_type VARCHAR(100),
+            payload JSON,
+            status_code INT,
+            response_body TEXT,
+            response_time_ms INT,
+            attempt_number INT DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (webhook_id) REFERENCES webhooks(id) ON DELETE CASCADE,
+            INDEX idx_webhook_id (webhook_id),
+            INDEX idx_created_at (created_at),
+            INDEX idx_status_code (status_code)
+        )");
+        
+        // Insert permissions
+        $pdo->exec("INSERT IGNORE INTO permissions (name, description) VALUES ('manage_api', 'Manage API keys and integrations')");
+        $pdo->exec("INSERT IGNORE INTO permissions (name, description) VALUES ('manage_webhooks', 'Manage webhook configurations')");
+        
+        // Assign to super_admin
+        $pdo->exec("INSERT IGNORE INTO role_permissions (role_id, permission_id)
+            SELECT r.id, p.id FROM roles r, permissions p 
+            WHERE r.name = 'super_admin' AND p.name IN ('manage_api', 'manage_webhooks')");
+        
+        echo "<div class='alert alert-success'>API and Webhook tables created successfully!</div>";
+    } catch (Exception $e) {
+        echo "<div class='alert alert-danger'>Error creating API/Webhook tables: " . $e->getMessage() . "</div>";
+    }
+}
+
 // Script to set up necessary tables for the admin interface
 
 try {
     echo "<h2>Database Table Setup Check</h2>";
     echo "<p><strong>Generated on:</strong> " . date('Y-m-d H:i:s') . "</p>";
+    
+    // API Tables Setup Button
+    echo "<div class='mb-4'>";
+    echo "<form method='POST' style='display: inline;'>";
+    echo "<button type='submit' name='create_api_tables' class='btn btn-primary me-2'>Create API & Webhook Tables</button>";
+    echo "</form>";
+    echo "</div>";
 
     // Get all tables in the database
     $stmt = $pdo->query("SHOW TABLES");

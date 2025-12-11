@@ -2,24 +2,22 @@
 require_once 'auth/db.php';
 
 try {
-    // Ensure system permissions exist (in case migration didn't run fully)
+    // Ensure email triggers permission exists
     $pdo->exec("INSERT IGNORE INTO permissions (name, description, module) VALUES
-        ('manage_backups', 'Create and manage database backups', 'system'),
-        ('view_system_health', 'View system health and monitoring', 'system'),
-        ('view_error_logs', 'View and analyze error logs', 'system')");
+        ('manage_email_triggers', 'Create and manage email triggers and automation', 'automation')");
 
     // Get super_admin role ID
     $stmt = $pdo->query("SELECT id FROM roles WHERE name = 'super_admin'");
     $role = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($role) {
-        // Assign permissions to super_admin role
+        // Assign permission to super_admin role
         $pdo->exec("INSERT IGNORE INTO role_permissions (role_id, permission_id)
             SELECT {$role['id']}, p.id
             FROM permissions p
-            WHERE p.name IN ('manage_backups', 'view_system_health', 'view_error_logs')");
+            WHERE p.name = 'manage_email_triggers'");
 
-        echo "✅ System permissions successfully assigned to super_admin role!\n";
+        echo "✅ Email triggers permission successfully assigned to super_admin role!\n";
     } else {
         echo "❌ Could not find super_admin role\n";
     }
@@ -32,18 +30,20 @@ try {
         $pdo->exec("INSERT IGNORE INTO role_permissions (role_id, permission_id)
             SELECT {$adminRole['id']}, p.id
             FROM permissions p
-            WHERE p.name IN ('manage_backups', 'view_system_health', 'view_error_logs')");
+            WHERE p.name = 'manage_email_triggers'");
 
-        echo "✅ System permissions successfully assigned to admin role!\n";
+        echo "✅ Email triggers permission successfully assigned to admin role!\n";
     }
 
-    // Verify permissions were created
-    $stmt = $pdo->query("SELECT * FROM permissions WHERE name IN ('manage_backups', 'view_system_health', 'view_error_logs')");
-    $permissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Verify permission was created
+    $stmt = $pdo->query("SELECT * FROM permissions WHERE name = 'manage_email_triggers'");
+    $permission = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo "\nSystem permissions in database:\n";
-    foreach ($permissions as $perm) {
-        echo "- {$perm['name']}: {$perm['description']}\n";
+    if ($permission) {
+        echo "\nEmail triggers permission in database:\n";
+        echo "- {$permission['name']}: {$permission['description']}\n";
+    } else {
+        echo "\n❌ Email triggers permission not found in database\n";
     }
 
     // Verify role assignments
@@ -53,8 +53,8 @@ try {
         FROM roles r
         JOIN role_permissions rp ON r.id = rp.role_id
         JOIN permissions p ON rp.permission_id = p.id
-        WHERE p.name IN ('manage_backups', 'view_system_health', 'view_error_logs')
-        ORDER BY r.name, p.name
+        WHERE p.name = 'manage_email_triggers'
+        ORDER BY r.name
     ");
     $assignments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

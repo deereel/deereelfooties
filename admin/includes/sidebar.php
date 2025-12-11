@@ -102,6 +102,15 @@ function currentUserHasPermission($permissionName) {
             </li>
             <?php endif; ?>
 
+            <?php if (currentUserHasPermission('manage_email_triggers')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'email-triggers.php' ? 'active' : ''; ?>" href="email-triggers.php">
+                    <i class="bi bi-envelope me-1"></i>
+                    Email Triggers
+                </a>
+            </li>
+            <?php endif; ?>
+
             <?php if (currentUserHasPermission('view_order_automation')): ?>
             <li class="nav-item">
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'order-automation.php' ? 'active' : ''; ?>" href="order-automation.php">
@@ -223,6 +232,30 @@ function currentUserHasPermission($permissionName) {
                 <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'returns.php' ? 'active' : ''; ?>" href="returns.php">
                     <i class="bi bi-arrow-counterclockwise me-1"></i>
                     Returns & Refunds
+                </a>
+            </li>
+            <?php endif; ?>
+
+            <?php if (currentUserHasPermission('manage_api')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'api-management.php' ? 'active' : ''; ?>" href="api-management.php">
+                    <i class="bi bi-code-square me-1"></i>
+                    API Management
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'api-documentation.php' ? 'active' : ''; ?>" href="api-documentation.php">
+                    <i class="bi bi-book me-1"></i>
+                    API Documentation
+                </a>
+            </li>
+            <?php endif; ?>
+
+            <?php if (currentUserHasPermission('manage_webhooks')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) === 'webhook-management.php' ? 'active' : ''; ?>" href="webhook-management.php">
+                    <i class="bi bi-arrow-left-right me-1"></i>
+                    Webhook Management
                 </a>
             </li>
             <?php endif; ?>
